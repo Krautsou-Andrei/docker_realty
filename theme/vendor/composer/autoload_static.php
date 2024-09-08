@@ -33,6 +33,11 @@ class ComposerStaticInitf816015a55a1fe359af939e72bc1b875
         array (
             'Mustangostang\\' => 14,
         ),
+        'J' => 
+        array (
+            'JsonStreamingParser\\Test\\' => 25,
+            'JsonStreamingParser\\' => 20,
+        ),
         'G' => 
         array (
             'Gettext\\Languages\\' => 18,
@@ -68,6 +73,14 @@ class ComposerStaticInitf816015a55a1fe359af939e72bc1b875
         'Mustangostang\\' => 
         array (
             0 => __DIR__ . '/..' . '/wp-cli/mustangostang-spyc/src',
+        ),
+        'JsonStreamingParser\\Test\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/salsify/json-streaming-parser/tests',
+        ),
+        'JsonStreamingParser\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/salsify/json-streaming-parser/src',
         ),
         'Gettext\\Languages\\' => 
         array (

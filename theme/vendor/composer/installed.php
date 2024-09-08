@@ -3,7 +3,7 @@
         'name' => 'automattic/underscores',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '43fcd8df040c4b5ab62d036385cb9cbe19873474',
+        'reference' => 'd01fe41d8639c8ef7a53c7e14d3d9fce991c1ba2',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'automattic/underscores' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '43fcd8df040c4b5ab62d036385cb9cbe19873474',
+            'reference' => 'd01fe41d8639c8ef7a53c7e14d3d9fce991c1ba2',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -129,6 +129,15 @@
             'install_path' => __DIR__ . '/../phpcompatibility/phpcompatibility-wp',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'salsify/json-streaming-parser' => array(
+            'pretty_version' => 'v8.3.1',
+            'version' => '8.3.1.0',
+            'reference' => 'c0cfac990eb4e917c71b0ad0146546f0a4da0c2f',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../salsify/json-streaming-parser',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'squizlabs/php_codesniffer' => array(
             'pretty_version' => '3.7.2',

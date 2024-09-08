@@ -1,0 +1,10 @@
+<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="radio_circle_off" clip-path="url(#clip0_428_4694)">
+<path id="Rectangle 291 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M11 1.35156H1L1 11.3516H11V1.35156ZM1 0.351562C0.447715 0.351562 0 0.799278 0 1.35156V11.3516C0 11.9038 0.447715 12.3516 1 12.3516H11C11.5523 12.3516 12 11.9038 12 11.3516V1.35156C12 0.799278 11.5523 0.351562 11 0.351562H1Z" fill="#028FBE"/>
+</g>
+<defs>
+<clipPath id="clip0_428_4694">
+<rect width="12" height="12" fill="white" transform="translate(0 0.351562)"/>
+</clipPath>
+</defs>
+</svg>

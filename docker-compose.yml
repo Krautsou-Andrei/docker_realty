@@ -1,0 +1,50 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - 127.0.0.1:3307:3306
+    volumes:
+      - ./.srv/database:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: realty
+      MYSQL_USER: Andrei
+      MYSQL_PASSWORD: KR7nDso$X8RWi6%%Yz
+  wordpress:
+    image: wordpress:php8.1-apache
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    ports:
+      - 127.0.0.1:8080:80
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: Andrei
+      WORDPRESS_DB_PASSWORD: KR7nDso$X8RWi6%%Yz
+      WORDPRESS_DB_NAME: realty
+      WORDPRESS_DEBAG: 1
+    volumes:
+      - "./.srv/realty:/var/www/html"
+      - "./theme/:/var/www/html/wp-content/themes/realty"
+      - "./plugins/:/var/www/html/wp-content/plugins"
+      - "./uploads/:/var/www/html/wp-content/uploads"
+      - "./.srv/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
+      - "./mlsfiles/:/var/www/html/wp-content/mlsfiles"
+      - "./map/:/var/www/html/map"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    ports:
+      - 127.0.0.1:8181:80
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_USERNAME: Andrei
+      PMA_HOST: mysql
+      UPLOAD_LIMIT: 1024M

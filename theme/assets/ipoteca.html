@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:regular,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.min.css">
+  <title>Объектив</title>
+</head>
+
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+  <div class="header__container">
+    <div class="header__info">
+      <div class="header__text">
+        <p class="header__text-description">Агентство недвижимости «Объектив»</p>
+        <p class="header__text-location" style="background:url(images/location.svg) left center no-repeat; background-size: 8px;">Новороссийск</p>
+
+      </div>
+      <div class="header__menu-burger menu-burger" data-menu-burger>
+        <button class="icon-menu menu-burger__button" type="button" aria-expanded="false" aria-label="button burger" data-menu-burger-button>
+          <span></span>
+        </button>
+        <nav class="menu-burger__wrapper" data-menu-burger-content>
+  <div class="" data-menu-list>
+    <ul class="menu-burger__list">
+      <li>
+        <a href="/" data-menu-burger-link>Главная</a>
+      </li>
+      <li>
+        <a href="/catalog-second.html" data-menu-burger-link>Каталог</a>
+      </li>
+      <li>
+        <a href="/#agency" data-menu-burger-link>О компании</a>
+      </li>
+      <li>
+        <a href="/#employee" data-menu-burger-link>Сотрудники</a>
+      </li>
+      <li>
+        <a href="#" data-menu-burger-link>Ипотека<span></span></a>
+      </li>
+      <li>
+        <a href="/#contacts" data-menu-burger-link>Контакты</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <a href="#" class="header__logo logo">
+        <img src="images/logo.svg" alt="Объектив">
+        <img src="images/logo_burger.svg" alt="" width="132" height="27">
+      </a>
+      <div class="header__contacts">
+        <div class="contact-phone">
+  <div class="contact-phone__phone">
+    <a href="tel:+79186703658">+7 &nbsp;(918)&nbsp; 670-36-58</a>
+    <div class="wrapper-social">
+      <a href="#" target="_blank"><img src="images/whatsapp.svg" alt=""></a>
+      <a href="#" target="_blank"><img src="images/telegram.svg" alt=""></a>
+    </div>
+  </div>
+  <a href="mailto:objective.estate@yandex.ru">objective.estate@yandex.ru</a>
+</div>
+
+      </div>
+      <div class="header__contacts-burger">
+        <a href="tel:+79186703658">
+          <img src="images/phone_burger.svg" alt="" width="16" height="16">
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="header__border"></div>
+  <div class="header__container">
+    <nav class="header__menu menu">
+      <ul class="menu__list">
+        <li class="menu__item"> <a href="/" class="menu__link"> Главная </a> </li>
+        <li class="menu__item"> <a href="/catalog-second.html" class="menu__link"> Каталог </a> </li>
+        <li class="menu__item"> <a href="/#services" class="menu__link"> Сервисы </a> </li>
+        <li class="menu__item"> <a href="/#agency" class="menu__link"> О компании </a> </li>
+        <li class="menu__item"> <a href="/#employee" class="menu__link"> Сотрудники </a> </li>
+        <li class="menu__item"> <a href="#" class="menu__link"> Ипотека <span> 10%</span></a> </li>
+        <li class="menu__item"> <a href="/#contacts" class="menu__link"> Контакты </a> </li>
+      </ul>
+    </nav>
+    
+  </div>
+</header>
+
+    <main class="page">
+      <div class="main-ipoteca">
+        <section class="main-ipoteca__breadcrumbs">
+          <div class="breadcrumbs">
+  <div class="breadcrumbs__container">
+    <ul>
+      <li>Продажа недвижимости</li>
+      <li>Каталог</li>
+    </ul>
+  </div>
+</div>
+
+        </section>
+        <section class="main-ipoteca__ipoteca-calc">
+          <div class="ipoteca">
+  <div class="ipoteca__container">
+    <section class="ipoteca__calc">
+      <div class="ipoteca-calc">
+        <div class="ipoteca-calc__title">
+          <button class="button-back" type="button" aria-label="Назад"></button>
+          <h1 class="title--xl title--catalog title--ipoteca-page">Ипотечный калькулятор</h1>
+        </div>
+        <div class="ipoteca-calc-wrapper">
+          <div class="ipoteca-calc__calc">
+            <div class="calc">
+              <div class="calc__top">
+                <label class="ipoteca-label" for="">
+                  <span>Стоимость недвижимости</span>
+                  <input type="number" placeholder="Введит стоимость недвижимости">
+                </label>
+                <label class="ipoteca-label" for="">
+                  <span>Первоначальный взнос</span>
+                  <input type="number" placeholder="Введите сумму первоначильного взноса">
+                </label>
+              </div>
+              <div class="calc__checkbox">
+                <label for="">
+                  <input class="ipoteca-checkbox" type="checkbox">
+                  <span>Использовать материнский капитал</span>
+                </label>
+              </div>
+              <div class="calc__footer">
+                <div class="calc-footer-row">
+                  <label class="ipoteca-label" for="">
+                    <span>Процентная ставка</span>
+                    <input type="number" placeholder="Введите процентную ставку">
+                  </label>
+                  <label class="ipoteca-label" for="">
+                    <span>Срок кредита</span>
+                    <input type="number" placeholder="Введите срок кредитования">
+                  </label>
+                </div>
+                <div class="calc-footer-row">
+                  <label class="ipoteca-label" for="">
+                    <span>Доход семьи</span>
+                    <input type="number" placeholder="Введите доход семьи">
+                  </label>
+                  <label class="ipoteca-label" for="">
+                    <span>Расходы</span>
+                    <input type="number" placeholder="Введите сумму ежемесячных расходов">
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ipoteca-calc__order">
+            <div class="ipoteca-order">
+
+              <div class="ipoteca-calc-title-wrapper">
+                <p class="ipoteca-order__title">Ежемесячный платеж</p>
+                <h2 class="title--xl ipoteca-order__price title--ipoteca-order"> 133 547 ₽ </h2>
+              </div>
+              <p class="ipoteca-order-stavka"><span>Ставка</span><span></span><span>12.39 %</span></p>
+              <p class="ipoteca-order-sum-credit"><span>Сумма кредита</span><span></span><span>1 500 000 ₽</span></p>
+              <p class="ipoteca-order-tax"><span>Налоговый вычет</span><span></span><span>650 000 ₽</span></p>
+              <p class="ipoteca-order-date"><span>Срок кредита</span><span></span><span>5 лет</span></p>
+
+              <div class="ipoteca-order__button">
+                <button class="button" data-type="popup-form-ipoteca"><span data-type="popup-form-ipoteca">Отправить заявку</span></button>
+              </div>
+              <p class="ipoteca-order__info">
+                Расчет параметров кредита является
+                предварительным
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="popup" data-popup="popup-1" data-close-overlay>
+    <div class="popup__wrapper" data-close-overlay>
+        <div class="popup__content">
+            <button class="button-close popup__close" type="button">x</button>
+            <div class="popup__body">
+                <h2>Базовый пример модального окна</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+  </div>
+</div>
+
+        </section>
+        <section class="main-ipoteca__easy">
+          <div class="ipoteca-easy">
+  <div class="ipoteca-easy__container">
+    <h2 class="title--xl ipoteca-easy__title">Взять ипотеку просто!</h2>
+    <div class="ipoteca-easy-slider ipoteca-easy__slider swiper">
+      <ul class="ipoteca-easy-slider__list swiper-wrapper">
+        <li class="swiper-slide">
+          <img src="images/ipoteca-easy_1.svg" alt="">
+          <h3 class="title--lg">Онлайн-заявка</h3>
+          <p>Нужны только данные паспорта и СНИЛС</p>
+        </li>
+        <li class="swiper-slide">
+          <img src="images/ipoteca-easy_2.svg" alt="">
+          <h3 class="title--lg">Быстрый ответ</h3>
+          <p>Узнайте решение банка за 5 минут</p>
+        </li>
+        <li class="swiper-slide">
+          <img src="images/ipoteca-easy_3.svg" alt="">
+          <h3 class="title--lg">Индивидуальный подход</h3>
+          <p>Сделку будет сопровождать выделенный менеджер</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+        </section>
+        <section class="main-ipoteca__more-questions">
+          <div class="more-questions">
+  <div class="more-questions__container">
+    <h2 class="title--xl more-questions__title">Часто задаваемые вопросы по ипотеке</h2>
+    <div class="more-questions__accordion">
+      <div class="accordion">
+        <div class="accordion__item">
+          <div class="accordion__header"><span>Ипотека от 3% годовых</span></div>
+          <div class="accordion__content">
+            <p>Ипотечный кредит — это заем на покупку недвижимости. В этом случае гарантией возврата долга выступает покупаемая недвижимость, например квартира.<br><br>
+
+              Квартира оформляется как собственность заемщика, но на некоторые действия — например, продажу или дарение этой квартиры — заемщик должен получить согласие банка,
+              выдавшего
+              ипотечный кредит. Это ограничение снимается после полной выплаты долга по ипотеке.</p>
+          </div>
+        </div>
+        <div class="accordion__item">
+          <div class="accordion__header"><span>Ипотека по паспорту</span></div>
+          <div class="accordion__content">
+            <p>Контент 2</p>
+          </div>
+        </div>
+        <div class="accordion__item">
+          <div class="accordion__header"><span>Ипотека без первоначального взноса</span></div>
+          <div class="accordion__content">
+            <p>Контент 3</p>
+          </div>
+        </div>
+        <div class="accordion__item">
+          <div class="accordion__header"><span>Ипотека для ИП, собственников бизнеса и самозанятых</span></div>
+          <div class="accordion__content">
+            <p>Контент 4</p>
+          </div>
+        </div>
+        <div class="accordion__item">
+          <div class="accordion__header"><span>Ипотека на коммерческую недвижимость</span></div>
+          <div class="accordion__content">
+            <p>Контент 5</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+        </section>
+      </div>
+      <section class="main-ipoteca__questions">
+        <section class="questions">
+  <div class="questions__container">
+    <div class="questions-wrapper">
+      <div class="questions__info">
+        <h2 class="title--xl questions__title title--questions">Остались вопросы?</h2>
+        <p class="title--lg questions__subtitle subtitle--questions">Заполните форму и мы скоро свяжемся с вами</p>
+        <form action="" class="questions-form questions__form">
+          <label for="">
+            <input type="text" id="questions-name" placeholder="Ваше имя" required>
+          </label>
+          <label for="">
+            <input type="text" id="questions-phone" placeholder="+7 (999) 999-99-99 *" required>
+          </label>
+          <label for="">
+            <input type="text" id="questions-phone" placeholder="Email (не обязательно)" required>
+          </label>
+          <button type="submit" class="button button--questions"><span>Отправить</span></button>
+          <button type="submit" class="button button--phone-order"><span>Заказать звонок</span></button>
+        </form>
+        <a href="" class="questions__oferts">Нажимая на кнопку «Отправить», вы соглашаетесь на обработку персональных данных</a>
+      </div>
+      <div class="questions__image">
+        <img src="images/form_questions.png" alt="" width="537" height="461">
+      </div>
+    </div>
+  </div>
+</section>
+
+      </section>
+    </main>
+    <footer class="footer">
+  <div class="footer__container">
+    <div class="footer-wrapper">
+      <div class="footer-info footer__info">
+        <img class="footer-info__logo" src="images/logo_footer.svg" alt="" width="246" height="52">
+        <img class="footer-info__logo-mobile" src="images/logo.svg" alt="" width="246" height="52">
+        <p class="footer-info__location">г. Новороссийск,<br> Мысхакское шоссе, 75, офис 315</p>
+        <div class="footer-info__copy">©2004—2023 ООО «Объектив» <br> ИНН: 231505616849, ОГРНИП: 322237500230653</div>
+      </div>
+      <div class="footer-menu footer__menu">
+        <div class="footer-menu-wrapper">
+          <ul>
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">Каталог</a></li>
+            <li><a href="#">О компании</a></li>
+          </ul>
+          <ul>
+            <li><a href="#">Сотрудники</a></li>
+            <li><a href="#">Сервисы</a></li>
+            <li><a href="#">Ипотека</a></li>
+          </ul>
+          <ul>
+            <li><a href="#">Галерея</a></li>
+            <li><a href="#">Контакты</a></li>
+          </ul>
+        </div>
+        <ul class="footer-menu__tags footer-tags">
+          <li><img src="images/footer_tag_1.svg" alt=""></li>
+          <li><img src="images/footer_tag_2.svg" alt=""></li>
+          <li><div class="rating-wrapper">
+  <div class="rating">
+    <span class="rating__number">4,7</span>
+    <ul class="rating__stars">
+      <li style="background: url(images/star.svg) no-repeat;"></li>
+      <li style="background: url(images/star.svg) no-repeat;"></li>
+      <li style="background: url(images/star.svg) no-repeat;"></li>
+      <li style="background: url(images/star.svg) no-repeat;"></li>
+      <li style="background: url(images/star-1.svg) no-repeat;"></li>
+    </ul>
+  </div>
+  <span class="rating__description">Средний рейтинг клиентов</span>
+</div>
+</li>
+        </ul>
+      </div>
+      <div class="footer-contacts footer__conatacts">
+        <div class="footer-contacts__phone">
+          <div class="contact-phone">
+  <div class="contact-phone__phone">
+    <a href="tel:+79186703658">+7 &nbsp;(918)&nbsp; 670-36-58</a>
+    <div class="wrapper-social">
+      <a href="#" target="_blank"><img src="images/whatsapp.svg" alt=""></a>
+      <a href="#" target="_blank"><img src="images/telegram.svg" alt=""></a>
+    </div>
+  </div>
+  <a href="mailto:objective.estate@yandex.ru">objective.estate@yandex.ru</a>
+</div>
+
+        </div>
+        <div class="footer-contacts__button">
+          <button type="button" class="button button--phone-order">
+            <!-- <img src="images/phone.svg" alt="" width="16" height="16"> -->
+            <span>Заказать звонок</span>
+          </button>
+        </div>
+      </div>
+      <p class="footer-info__location-mobile">г. Новороссийск,<br> Мысхакское шоссе, 75, офис 315</p>
+      <div class="footer-info__copy-mobile">©2004—2023 ООО «Объектив» <br> ИНН: 231505616849, ОГРНИП: 322237500230653</div>
+    </div>
+
+  </div>
+</footer>
+
+  </div>
+
+  <div class="popup" data-popup="popup-form-ipoteca" data-close-overlay>
+  <div class="popup__wrapper" data-close-overlay>
+    <div class="popup__content">
+      <button class="button-close popup__close" type="button">x</button>
+      <div class="popup__body">
+        <div class="popup__title">
+          <h2>Заполним анкету за вас!</h2>
+          <p>Наш специалист скоро свяжется в вами</p>
+        </div>
+        <form action="" class="popup-form">
+          <div class="labels-wrapper">
+            <label for="" class="popup__label label--popup-name" aria-label="Имя">
+              <input type="text" placeholder="Ваше имя *">
+            </label>
+            <label for="" class="popup__label label--popup-phone" aria-label="Телефон">
+              <input type="number" placeholder="+7 (999) 999-99-99 *">
+            </label>
+            <label for="" class="popup__label label--popup-email" aria-label="Email">
+              <input type="text" placeholder="Email (не обязательно)">
+            </label>
+          </div>
+          <div class="popup-form__button">
+            <button class="button" type="submit">Отправить</button>
+          </div>
+        </form>
+        <p class="popup__info">
+          Нажимая на кнопку «Отправить», вы соглашаетесь на обработку персональных данных
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="js/app.min.js"></script>
+
+</body>
+
+</html>

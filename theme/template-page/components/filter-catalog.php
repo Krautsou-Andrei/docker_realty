@@ -106,10 +106,10 @@
           <span class="select-area__title">Общая, м²</span>
           <div class="select-area__wrapper-label">
             <label>
-              <input type="number" name="option-select-area" placeholder="от" id="area-from">
+              <input type="number" name="option-select-area-from" placeholder="от" id="area-from" min="1" max="1000">
             </label>
             <label>
-              <input type="number" name="option-select-area" placeholder="до" id="area-to">
+              <input type="number" name="option-select-area-to" placeholder="до" id="area-to" min="1" max="1000">
             </label>
           </div>
         </div>
@@ -135,11 +135,11 @@
           </div>
           <div class="select-price__wrapper-label">
             <label>
-              <input type="number" name="option-select-price" placeholder="от" id="price-from">
+              <input type="number" name="option-select-price-from" placeholder="от" id="price-from" min="1" max="1000">
               <span>₽</span>
             </label>
             <label>
-              <input type="number" name="option-select-price" placeholder="до" id="price-to">
+              <input type="number" name="option-select-price-to" placeholder="до" id="price-to" min="1" max="1000">
               <span>₽</span>
             </label>
           </div>

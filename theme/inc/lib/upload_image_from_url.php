@@ -2,10 +2,16 @@
 
 function upload_image_from_url($image_url)
 {
-    // Проверка, существует ли изображение в медиабиблиотеке
-    $attachment_id = attachment_url_to_postid($image_url);
-    if ($attachment_id) {
-        return $attachment_id; // Возвращаем ID, если изображение уже существует
+    // Проверяем существование изображения по сохраненному URL
+    $existing_attachment = get_posts(array(
+        'post_type'   => 'attachment',
+        'meta_key'    => 'external_image_url', // Ключ метаданных
+        'meta_value'  => $image_url,
+        'posts_per_page' => 1,
+    ));
+
+    if ($existing_attachment) {
+        return $existing_attachment[0]->ID; // Возвращаем ID, если изображение уже существует
     }
 
     // Получаем содержимое изображения
@@ -41,6 +47,9 @@ function upload_image_from_url($image_url)
     require_once(ABSPATH . 'wp-admin/includes/image.php');
     $attach_data = wp_generate_attachment_metadata($attachment_id, $upload['file']);
     wp_update_attachment_metadata($attachment_id, $attach_data);
+
+    // Сохраняем URL изображения в метаданных
+    update_post_meta($attachment_id, 'external_image_url', $image_url);
 
     return $attachment_id;
 }

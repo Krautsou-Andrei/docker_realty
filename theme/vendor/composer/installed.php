@@ -3,7 +3,7 @@
         'name' => 'automattic/underscores',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'd01fe41d8639c8ef7a53c7e14d3d9fce991c1ba2',
+        'reference' => '0dcae2eee045a1427e7afb034383ffff86f35c04',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'automattic/underscores' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'd01fe41d8639c8ef7a53c7e14d3d9fce991c1ba2',
+            'reference' => '0dcae2eee045a1427e7afb034383ffff86f35c04',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

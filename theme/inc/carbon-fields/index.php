@@ -9,6 +9,7 @@ function crb_load_realty(){
 	\Carbon_Fields\Carbon_Fields::boot();
 }
 
+require __DIR__ . '/fields-gk.php';
 require __DIR__ . '/theme-options.php';
 require __DIR__ . '/fields-product.php';
 require __DIR__ . '/fields-page-ipoteca.php';

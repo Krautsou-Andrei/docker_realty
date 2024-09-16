@@ -3,6 +3,8 @@
 Template Name: Страница новостройки
 */
 
+require_once get_template_directory() . '/inc/enums/default_enum.php';
+
 get_header();
 ?>
 <main class="page">
@@ -58,7 +60,7 @@ get_header();
                 <span>Назад </span>
               </a>
             </div>
-            <div class="filter-catalog-mobile__button"  data-type="popup-filter">
+            <div class="filter-catalog-mobile__button" data-type="popup-filter">
               <button class="button-catalog-filter" data-type="popup-filter">
                 <img src="<?php bloginfo('template_url'); ?>/assets/images/filter.svg" alt="" data-type="popup-filter">
                 <span data-type="popup-filter">Фильтры </span>
@@ -83,14 +85,12 @@ get_header();
               <h1 class="favorites__title title--xl title--catalog">
                 <?php echo $crb_new_building_title . ' ' . $title_city; ?>
               </h1>
-              <p class="favorites__subtitle">Найдено <?php echo num_word($total_posts, array('объявление', 'объявления', 'объявлений')) ?></p>
+              <p class="favorites__subtitle">Найдено <?php echo num_word($total_posts, DEFAULT_ENUM::RESIDENTAL_COMPLEX) ?></p>
             </div>
           </div>
           <div id='content-container-new-buildings' class="favorites-wrapper">
 
             <?php
-
-
             function pluralForm($number, $forms)
             {
               $cases = array(2, 0, 1, 1, 1, 2);

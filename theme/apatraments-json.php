@@ -5,16 +5,28 @@ Template Name: JSON Apartaments
 
 
 declare(strict_types=1);
+require_once get_template_directory() . '/inc/lib/create_page.php';
 require_once get_template_directory() . '/inc/lib/create_post.php';
-require_once get_template_directory() . '/inc/lib/get_new_complex_fields_gk.php';
+require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
-
+require_once get_template_directory() . '/inc/enums/template_name.php';
 
 set_time_limit(0);
 
 use JsonMachine\Items;
 
 $crb_gk = carbon_get_post_meta(CATEGORIES_ID::PAGE_NEW_BUILDINGS, 'crb_gk');
+
+$args_new_buildings = array(
+    'post_type'      => 'page', // Тип поста - страница
+    'post_parent'    => CATEGORIES_ID::PAGE_NEW_BUILDINGS, // ID родительской страницы
+    'posts_per_page' => -1, // Получить все дочерние страницы    
+);
+
+// Выполняем запрос
+$pages_children_new_buildings = get_posts($args_new_buildings);
+
+// prettyVarDump($pages_children_new_buildings);
 
 $args_cities = array(
     'hide_empty' => false,
@@ -71,18 +83,22 @@ foreach ($blocks as $block) {
         $region = search_region($regions, $block->district);
         $region_name = $region->name;
         $region_category_id = get_term_by('name', $region_name, 'category')->term_id;
+        prettyVarDump($region_name);
+        $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
 
-        $crb_gk_new[] =  get_new_complex_fields_gk($block, $region_name);
+        if (!empty($id_page)) {
+            create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
+        }
 
-        // prettyVarDump( $region_category_id);
+        // $crb_gk_new[] = get_new_complex_fields_gk($blocks, $region_name);
+
+        prettyVarDump($id_page);
     }
 }
 
-if ( !empty($crb_gk_new)) {
-    carbon_set_post_meta(CATEGORIES_ID::PAGE_NEW_BUILDINGS, 'crb_gk', $crb_gk_new);
-} 
-
-
+if (!empty($crb_gk_new)) {
+    // carbon_set_post_meta(CATEGORIES_ID::PAGE_NEW_BUILDINGS, 'crb_gk', $crb_gk_new);
+}
 
 
 

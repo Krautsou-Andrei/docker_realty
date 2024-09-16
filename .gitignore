@@ -1,3 +1,4 @@
 /.srv/*
 !/.srv/custom.ini
 /uploads
+/theme/json

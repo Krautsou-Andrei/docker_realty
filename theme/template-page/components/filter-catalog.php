@@ -1,29 +1,5 @@
 <form action="" class="filter-catalog__form form-filter-catalog" method='get'>
-  <div class="form-filter-catalog__list">
-    <div class="label-option-radio-wrapper label label-type" id="filter-flat" data-checked>
-      <div class="option-radio">
-        <span class="option-radio__label" data-checked-view data-default-value="Тип объекта">Тип объекта</span>
-        <span data-arrow></span>
-      </div>
-      <div class="option-radio__select" data-select>
-        <ul>
-          <li>
-            <label>
-              <span>Квартиры</span>
-              <input type="radio" name="option-radio-type-build" value="Квартиры" id="">
-              <span></span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <span>Дома</span>
-              <input type="radio" name="option-radio-type-build" value="Дома" id="">
-              <span></span>
-            </label>
-          </li>
-        </ul>
-      </div>
-    </div>
+  <div class="form-filter-catalog__list">  
     <div class="label-option-radio-wrapper label label-city" id="filter-city" data-checked>
       <div class="option-radio">
         <span class="option-radio__label" data-checked-view data-default-value="Город">Город</span>
@@ -42,30 +18,6 @@
             <label>
               <span>Краснодар</span>
               <input type="radio" name="option-radio-type-build" value="Краснодар" id="">
-              <span></span>
-            </label>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="label-option-checkbox-wrapper label label-district" id="filter-flat-district" data-checked>
-      <div class="option-checkbox">
-        <span class="option-checkbox__label" data-checked-view data-default-value="Район">Район</span>
-        <span data-arrow></span>
-      </div>
-      <div class="option-checkbox__select" data-select>
-        <ul>
-          <li>
-            <label>
-              <span>Центральный</span>
-              <input type="checkbox" name="option-checkbox-district" value="Центральный" id="">
-              <span></span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <span>Приморский</span>
-              <input type="checkbox" name="option-checkbox-district" value="Приморский" id="">
               <span></span>
             </label>
           </li>

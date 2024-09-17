@@ -120,8 +120,9 @@ get_header();
               while ($query->have_posts()) {
                 $query->the_post();
 
-                $product_id = carbon_get_post_meta(get_the_ID(), 'product-id');
-                
+                $params = [];
+
+                get_template_part('template-page/components/card_gk_single', null, $params);
               }
               if ($query->max_num_pages > 1) {
                 echo '<div class="pagination">

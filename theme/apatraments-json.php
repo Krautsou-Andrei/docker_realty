@@ -15,19 +15,6 @@ set_time_limit(0);
 
 use JsonMachine\Items;
 
-$crb_gk = carbon_get_post_meta(CATEGORIES_ID::PAGE_NEW_BUILDINGS, 'crb_gk');
-
-$args_new_buildings = array(
-    'post_type'      => 'page', // Тип поста - страница
-    'post_parent'    => CATEGORIES_ID::PAGE_NEW_BUILDINGS, // ID родительской страницы
-    'posts_per_page' => -1, // Получить все дочерние страницы    
-);
-
-// Выполняем запрос
-$pages_children_new_buildings = get_posts($args_new_buildings);
-
-// prettyVarDump($pages_children_new_buildings);
-
 $args_cities = array(
     'hide_empty' => false,
     'parent' => CATEGORIES_ID::CITIES,
@@ -36,23 +23,8 @@ $args_cities = array(
 $categories_cities = get_categories($args_cities);
 $categories_cities_name = [];
 
-
 foreach ($categories_cities as $city) {
     $categories_cities_name[] = $city->name;
-}
-
-foreach ($categories_cities as $cities) {
-    $args_gk = array(
-        'hide_empty' => false,
-        'parent' => $cities->term_id,
-    );
-
-    $categories_gk = get_categories($args_gk);
-    $categories_gk_names = [];
-
-    foreach ($categories_gk as $gk) {
-        $categories_gk_names[] = $gk->name;
-    }
 }
 
 $json_regions_path = get_template_directory() . '/json/regions.json';
@@ -66,8 +38,23 @@ foreach ($regions as $region) {
     }
 }
 
+$json_building_type_path = get_template_directory() . '/json/buildingtypes.json';
+$json_building_type = file_get_contents($json_building_type_path);
+$building_type = json_decode($json_building_type);
+$building_type_ids = [];
 
+foreach ($building_type as $type) {
+    $building_type_ids[$type->_id] = $type->name;
+}
 
+$json_finishings_path = get_template_directory() . '/json/finishings.json';
+$json_finishings = file_get_contents($json_finishings_path);
+$finishings = json_decode($json_finishings);
+$finishings_ids = [];
+
+foreach ($finishings as $type) {
+    $finishings_ids[$type->_id] = $type->name;
+}
 
 // prettyVarDump($regions);
 
@@ -76,59 +63,56 @@ $json_blocks_path = get_template_directory() . '/json/blocks.json';
 $json_blocks = file_get_contents($json_blocks_path);
 $blocks = json_decode($json_blocks);
 
-$crb_gk_new = [];
+
 
 foreach ($blocks as $block) {
     if (in_array($block->district, $regions_ids)) {
         $region = search_region($regions, $block->district);
         $region_name = $region->name;
         $region_category_id = get_term_by('name', $region_name, 'category')->term_id;
-        prettyVarDump($region_name);
+
         $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
 
         if (!empty($id_page)) {
-            create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
+            // create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
         }
-
-        // $crb_gk_new[] = get_new_complex_fields_gk($blocks, $region_name);
-
-        prettyVarDump($id_page);
     }
 }
-
-if (!empty($crb_gk_new)) {
-    // carbon_set_post_meta(CATEGORIES_ID::PAGE_NEW_BUILDINGS, 'crb_gk', $crb_gk_new);
-}
-
-
-
-
 
 
 
 $json_folder_path = get_template_directory() . '/json/apartaments.json';
-
+prettyVarDump($json_folder_path);
 $items = Items::fromFile($json_folder_path);
-
+prettyVarDump($items);
 $count = 0; // Счётчик итераций
 
 foreach ($items as $name => $item) {
-    if ($count >= 10) {
+    prettyVarDump('sdsdsdsdsd');
+    if ($count >= 2) {
         break; // Прерываем цикл после 10 итераций
     }
 
-    $data = new stdClass(); // Создание нового объекта
+    if (in_array($item->block_district, $regions_ids)) {
+        $data = new stdClass(); // Создание нового объекта
 
-    $data->_id = $item->_id;
-    $data->product_gallery = $item->plan[0] ?? "https://cdn-dataout.trendagent.ru/images/o/y/7hbh0odgo51mue86z1bczyvh.png";
-    $data->product_price = $item->price ?? 0;
-    $data->product_price_meter = $item->price ?? 0;
-    $data->product_rooms = $item->room ?? 0;
-    $data->product_area = $item->area_total ?? 0;
-    $data->product_stage = $item->floor ?? '';
-    $data->product_city = $item->block_address ?? '';
+        $data->id = $item->_id;
+        $data->product_gallery = $item->plan[0] ?? "https://cdn-dataout.trendagent.ru/images/o/y/7hbh0odgo51mue86z1bczyvh.png";
+        $data->product_price = $item->price ?? 0;
+        $data->product_price_meter = $item->price ?? 0;
+        $data->product_rooms = $item->room ?? 0;
+        $data->product_area = $item->area_total ?? 0;
+        $data->product_stage = $item->floor ?? '';
+        $date->product_year_build = $item->building_deadline ?? '';
+        $data->product_city = $item->block_district_name ?? '';
+        $data->product_gk = $item->block_name ?? '';
+        $data->product_street = $item->block_address ?? '';
+        $data->coordinates = $item->block_geometry->coordinates ?? [];
+        $data->product_building_type = $building_type_ids[$item->building_type] ?? '';
+        $data->product_finishing = $finishings_ids[$item->finishing] ?? '';
+    }
 
-    // create_post($data);
+    create_post($data);
 
     $count++; // Увеличиваем счётчик
 }

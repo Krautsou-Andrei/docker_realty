@@ -1,5 +1,6 @@
 <?php
 
+require_once get_template_directory() . '/inc/lib/create_category.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 require_once get_template_directory() . '/inc/lib/update_fields_gk.php';
 
@@ -9,6 +10,8 @@ function create_page($parent_id, $page, $template, $city_name)
     $page_title = $page->name;
     $page_slug = get_transliterate($page_title);
     $page_enabled_id = page_exists($page_slug);
+
+    create_category($page_title, $page_slug, CATEGORIES_ID::GK);
 
     // Проверка, существует ли страница с таким же слагом
     if ($page_enabled_id) {

@@ -2,6 +2,9 @@
 
 function get_transliterate($text)
 {
+    // Удаляем все символы, кроме букв и пробелов
+    $text = preg_replace('/[^\p{L}\s]/u', '', $text);
+
     $transliteration_table = [
         'а' => 'a',
         'б' => 'b',

@@ -1,6 +1,9 @@
 <?php
 
+require_once get_template_directory() . '/inc/lib/create_category.php';
+require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
+require_once get_template_directory() . '/inc/enums/categories_id.php';
 
 function create_post($data)
 {
@@ -14,11 +17,14 @@ function create_post($data)
     $product_stage = $data->product_stage;
     $product_year_build = $data->product_year_build;
     $product_city = $data->product_city;
+    $product_gk = $data->product_gk;
     $product_street = $data->product_street;
     $product_latitude = $data->coordinates[0] ?? '';
     $product_longitude = $data->coordinates[1] ?? '';
     $product_building_type = $data->product_building_type;
     $product_finishing = $data->product_finishing;
+
+    // prettyVarDump($data);
 
     $date_build = '';
 
@@ -35,18 +41,23 @@ function create_post($data)
         return $attachment_id;
     }
 
+    $id_city_category = create_category($product_city, get_transliterate($product_city), CATEGORIES_ID::CITIES);
+    $id_gk_category = create_category($product_gk, get_transliterate($product_gk), CATEGORIES_ID::GK);
+    $id_rooms_category = create_category($product_rooms, get_transliterate($product_rooms), CATEGORIES_ID::ROOMS);
+    $id_area_category = create_category(ceil($product_area), get_transliterate(ceil($product_area)), CATEGORIES_ID::AREA);
+
     $post_id = wp_insert_post(array(
         'post_title'   => 'Заголовок поста 1',
         'post_content' => 'Содержимое поста',
         'post_status'  => 'publish',
         'post_type'    => 'post',
+        'post_category' => [CATEGORIES_ID::CITIES, CATEGORIES_ID::GK, CATEGORIES_ID::ROOMS, CATEGORIES_ID::AREA, $id_city_category, $id_gk_category, $id_rooms_category, $id_area_category]
     ));
 
     var_dump(!is_wp_error($post_id));
     if (!is_wp_error($post_id)) {
         carbon_set_post_meta($post_id, 'product-id', $product_id);
         carbon_set_post_meta($post_id, 'product-gallery', [$attachment_id]);
-        // carbon_set_post_meta($post_id, 'product-description', 'text');
         carbon_set_post_meta($post_id, 'product-price', $product_price);
         carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);
         carbon_set_post_meta($post_id, 'product-rooms', $product_rooms);

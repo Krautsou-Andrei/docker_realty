@@ -12,6 +12,7 @@ function update_fields_gk($post_id, $block, $name_city)
         $ids_gallery[] = upload_image_from_url($render);
     }
 
+    carbon_set_post_meta($post_id, 'crb_gk_id', $block->_id);
     carbon_set_post_meta($post_id, 'crb_gk_name', $block->name);
     carbon_set_post_meta($post_id, 'crb_gk_plan', [$id_plan]);
     carbon_set_post_meta($post_id, 'crb_gk_gallery', $ids_gallery);

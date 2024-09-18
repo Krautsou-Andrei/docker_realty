@@ -13,6 +13,7 @@ return array(
     'Mustangostang\\' => array($vendorDir . '/wp-cli/mustangostang-spyc/src'),
     'JsonStreamingParser\\Test\\' => array($vendorDir . '/salsify/json-streaming-parser/tests'),
     'JsonStreamingParser\\' => array($vendorDir . '/salsify/json-streaming-parser/src'),
+    'JsonMachine\\' => array($vendorDir . '/halaxa/json-machine/src'),
     'Gettext\\Languages\\' => array($vendorDir . '/gettext/languages/src'),
     'Gettext\\' => array($vendorDir . '/gettext/gettext/src'),
     'Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => array($vendorDir . '/dealerdirect/phpcodesniffer-composer-installer/src'),

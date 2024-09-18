@@ -37,6 +37,7 @@ class ComposerStaticInitf816015a55a1fe359af939e72bc1b875
         array (
             'JsonStreamingParser\\Test\\' => 25,
             'JsonStreamingParser\\' => 20,
+            'JsonMachine\\' => 12,
         ),
         'G' => 
         array (
@@ -81,6 +82,10 @@ class ComposerStaticInitf816015a55a1fe359af939e72bc1b875
         'JsonStreamingParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/salsify/json-streaming-parser/src',
+        ),
+        'JsonMachine\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/halaxa/json-machine/src',
         ),
         'Gettext\\Languages\\' => 
         array (

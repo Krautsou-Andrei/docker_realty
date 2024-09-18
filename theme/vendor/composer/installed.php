@@ -3,7 +3,7 @@
         'name' => 'automattic/underscores',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '0dcae2eee045a1427e7afb034383ffff86f35c04',
+        'reference' => 'a4e4876fe29200da9ff94b8a70c84f296588b40f',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'automattic/underscores' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '0dcae2eee045a1427e7afb034383ffff86f35c04',
+            'reference' => 'a4e4876fe29200da9ff94b8a70c84f296588b40f',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -60,6 +60,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'halaxa/json-machine' => array(
+            'pretty_version' => '1.1.4',
+            'version' => '1.1.4.0',
+            'reference' => '5147f38f74d7ab3e27733e3f3bdabbd2fd28e3fa',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../halaxa/json-machine',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'htmlburger/carbon-fields' => array(
             'pretty_version' => 'v3.6.0',

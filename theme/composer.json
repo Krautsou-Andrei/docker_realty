@@ -17,7 +17,8 @@
     "require": {
         "php": ">=5.6",
         "htmlburger/carbon-fields": "^3.6",
-        "salsify/json-streaming-parser": "^8.3"
+        "salsify/json-streaming-parser": "^8.3",
+        "halaxa/json-machine": "^1.1"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",

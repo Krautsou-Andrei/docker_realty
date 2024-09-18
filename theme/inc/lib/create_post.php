@@ -7,7 +7,7 @@ require_once get_template_directory() . '/inc/enums/categories_id.php';
 
 function create_post($data)
 {
-
+    prettyVarDump($data);
     $product_id = $data->id;
     $product_gallery = $data->product_gallery;
     $product_price = $data->product_price;
@@ -23,6 +23,7 @@ function create_post($data)
     $product_longitude = $data->coordinates[1] ?? '';
     $product_building_type = $data->product_building_type;
     $product_finishing = $data->product_finishing;
+    $product_building_name = $data->building_name;
 
     // prettyVarDump($data);
 
@@ -70,6 +71,7 @@ function create_post($data)
         carbon_set_post_meta($post_id, 'product-street', $product_street);
         carbon_set_post_meta($post_id, 'product-latitude', $product_latitude);
         carbon_set_post_meta($post_id, 'product-longitude', $product_longitude);
+        carbon_set_post_meta($post_id, 'product-builder-liter', $product_building_name);
     } else {
         // Вывод сообщения об ошибке
         echo 'Ошибка при создании поста: ' . $post_id->get_error_message();

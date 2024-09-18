@@ -20,12 +20,12 @@ function product_fields()
   Container::make('post_meta', 'Информация о товаре')
     ->where('post_type', '=', 'post')
     ->add_tab('Общие', [
-      Field::make( 'checkbox', 'product_compare_content', 'Фильтр похожие объявления' )->set_option_value( 'yes' )->set_width(33), 
-      Field::make( 'checkbox', 'product_more_content', 'Фильтр могут подойти' )->set_option_value( 'yes' )->set_width(33), 
-      Field::make( 'checkbox', 'product_type_aparts', 'Квартира или студия' )->set_option_value( 'yes' )->set_help_text('Если квартира является студией, поставить галочку')->set_width(33),      
-      Field::make('text', 'product-id', 'Индекс объявления')->set_help_text('12328600010')->set_width(50)->set_required(true),     
+      Field::make('checkbox', 'product_compare_content', 'Фильтр похожие объявления')->set_option_value('yes')->set_width(33),
+      Field::make('checkbox', 'product_more_content', 'Фильтр могут подойти')->set_option_value('yes')->set_width(33),
+      Field::make('checkbox', 'product_type_aparts', 'Квартира или студия')->set_option_value('yes')->set_help_text('Если квартира является студией, поставить галочку')->set_width(33),
+      Field::make('text', 'product-id', 'Индекс объявления')->set_help_text('12328600010')->set_width(50)->set_required(true),
       Field::make('media_gallery', 'product-gallery', 'Галерея')->set_width(75),
-      Field::make('textarea', 'product-description', 'Описание'),   
+      Field::make('textarea', 'product-description', 'Описание'),
     ])
     ->add_tab('Основные значения', [
       Field::make('text', 'product-price', 'Цена')->set_help_text('Цены в рублях, только цифры')->set_width(50)->set_required(true),
@@ -39,7 +39,7 @@ function product_fields()
       Field::make('text', 'product-rooms', 'Количество комнат')->set_help_text('Указать количество комнат')->set_width(50)->set_required(true),
       Field::make('text', 'product-area', 'Площадь квартиры')->set_help_text('Указать площадь квартиры')->set_width(50)->set_required(true),
       Field::make('text', 'product-stage', 'Этаж')->set_help_text('Указать этаж, например 9/16')->set_width(50)->set_required(true),
-      ])
+    ])
     ->add_tab('О доме', [
       Field::make('text', 'product-developer', 'Застройщик')->set_width(50),
       Field::make('text', 'product-building-type', 'Тип дома')->set_width(50),
@@ -48,6 +48,7 @@ function product_fields()
       Field::make('text', 'product-parking-type', 'Парковка')->set_width(50),
       Field::make('text', 'product-payment', 'Оплата')->set_width(50),
       Field::make('text', 'product-contract', 'Договор')->set_width(50),
+      Field::make('text', 'product-builder-liter', 'Литера дома')->set_width(50),
     ])
     ->add_tab('Агент', [
       Field::make('text', 'product-agent-phone', 'Телефон')->set_help_text('телефон без знака "+". Например: 79897626258')->set_width(50),
@@ -57,7 +58,7 @@ function product_fields()
       Field::make('text', 'product-agent-email', 'Email')->set_width(50),
       Field::make('image', 'product-agent-photo', 'Фото')->set_width(50),
     ])
-    ->add_tab('Локация', [      
+    ->add_tab('Локация', [
       Field::make('text', 'product-city', 'Город')->set_width(100)->set_required(true),
       Field::make('text', 'product-sub-locality', 'Район')->set_width(50),
       Field::make('text', 'product-street', 'Улица')->set_width(50),

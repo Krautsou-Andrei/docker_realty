@@ -5,6 +5,7 @@ Template Name: JSON Apartaments
 
 
 declare(strict_types=1);
+require_once get_template_directory() . '/vendor/autoload.php';
 require_once get_template_directory() . '/inc/lib/create_page.php';
 require_once get_template_directory() . '/inc/lib/create_post.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
@@ -13,7 +14,7 @@ require_once get_template_directory() . '/inc/enums/template_name.php';
 
 set_time_limit(0);
 
-use JsonMachine\Items;
+
 
 $args_cities = array(
     'hide_empty' => false,
@@ -56,7 +57,7 @@ foreach ($finishings as $type) {
     $finishings_ids[$type->_id] = $type->name;
 }
 
-// prettyVarDump($regions);
+prettyVarDump($regions);
 
 
 $json_blocks_path = get_template_directory() . '/json/blocks.json';
@@ -74,47 +75,51 @@ foreach ($blocks as $block) {
         $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
 
         if (!empty($id_page)) {
-            // create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
+            create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
         }
     }
 }
 
 
+use JsonMachine\Items;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\Number;
 
 $json_folder_path = get_template_directory() . '/json/apartaments.json';
-prettyVarDump($json_folder_path);
+
 $items = Items::fromFile($json_folder_path);
-prettyVarDump($items);
-$count = 0; // Счётчик итераций
+
+$count = 0;
 
 foreach ($items as $name => $item) {
-    prettyVarDump('sdsdsdsdsd');
-    if ($count >= 2) {
-        break; // Прерываем цикл после 10 итераций
-    }
+
+    // if ($count >= 2) {
+    //     break;
+    // }
 
     if (in_array($item->block_district, $regions_ids)) {
-        $data = new stdClass(); // Создание нового объекта
+        $data = new stdClass();
 
         $data->id = $item->_id;
         $data->product_gallery = $item->plan[0] ?? "https://cdn-dataout.trendagent.ru/images/o/y/7hbh0odgo51mue86z1bczyvh.png";
         $data->product_price = $item->price ?? 0;
-        $data->product_price_meter = $item->price ?? 0;
+        $data->product_price_meter = $item->price && $item->area_total ? round(floatval($item->price) / floatval($item->area_total), 2) :  0;
         $data->product_rooms = $item->room ?? 0;
         $data->product_area = $item->area_total ?? 0;
         $data->product_stage = $item->floor ?? '';
-        $date->product_year_build = $item->building_deadline ?? '';
+        $data->product_year_build = $item->building_deadline ?? '';
         $data->product_city = $item->block_district_name ?? '';
         $data->product_gk = $item->block_name ?? '';
         $data->product_street = $item->block_address ?? '';
         $data->coordinates = $item->block_geometry->coordinates ?? [];
         $data->product_building_type = $building_type_ids[$item->building_type] ?? '';
         $data->product_finishing = $finishings_ids[$item->finishing] ?? '';
+        $data->building_name = $item->building_name ?? '';
+        prettyVarDump($data);
     }
 
     create_post($data);
 
-    $count++; // Увеличиваем счётчик
+    $count++;
 }
 
 function search_region($regions, $search_id)
@@ -129,7 +134,7 @@ function search_region($regions, $search_id)
 
 function prettyVarDump($data)
 {
-    echo '<pre>'; // Открываем тег <pre> для форматирования
+    echo '<pre>';
     var_dump($data);
-    echo '</pre>'; // Закрываем тег <pre>
+    echo '</pre>';
 }

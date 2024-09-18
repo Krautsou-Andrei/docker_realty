@@ -1,6 +1,7 @@
 <?php
 
 require_once get_template_directory() . '/inc/lib/create_category.php';
+require_once get_template_directory() . '/inc/lib/create_title_post.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
@@ -13,6 +14,7 @@ function create_post($data)
     $product_price = $data->product_price;
     $product_price_meter = $data->product_price_meter;
     $product_rooms = $data->product_rooms;
+    $product_room_id = $data->product_room_id;
     $product_area = $data->product_area;
     $product_stage = $data->product_stage;
     $product_year_build = $data->product_year_build;
@@ -48,8 +50,7 @@ function create_post($data)
     $id_area_category = create_category(ceil($product_area), get_transliterate(ceil($product_area)), CATEGORIES_ID::AREA);
 
     $post_id = wp_insert_post(array(
-        'post_title'   => 'Заголовок поста 1',
-        'post_content' => 'Содержимое поста',
+        'post_title'   => create_title_post($product_room_id, $product_area, $product_stage),
         'post_status'  => 'publish',
         'post_type'    => 'post',
         'post_category' => [CATEGORIES_ID::CITIES, CATEGORIES_ID::GK, CATEGORIES_ID::ROOMS, CATEGORIES_ID::AREA, $id_city_category, $id_gk_category, $id_rooms_category, $id_area_category]

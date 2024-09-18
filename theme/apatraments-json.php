@@ -57,6 +57,15 @@ foreach ($finishings as $type) {
     $finishings_ids[$type->_id] = $type->name;
 }
 
+$json_rooms_path = get_template_directory() . '/json/room.json';
+$json_rooms = file_get_contents($json_rooms_path);
+$rooms = json_decode($json_rooms);
+$rooms_ids = [];
+
+foreach ($rooms as $room) {
+    $rooms_ids[$room->crm_id] = $room->name_one;
+}
+
 prettyVarDump($regions);
 
 
@@ -82,10 +91,7 @@ foreach ($blocks as $block) {
 
 
 use JsonMachine\Items;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\Number;
-
 $json_folder_path = get_template_directory() . '/json/apartaments.json';
-
 $items = Items::fromFile($json_folder_path);
 
 $count = 0;
@@ -100,10 +106,11 @@ foreach ($items as $name => $item) {
         $data = new stdClass();
 
         $data->id = $item->_id;
-        $data->product_gallery = $item->plan[0] ?? "https://cdn-dataout.trendagent.ru/images/o/y/7hbh0odgo51mue86z1bczyvh.png";
+        $data->product_gallery = $item->plan[0] ?? "http://localhost:8080/wp-content/uploads/2024/09/no-photo-lg.png";
         $data->product_price = $item->price ?? 0;
         $data->product_price_meter = $item->price && $item->area_total ? round(floatval($item->price) / floatval($item->area_total), 2) :  0;
-        $data->product_rooms = $item->room ?? 0;
+        $data->product_rooms = $rooms_ids[$item->room] ?? 0;
+        $data->product_room_id = $item->room ?? '';
         $data->product_area = $item->area_total ?? 0;
         $data->product_stage = $item->floor ?? '';
         $data->product_year_build = $item->building_deadline ?? '';
@@ -113,8 +120,7 @@ foreach ($items as $name => $item) {
         $data->coordinates = $item->block_geometry->coordinates ?? [];
         $data->product_building_type = $building_type_ids[$item->building_type] ?? '';
         $data->product_finishing = $finishings_ids[$item->finishing] ?? '';
-        $data->building_name = $item->building_name ?? '';
-        prettyVarDump($data);
+        $data->building_name = $item->building_name ?? '';       
     }
 
     create_post($data);

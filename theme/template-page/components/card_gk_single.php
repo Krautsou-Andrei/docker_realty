@@ -1,17 +1,75 @@
 <?php
 
-$crb_gk_name = $args['crb_gk_name'];
-$crb_gk_plan = $args['crb_gk_plan'];
-$crb_gk_gallery = $args['crb_gk_gallery'];
-$crb_gk_description =  $args['crb_gk_description'];
-$crb_gk_city =  $args['crb_gk_city'];
-$crb_gk_address = $args['crb_gk_address'];
-$crb_gk_latitude =  $args['crb_gk_latitude'];
-$crb_gk_longitude = $args['crb_gk_longitude'];
-$update_page = $args['update_page'];
-$min_price = $args['min_price'];
-$min_price_meter = $args['min_price_meter'];
-$finishing = $args['finishing'];
+$id_page_gk = $args['id_page_gk'];
+$id_category_gk = $args['id_category_gk'];
+
+$args_gk = [
+    'post_type' => 'post', // Тип поста (может быть 'post', 'page', 'custom-post-type' и т.д.)
+    'posts_per_page' => -1, // Количество постов на странице (-1 для вывода всех постов)
+    'category__and' => [$id_category_gk],
+];
+
+$query = new WP_Query($args_gk);
+$total_posts = $query->found_posts;
+
+$price_all = [];
+$price_meter_all = [];
+$finishing = [];
+$literal = [];
+$categories_area = [];
+$categories_rooms = [];
+
+if ($query->have_posts()) {
+
+    while ($query->have_posts()) {
+        $query->the_post(); // Устанавливаем данные поста
+        $ip_post = get_the_ID();
+        $price = carbon_get_post_meta($ip_post, 'product-price');
+        $price_meter = carbon_get_post_meta($ip_post, 'product-price-meter');
+        $apartament_finishing = carbon_get_post_meta($ip_post, 'product-finishing');
+        $liter = carbon_get_post_meta($ip_post, 'product-builder-liter');
+        $categories = get_the_category($ip_post);
+
+        foreach ($categories as $category) {
+            if ($category->parent == CATEGORIES_ID::AREA && !in_array($category->term_id, array_column($categories_area, 'term_id'))) { // Проверяем, является ли родительская категория 
+                $categories_area[] = $category;
+            }
+            if ($category->parent == CATEGORIES_ID::ROOMS && !in_array($category->term_id, array_column($categories_rooms, 'term_id'))) {
+                $categories_rooms[] = $category;
+            }
+        }
+
+        usort($categories_area, function ($a, $b) {
+            return strcmp(intval($a->name), intval($b->name)); // Сравниваем имена категорий
+        });
+
+        usort($categories_rooms, function ($a, $b) {
+            return strcmp(intval($a->name), intval($b->name)); // Сравниваем имена категорий
+        });
+
+        $price_all[] = $price;
+        $price_meter_all[] = $price_meter;
+
+        if (!in_array($apartament_finishing, $finishing)) {
+            $finishing[] = $apartament_finishing;
+        }
+        if (!in_array($liter, $literal)) {
+            $literal[] = $liter;
+        }
+    }
+}
+
+$crb_gk_name = carbon_get_post_meta($id_page_gk, 'crb_gk_name');
+$crb_gk_plan = carbon_get_post_meta($id_page_gk, 'crb_gk_plan');
+$crb_gk_gallery = carbon_get_post_meta($id_page_gk, 'crb_gk_gallery');
+$crb_gk_description =  carbon_get_post_meta($id_page_gk, 'crb_gk_description');
+$crb_gk_city =  carbon_get_post_meta($id_page_gk, 'crb_gk_city');
+$crb_gk_address = carbon_get_post_meta($id_page_gk, 'crb_gk_address');
+$crb_gk_latitude =  carbon_get_post_meta($id_page_gk, 'crb_gk_latitude');
+$crb_gk_longitude = carbon_get_post_meta($id_page_gk, 'crb_gk_longitude');
+$update_page = get_the_modified_date('d-m-Y', $id_page_gk);
+$min_price = $price_all ? min($price_all) : '';
+$min_price_meter = $price_meter_all ? min($price_meter_all) : '';
 
 $image_preview_url = '';
 $image_preview_url_two = '';
@@ -28,6 +86,11 @@ if (!empty($crb_gk_gallery[2])) {
 }
 
 $all_finishing = implode(', ', $finishing);
+
+$params_table = [
+    'literal' => $literal,
+    'categories_area' => $categories_area,
+]
 ?>
 
 <section class="single-gk-card">
@@ -46,7 +109,7 @@ $all_finishing = implode(', ', $finishing);
                     <div class="single-gk-card__product product">
                         <div class="product__image-wrapper">
                             <div class="product__image" data-type="popup-gallery">
-                                <div class="product-image-wrapper" data-type="popup-gallery" >
+                                <div class="product-image-wrapper" data-type="popup-gallery">
                                     <img class="product-image-wrapper__preview" src="<?php echo $image_preview_url[0] ?>" alt="" data-type="popup-gallery" />
                                 </div>
                             </div>
@@ -57,7 +120,7 @@ $all_finishing = implode(', ', $finishing);
                                             $image_url = wp_get_attachment_image_src($image, 'full');
 
                                     ?>
-                                            <div class="product-single-slider__slide swiper-slide" data-type="popup-gallery" >
+                                            <div class="product-single-slider__slide swiper-slide" data-type="popup-gallery">
                                                 <img class="swiper-lazy" data-src="<?php echo $image_url[0] ?>" src="<?php bloginfo('template_url'); ?>'/assets/images/1px.png" alt="" data-type="popup-gallery" />
                                                 <div class="swiper-lazy-preloader"></div>
                                             </div>
@@ -104,20 +167,25 @@ $all_finishing = implode(', ', $finishing);
                     <div class="single-gk-card__order">
                         <article class="agent-order" data-agent-order>
                             <p class="agent-order__date">Информация обновлена <?php echo $update_page ?></p>
-                            <h2 class="agent-order__price title--xl title--product-agent">от <?php echo number_format(round(floatval($min_price)), 0, '.', ' ') ?> ₽</h2>
-                            <div class="agent-order__label">Хорошая цена!</div>
-
+                            <?php if (!empty($min_price)) { ?>
+                                <h2 class="agent-order__price title--xl title--product-agent">от <?php echo number_format(round(floatval($min_price)), 0, '.', ' ') ?> ₽</h2>
+                                <div class="agent-order__label">Хорошая цена!</div>
+                            <?php } ?>
                             <div class="agent-order__info">
-                                <div class="agent-order__price-one-metr agent-price-one-mert">
-                                    <span class="agent-conditions__title">Отделка</span>
-                                    <span class="agent-conditions__space"></span>
-                                    <span class="agent-conditions__price"><?php echo $all_finishing ?></span>
-                                </div>
-                                <div class="agent-order__price-one-metr agent-price-one-mert">
-                                    <span class="agent-conditions__title">Цена за метр</span>
-                                    <span class="agent-conditions__space"></span>
-                                    <span class="agent-conditions__price">от <?php echo number_format(round(floatval($min_price_meter)), 0, '.', ' ') ?> ₽/м² </span>
-                                </div>
+                                <?php if (!empty($all_finishing)) { ?>
+                                    <div class="agent-order__price-one-metr agent-price-one-mert">
+                                        <span class="agent-conditions__title">Отделка</span>
+                                        <span class="agent-conditions__space"></span>
+                                        <span class="agent-conditions__price"><?php echo $all_finishing ?></span>
+                                    </div>
+                                <?php  } ?>
+                                <?php if (!empty($min_price_meter)) { ?>
+                                    <div class="agent-order__price-one-metr agent-price-one-mert">
+                                        <span class="agent-conditions__title">Цена за метр</span>
+                                        <span class="agent-conditions__space"></span>
+                                        <span class="agent-conditions__price">от <?php echo number_format(round(floatval($min_price_meter)), 0, '.', ' ') ?> ₽/м² </span>
+                                    </div>
+                                <?php } ?>
                             </div>
                             <div class="button-wrapper">
                                 <div class="agent-order__button">
@@ -132,8 +200,42 @@ $all_finishing = implode(', ', $finishing);
 
                     </div>
                 </div>
-                <!-- <div class="product__gk-filter">@@include('../../components/page-gk/page-gk-filter.html')</div>
-                <div class="product__more">@@include('../../components/page-gk/page-gk-table.html')</div> -->
+                <div class="product__gk-filter">
+                    <section class="page-gk-filter">
+                        <form class="page-gk-filter__form" action="">
+                            <?php if (!empty($categories_rooms)) { ?>
+                                <div class="gk-filter-rooms">
+                                    <div class="gk-filter-rooms__title">Количество комнат</div>
+                                    <?php foreach ($categories_rooms as $room) { ?>
+                                        <label>
+                                            <input type="checkbox" />
+                                            <span><?php echo $room->name ?></span>
+                                        </label>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
+
+                            <?php if (!empty($categories_area)) { ?>
+                                <div class="gk-filter-area">
+                                    <div class="gk-filter-area__title">Общая площадь</div>
+                                    <div class="gk-filter-area__wrapper">
+                                        <?php foreach ($categories_area as $area) { ?>
+                                            <label>
+                                                <input type="checkbox" />
+                                                <span><?php echo intval($area->name) ?> м2</span>
+                                            </label>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            <?php  } ?>
+
+                        </form>
+                    </section>
+
+                </div>
+                <div class="product__more">
+                    <?php get_template_part('template-page/components/gk_table', null, $params_table) ?>
+                </div>
             </div>
         </div>
     </div>

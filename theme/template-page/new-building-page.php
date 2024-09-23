@@ -101,6 +101,7 @@ get_header();
                 $params = [
                   'crb_gk_name' => carbon_get_post_meta(get_the_ID(), 'crb_gk_name'),
                   'crb_gk_plan' => carbon_get_post_meta(get_the_ID(), 'crb_gk_plan'),
+                  'crb_gk_gallery' => carbon_get_post_meta(get_the_ID(), 'crb_gk_gallery'),
                   'crb_gk_description' => carbon_get_post_meta(get_the_ID(), 'crb_gk_description'),
                   'crb_gk_city' => carbon_get_post_meta(get_the_ID(), 'crb_gk_city'),
                   'crb_gk_address' => carbon_get_post_meta(get_the_ID(), 'crb_gk_address'),

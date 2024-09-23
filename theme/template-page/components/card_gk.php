@@ -4,6 +4,7 @@ $gk = $args;
 
 $gk_name =  $gk['crb_gk_name'];
 $gk_plane =  $gk['crb_gk_plan'];
+$crb_gk_gallery = $gk['crb_gk_gallery'];
 $gk_description = $gk['crb_gk_description'];
 $gk_city = $gk['crb_gk_city'];
 $gk_address = $gk['crb_gk_address'];
@@ -11,8 +12,8 @@ $crb_gk_permalink = $gk['crb_gk_permalink'];
 
 $image_url = '';
 
-if (!empty($gk_plane)) {
-    $image_url = wp_get_attachment_image_src($gk_plane, 'full');
+if (!empty($crb_gk_gallery[0])) {
+    $image_url = wp_get_attachment_image_src($crb_gk_gallery[0], 'full');
 }
 
 ?>

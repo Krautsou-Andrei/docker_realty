@@ -1,5 +1,4 @@
 <?php
-require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 
 function update_fields_gk($post_id, $block, $name_city)

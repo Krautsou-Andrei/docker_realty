@@ -91,6 +91,7 @@ foreach ($blocks as $block) {
 
 
 use JsonMachine\Items;
+
 $json_folder_path = get_template_directory() . '/json/apartaments.json';
 $items = Items::fromFile($json_folder_path);
 
@@ -113,6 +114,7 @@ foreach ($items as $name => $item) {
         $data->product_room_id = $item->room ?? '';
         $data->product_area = $item->area_total ?? 0;
         $data->product_stage = $item->floor ?? '';
+        $data->product_stages = $item->floors ?? '';
         $data->product_year_build = $item->building_deadline ?? '';
         $data->product_city = $item->block_district_name ?? '';
         $data->product_gk = $item->block_name ?? '';
@@ -120,7 +122,7 @@ foreach ($items as $name => $item) {
         $data->coordinates = $item->block_geometry->coordinates ?? [];
         $data->product_building_type = $building_type_ids[$item->building_type] ?? '';
         $data->product_finishing = $finishings_ids[$item->finishing] ?? '';
-        $data->building_name = $item->building_name ?? '';       
+        $data->building_name = $item->building_name ?? '';
     }
 
     create_post($data);

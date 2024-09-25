@@ -2,8 +2,6 @@ jQuery(document).ready(function ($) {
   const loader = $("[data-loader]");
   const content = $("#content-container-page-gk");
 
-  loader.css("display", "flex");
-
   $.ajax({
     url: ajax_object.ajaxurl,
     type: "POST",

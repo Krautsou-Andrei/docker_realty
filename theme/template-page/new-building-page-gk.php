@@ -10,14 +10,15 @@ require_once get_template_directory() . '/inc/lib/get_slug_page.php';
 $id_page = get_the_ID();
 
 $slug_page = get_slug_page();
-$id_category_gk = get_term_by('slug', $slug_page, 'category')->term_id;
 
 $params_page_gk = [
   'id_page_gk' => $id_page,
-  'id_category_gk' => $id_category_gk
+  'slug_page' => $slug_page
 ];
 
 get_header();
+wp_enqueue_script('get_card_gk_single-js', get_template_directory_uri() . '/inc/ajax/get_card_gk_single.js', array('jquery'), null, true);
+wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
 ?>
 <main class="page">
   <div class="main-favorites">
@@ -80,47 +81,43 @@ get_header();
               <!-- <p class="favorites__subtitle">Найдено <?php echo num_word($total_posts, DEFAULT_ENUM::RESIDENTAL_COMPLEX) ?></p> -->
             </div>
           </div>
-          <div id='content-container-new-buildings' class="favorites-wrapper">
+          <div data-loader class="loader">
+            <img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" />
+          </div>
+          <div id='content-container-page-gk' class="favorites-wrapper">
 
-            <?php
-            function pluralForm($number, $forms)
-            {
-              $cases = array(2, 0, 1, 1, 1, 2);
-              return $number . ' ' . $forms[($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
+
+
+          </div>
+          <script>
+            function redirectToURL(url) {
+              window.location.href = url;
             }
 
-            get_template_part('template-page/components/card_gk_single', null, $params_page_gk);
-            ?>
-            <script>
-              function redirectToURL(url) {
-                window.location.href = url;
+            const buttonsOrder = document.querySelectorAll('.button--phone-order')
+
+            buttonsOrder.forEach((button) => {
+              button.addEventListener('click', showFullNumber)
+            })
+
+            function showFullNumber(event) {
+              event.preventDefault();
+              event.stopPropagation();
+
+              const phoneLink = event.currentTarget;
+              const phoneSpan = phoneLink.querySelector('span');
+              const numberText = phoneSpan.textContent;
+              const phoneNumber = phoneLink.href;
+              const formattedNumber = phoneNumber.replace(/^tel:\+(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/, '+$1 $2 $3-$4-$5');
+
+              if (numberText === formattedNumber) {
+                window.location.href = phoneLink.href
+              } else {
+                phoneSpan.textContent = formattedNumber;
               }
 
-              const buttonsOrder = document.querySelectorAll('.button--phone-order')
-
-              buttonsOrder.forEach((button) => {
-                button.addEventListener('click', showFullNumber)
-              })
-
-              function showFullNumber(event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                const phoneLink = event.currentTarget;
-                const phoneSpan = phoneLink.querySelector('span');
-                const numberText = phoneSpan.textContent;
-                const phoneNumber = phoneLink.href;
-                const formattedNumber = phoneNumber.replace(/^tel:\+(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/, '+$1 $2 $3-$4-$5');
-
-                if (numberText === formattedNumber) {
-                  window.location.href = phoneLink.href
-                } else {
-                  phoneSpan.textContent = formattedNumber;
-                }
-
-              }
-            </script>
-          </div>
+            }
+          </script>
         </div>
         <div class="catalog__questions">
           <?php get_template_part('template-page/components/questions'); ?>

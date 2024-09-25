@@ -177,6 +177,7 @@ require get_template_directory() . '/inc/filter-documents.php';
 require get_template_directory() . '/inc/pagination-documents.php';
 require get_template_directory() . '/inc/filter-post-single-page.php';
 require get_template_directory() . '/inc/filter-post-home-page.php';
+require get_template_directory() . '/inc/ajax/get_card_gk_single.php';
 
 // require get_template_directory() . '/inc/template-hooks.php';
 
@@ -305,9 +306,7 @@ function sync_new_gallery_after_import($post_id)
  * Добавление кнопки на панель управления
  */
 
-function my_custom_page_callback()
-{
-}
+function my_custom_page_callback() {}
 
 add_action('admin_init', 'my_custom_page_callback');
 
@@ -356,9 +355,3 @@ add_action('admin_menu', 'add_custom_button_to_admin_bar');
 // }
 
 // add_action('init', 'fetch_json_and_send_email');
-
-
-
-
-
-

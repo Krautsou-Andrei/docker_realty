@@ -1,75 +1,21 @@
 <?php
 
-$id_page_gk = $args['id_page_gk'];
-$id_category_gk = $args['id_category_gk'];
-
-$args_gk = [
-    'post_type' => 'post', // Тип поста (может быть 'post', 'page', 'custom-post-type' и т.д.)
-    'posts_per_page' => -1, // Количество постов на странице (-1 для вывода всех постов)
-    'category__and' => [$id_category_gk],
-];
-
-$query = new WP_Query($args_gk);
-$total_posts = $query->found_posts;
-
-$price_all = [];
-$price_meter_all = [];
-$finishing = [];
-$literal = [];
-$categories_area = [];
-$categories_rooms = [];
-
-if ($query->have_posts()) {
-
-    while ($query->have_posts()) {
-        $query->the_post(); // Устанавливаем данные поста
-        $ip_post = get_the_ID();
-        $price = carbon_get_post_meta($ip_post, 'product-price');
-        $price_meter = carbon_get_post_meta($ip_post, 'product-price-meter');
-        $apartament_finishing = carbon_get_post_meta($ip_post, 'product-finishing');
-        $liter = carbon_get_post_meta($ip_post, 'product-builder-liter');
-        $categories = get_the_category($ip_post);
-
-        foreach ($categories as $category) {
-            if ($category->parent == CATEGORIES_ID::AREA && !in_array($category->term_id, array_column($categories_area, 'term_id'))) { // Проверяем, является ли родительская категория 
-                $categories_area[] = $category;
-            }
-            if ($category->parent == CATEGORIES_ID::ROOMS && !in_array($category->term_id, array_column($categories_rooms, 'term_id'))) {
-                $categories_rooms[] = $category;
-            }
-        }
-
-        usort($categories_area, function ($a, $b) {
-            return strcmp(intval($a->name), intval($b->name)); // Сравниваем имена категорий
-        });
-
-        usort($categories_rooms, function ($a, $b) {
-            return strcmp(intval($a->name), intval($b->name)); // Сравниваем имена категорий
-        });
-
-        $price_all[] = $price;
-        $price_meter_all[] = $price_meter;
-
-        if (!in_array($apartament_finishing, $finishing)) {
-            $finishing[] = $apartament_finishing;
-        }
-        if (!in_array($liter, $literal)) {
-            $literal[] = $liter;
-        }
-    }
-}
-
-$crb_gk_name = carbon_get_post_meta($id_page_gk, 'crb_gk_name');
-$crb_gk_plan = carbon_get_post_meta($id_page_gk, 'crb_gk_plan');
-$crb_gk_gallery = carbon_get_post_meta($id_page_gk, 'crb_gk_gallery');
-$crb_gk_description =  carbon_get_post_meta($id_page_gk, 'crb_gk_description');
-$crb_gk_city =  carbon_get_post_meta($id_page_gk, 'crb_gk_city');
-$crb_gk_address = carbon_get_post_meta($id_page_gk, 'crb_gk_address');
-$crb_gk_latitude =  carbon_get_post_meta($id_page_gk, 'crb_gk_latitude');
-$crb_gk_longitude = carbon_get_post_meta($id_page_gk, 'crb_gk_longitude');
-$update_page = get_the_modified_date('d-m-Y', $id_page_gk);
-$min_price = $price_all ? min($price_all) : '';
-$min_price_meter = $price_meter_all ? min($price_meter_all) : '';
+$crb_gk_name = $args['crb_gk_name'];
+$crb_gk_plan = $args['crb_gk_plan'];
+$crb_gk_gallery = $args['crb_gk_gallery'];
+$crb_gk_description =  $args['crb_gk_description'];
+$crb_gk_city =  $args['crb_gk_city'];
+$crb_gk_address = $args['crb_gk_address'];
+$crb_gk_latitude =  $args['crb_gk_latitude'];
+$crb_gk_longitude = $args['crb_gk_longitude'];
+$update_page = $args['update_page'];
+$min_price = $args['min_price'];
+$min_price_meter = $args['min_price_meter'];
+$finishing = $args['finishing'];
+$literal = $args['literal'];
+$categories_area = $args['categories_area'];
+$categories_rooms = $args['categories_rooms'];
+$map_apartaments = $args['map_apartaments'];
 
 $image_preview_url = '';
 $image_preview_url_two = '';
@@ -90,9 +36,13 @@ $all_finishing = implode(', ', $finishing);
 $params_table = [
     'literal' => $literal,
     'categories_area' => $categories_area,
-]
-?>
+    'map_apartaments' => $map_apartaments,
+];
 
+?>
+<script>
+
+</script>
 <section class="single-gk-card">
     <div class="single-gk-card__container">
         <div class="single-gk-card-wrapper">

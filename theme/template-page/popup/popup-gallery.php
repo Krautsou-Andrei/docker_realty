@@ -42,9 +42,9 @@
             $product_gallery = carbon_get_post_meta(get_the_ID(), 'product-gallery');
             $product_new_building = carbon_get_post_meta(get_the_ID(), 'product-new-building');
             $product_video = "";
-            if($product_new_building != 1){
-             $product_video = array_pop ($product_gallery);   
-            };
+            // if($product_new_building != 1){
+            //  $product_video = array_pop ($product_gallery);   
+            // };
 			
 			
 			

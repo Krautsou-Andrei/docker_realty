@@ -19,8 +19,8 @@ function create_post($data)
 
     $id_city_category = create_category($product_city, get_transliterate($product_city), CATEGORIES_ID::CITIES);
     $id_gk_category = create_category($product_gk, get_transliterate($product_gk), CATEGORIES_ID::GK);
-    $id_rooms_category = create_category(intval($product_rooms) ? intval($product_rooms) : $product_rooms, intval($product_rooms) ? 'rooms' . intval($product_rooms) : get_transliterate($product_rooms), CATEGORIES_ID::ROOMS);
-    $id_area_category = create_category(ceil($product_area), get_transliterate(ceil($product_area)), CATEGORIES_ID::AREA);
+    $id_rooms_category = create_category(intval($product_rooms) ? intval($product_rooms) : $product_rooms, intval($product_rooms) ? 'rooms_' . intval($product_rooms) : get_transliterate($product_rooms), CATEGORIES_ID::ROOMS);
+    $id_area_category = create_category(ceil($product_area), 'area_' . ceil($product_area), CATEGORIES_ID::AREA);
 
     $title = create_title_post($product_room_id, $product_area, $product_stage);
 

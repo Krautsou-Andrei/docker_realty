@@ -2,6 +2,8 @@
 /*
 Template Name: Страница товара
 */
+
+require_once get_template_directory() . '/inc/lib/get_cookies_favorites.php';
 ?>
 <div class="main-second-product">
   <?php
@@ -24,7 +26,7 @@ Template Name: Страница товара
               <?php
 
               $product_id = carbon_get_post_meta(get_the_ID(), 'product-id');
-              $product_title = carbon_get_post_meta(get_the_ID(), 'product-title');
+              $product_title = get_the_title(get_the_ID());
               $product_gallery = carbon_get_post_meta(get_the_ID(), 'product-gallery');
               $product_label = carbon_get_post_meta(get_the_ID(), 'product-label');
               $product_price = carbon_get_post_meta(get_the_ID(), 'product-price');
@@ -33,7 +35,7 @@ Template Name: Страница товара
               $product_description = carbon_get_post_meta(get_the_ID(), 'product-description');
               $product_agent_photo = carbon_get_post_meta(get_the_ID(), 'product-agent-photo');
               $product_agent_phone  = carbon_get_post_meta(get_the_ID(), 'product-agent-phone');
-              $product_update_date = carbon_get_post_meta(get_the_ID(), 'product-update-date');
+              $product_update_date = get_the_modified_date('d-m-Y', get_the_ID());
               $product_city = carbon_get_post_meta(get_the_ID(), 'product-city');
               $product_street = carbon_get_post_meta(get_the_ID(), 'product-street');
               $product_year_build = carbon_get_post_meta(get_the_ID(), 'product-year-build');
@@ -50,33 +52,22 @@ Template Name: Страница товара
               $product_finishing = carbon_get_post_meta(get_the_ID(), 'product-finishing');
               $product_payment = carbon_get_post_meta(get_the_ID(), 'product-payment');
               $product_contract = carbon_get_post_meta(get_the_ID(), 'product-contract');
-            
+
 
               $agent_phone = preg_replace('/[^0-9]/', '', $product_agent_phone);
               $format_phone_agent = '+' . substr($agent_phone, 0, 1) . ' ' . substr($agent_phone, 1, 3) . ' ' . substr($agent_phone, 4, 3) . ' - ' . substr($agent_phone, 7, 2) . ' - ...';
 
               $product_price_format = number_format(round(floatval($product_price)), 0, '.', ' ');
-              if($product_price_meter){
-                   $product_price_meter_format = number_format(round(floatval($product_price_meter)), 0, '.', ' '); 
+              if ($product_price_meter) {
+                $product_price_meter_format = number_format(round(floatval($product_price_meter)), 0, '.', ' ');
               }
-              if($product_price_mortgage){
-                   $product_price_mortgage_format = number_format(round(floatval($product_price_mortgage)), 0, '.', ' '); 
+              if ($product_price_mortgage) {
+                $product_price_mortgage_format = number_format(round(floatval($product_price_mortgage)), 0, '.', ' ');
               }
-              
 
-              $targetDate = new DateTime($product_update_date);
+              $post_ids_favorites = get_cookies_favorites();
 
-              $day_uptade = $targetDate->format('d');
-              $month_uptade = $targetDate->format('m');
-              $year_uptade = $targetDate->format('Y');
-              
-              $cookieValue = $_COOKIE['favorites'];
-              $unescapedValue = stripslashes($cookieValue);
-              $postIds = json_decode( $unescapedValue, true); // Декодирование JSON строки в массив
-              $postIds = array_map('intval', $postIds);
-            
-              $is_favorite = in_array($product_id, $postIds);
-
+              $is_favorite = in_array(get_the_ID(), $post_ids_favorites);
 
               ?>
               <?php $referer = wp_get_referer() ?>
@@ -114,28 +105,41 @@ Template Name: Страница товара
                     </div>
                   </div>
                   <div class="custom-scrollbar"></div>
-                  <button class="product__return-first-slide" data-return-first-slide>
-                    <img src="<?php bloginfo('template_url'); ?>/assets/images/plan.svg" alt="" width="16" height="16">
-                    <span>Планировка</span>
-                  </button>
-                  <div class="product__gallery">
-                    <div data-type="popup-gallery">
-                      <?php
-                      if (!empty($product_gallery[1])) {
-                        $image_url = wp_get_attachment_image_src($product_gallery[1], 'full');
-                        echo ' <img src="' . $image_url[0] . '" alt="" width="226" height="166" data-type="popup-gallery">';
-                      }
-                      ?>
+                  <?php if (!empty($product_gallery[1])) { ?>
+                    <div class="product__gallery">
+                      <div data-type="popup-gallery">
+                        <?php
+                        if (!empty($product_gallery[1])) {
+                          $image_url = wp_get_attachment_image_src($product_gallery[1], 'full');
+                          echo ' <img src="' . $image_url[0] . '" alt="" width="226" height="166" data-type="popup-gallery">';
+                        }
+                        ?>
+                      </div>
+                      <div data-type="popup-gallery">
+                        <?php
+                        if (!empty($product_gallery[2])) {
+                          $image_url = wp_get_attachment_image_src($product_gallery[2], 'full');
+                          echo ' <img src="' . $image_url[0] . '" alt="" width="226" height="166" data-type="popup-gallery">';
+                        }
+                        ?>
+                        <span data-type="popup-gallery"><?php echo count($product_gallery) ?></span>
+                      </div>
                     </div>
-                    <div data-type="popup-gallery">
-                      <?php
-                      if (!empty($product_gallery[2])) {
-                        $image_url = wp_get_attachment_image_src($product_gallery[2], 'full');
-                        echo ' <img src="' . $image_url[0] . '" alt="" width="226" height="166" data-type="popup-gallery">';
-                      }
-                      ?>
-                      <span data-type="popup-gallery"><?php echo count($product_gallery) ?></span>
-                    </div>
+                  <?php } ?>
+                </div>
+                <div class="product-single-slide-gallery swiper">
+                  <div class="product-single-slide-gallery__wrapper swiper-wrapper">
+                    <?php if (!empty($product_gallery)) {
+                      foreach ($product_gallery as $image) {
+                        $image_url = wp_get_attachment_image_src($image, 'full');
+
+                    ?>
+                        <div class="product-single-slide-gallery__slide swiper-slide">
+                          <img src="<?php echo $image_url[0] ?>" alt="" />
+                        </div>
+                    <? }
+                    } ?>
+
                   </div>
                 </div>
                 <div class="product__info">
@@ -262,15 +266,6 @@ Template Name: Страница товара
                 </div>
                 <div class="product__more">
                   <section class="more-list">
-                    <!--<div class="more-list__column more-column">-->
-                      <!--<label class="more-tabs__label">-->
-                      <!--  <input class="more-tabs__input" type="radio" name="more-list" checked>-->
-                      <!--  <span class="more-column__title title--lg">О квартире</span>-->
-                      <!--</label>-->
-                    <!--  <div class="more-column__list">-->
-                        
-                    <!--  </div>-->
-                    <!--</div>-->
                     <div class="more-list__column more-column">
                       <label class="more-tabs__label">
                         <input class="more-tabs__input" type="radio" name="more-list">
@@ -330,18 +325,18 @@ Template Name: Страница товара
               </div>
               <div class="single-page__order">
                 <article class="agent-order" data-agent-order>
-                  <p class="agent-order__date">Информация обновлена <?php echo " $day_uptade.$month_uptade.$year_uptade" ?></p>
-                  <h2 class="agent-order__price title--xl title--product-agent">от <?php echo $product_price_format ?> ₽</h2>
-                  <div class="agent-order__label"><?php echo$product_label ?></div>
+                  <p class="agent-order__date">Информация обновлена <?php echo $product_update_date ?></p>
+                  <h2 class="agent-order__price title--xl title--product-agent"><?php echo $product_price_format ?> ₽</h2>
+                  <div class="agent-order__label"><?php echo $product_label ?></div>
                   <?php
                   if (!empty($product_mortgage)) {
-                    echo '<div class="agent-order__ipoteca">В ипотеку от <span>'.$product_price_mortgage_format.'</span> ₽/мес</div>';
+                    echo '<div class="agent-order__ipoteca">В ипотеку от <span>' . $product_price_mortgage_format . '</span> ₽/мес</div>';
                   }
                   if (!empty($product_price_meter_format)) {
                     echo '<div class="agent-order__price-one-metr agent-price-one-mert">
                           <span class="agent-price-one-mert__title">Цена за метр</span>
                           <span class="agent-price-one-mert__space"></span>
-                          <span class="agent-price-one-mert__price">от ' . $product_price_meter_format . ' ₽/м²</span>
+                          <span class="agent-price-one-mert__price">' . $product_price_meter_format . ' ₽/м²</span>
                         </div>';
                   }
                   if (!empty($product_deal_type)) {
@@ -353,18 +348,22 @@ Template Name: Страница товара
                   }
                   ?>
                   <div class="button-wrapper">
-                      <div class="agent-order__button">
-                        <a onclick="showFullNumber(event)" class="button button--phone-order" href="tel:<?php echo $product_agent_phone ?>"><span><?php echo $format_phone_agent ?></span></a>
-                         <button class="button--favorites-mobile <?php echo ($is_favorite ? 'delete' : '') ?>" type="button" data-favorite-cookies="<?php echo $product_id ?>" data-button-favorite-mobile data-delete-favorite="<?php echo $is_favorite ?>"><span></span></button>
-                      </div>
-                      <div class="agent-order__callback">
-                        <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>
-                      </div>
-                      <div class="agent-order__favorites">
-                        <button class="button button--favorites" type="button" data-favorite-cookies="<?php echo $product_id ?>" data-button-favorite data-delete-favorite="<?php echo $is_favorite ?>">
-                             <span><?php if ($is_favorite) { echo "удалить";} else { echo "В избранное";}?> </span>
-                        </button>
-                      </div>
+                    <div class="agent-order__button">
+                      <a onclick="showFullNumber(event)" class="button button--phone-order" href="tel:<?php echo $product_agent_phone ?>"><span><?php echo $format_phone_agent ?></span></a>
+                      <button class="button--favorites-mobile <?php echo ($is_favorite ? 'delete' : '') ?>" type="button" data-favorite-cookies="<?php echo $product_id ?>" data-button-favorite-mobile data-delete-favorite="<?php echo $is_favorite ?>"><span></span></button>
+                    </div>
+                    <div class="agent-order__callback">
+                      <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>
+                    </div>
+                    <div class="agent-order__favorites">
+                      <button class="button button--favorites" type="button" data-favorite-cookies="<?php echo get_the_ID() ?>" data-button-favorite data-delete-favorite="<?php echo $is_favorite ?>">
+                        <span><?php if ($is_favorite) {
+                                echo "удалить";
+                              } else {
+                                echo "В избранное";
+                              } ?> </span>
+                      </button>
+                    </div>
                   </div>
                 </article>
               </div>
@@ -383,5 +382,5 @@ Template Name: Страница товара
   <?php get_template_part('template-page/components/questions'); ?>
 </div>
 <div class="popup-gallery">
-		<?php get_template_part('template-page/popup/popup-gallery') ?>
+  <?php get_template_part('template-page/popup/popup-gallery'); ?>
 </div>

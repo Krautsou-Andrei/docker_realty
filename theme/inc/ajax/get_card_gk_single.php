@@ -66,23 +66,27 @@ function get_card_gk_single()
                 $literal[] = $liter;
             }
 
-            usort($categories_area, function ($a, $b) {
-                return strcmp(intval($a->name), intval($b->name));
-            });
-
-            usort($categories_rooms, function ($a, $b) {
-                return strcmp(intval($a->name), intval($b->name));
-            });
-
-            usort($literal, function ($a, $b) {
-                return strcmp(intval($a), intval($b));
-            });
-
             $price_all[] = $price;
             $price_meter_all[] = $price_meter;
         }
 
         wp_reset_postdata();
+    }
+
+    usort($categories_area, function ($a, $b) {
+        return strcmp(intval($a->name), intval($b->name));
+    });
+
+    usort($categories_rooms, function ($a, $b) {
+        return strcmp(intval($a->name), intval($b->name));
+    });
+
+    usort($literal, function ($a, $b) {
+        return strcmp(intval($a), intval($b));
+    });
+
+    foreach ($map_apartaments as $liter => $floors) {
+        krsort($map_apartaments[$liter]); // Сортируем массив по ключам для текущего литера
     }
 
     $params_page_gk = [

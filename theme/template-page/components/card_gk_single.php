@@ -37,6 +37,7 @@ $params_table = [
     'literal' => $literal,
     'categories_area' => $categories_area,
     'map_apartaments' => $map_apartaments,
+    'crb_gk_plan' => $crb_gk_plan,
 ];
 
 ?>

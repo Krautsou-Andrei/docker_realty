@@ -15,16 +15,16 @@ $product_plan = carbon_get_post_meta(get_the_ID(), 'crb_gk_plan');
                         <div class="slider-preview-plan swiper">
                             <ul class="slider-preview-plan__wrapper swiper-wrapper">
                                 <?php
-                                // foreach ($product_plan as $plan_id) {
-                                $image_url = wp_get_attachment_image_src($product_plan, 'full');
 
+                                foreach ($product_plan as $plan_id) {
+                                    $image_url = wp_get_attachment_image_src($plan_id, 'full');
                                 ?>
-                                <li class="slider-preview-plan__slide swiper-slide">
-                                    <div class="slide-wrapper">
-                                        <img src="<?php echo $image_url[0] ?>" alt="" />
-                                    </div>
-                                </li>
-
+                                    <li class="slider-preview-plan__slide swiper-slide">
+                                        <div class="slide-wrapper">
+                                            <img src="<?php echo $image_url[0] ?>" alt="" />
+                                        </div>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </div>
                         <div class="slider-preview-plan__button-next"></div>
@@ -32,9 +32,14 @@ $product_plan = carbon_get_post_meta(get_the_ID(), 'crb_gk_plan');
                     <div class="slider-gallery-container">
                         <div class="slider-popup-gallery-plan swiper">
                             <ul class="slider-popup-gallery-plan__wrapper swiper-wrapper">
-                                <li class="slider-popup-gallery-plan__slide swiper-slide">
-                                    <img src="<?php echo  $image_url[0] ?>" alt="" width="82" height="64" />
-                                </li>
+                                <?php foreach ($product_plan as $plan_id) {
+                                    $image_url = wp_get_attachment_image_src($plan_id, 'full');
+
+                                ?>
+                                    <li class="slider-popup-gallery-plan__slide swiper-slide">
+                                        <img src="<?php echo  $image_url[0] ?>" alt="" width="82" height="64" />
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>

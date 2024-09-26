@@ -19,7 +19,7 @@ function page_new_building_fields_gk()
 
         ))->add_tab('Основные', [
             Field::make('text', 'crb_gk_name', 'Заголовок')->set_width(100),
-            Field::make('image', 'crb_gk_plan', 'План зайстройки')->set_width(25),
+            Field::make('media_gallery', 'crb_gk_plan', 'План зайстройки')->set_width(25),
             Field::make('media_gallery', 'crb_gk_gallery', 'Галерея')->set_width(75),
             Field::make('textarea', 'crb_gk_description', 'Описание')->set_width(100),
             Field::make('text', 'crb_gk_city', 'Город')->set_help_text('Новороссийск')->set_width(50),

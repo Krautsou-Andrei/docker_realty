@@ -2,15 +2,17 @@
 function create_category($category_name, $category_slug = '', $parent_id = 0)
 {
     // Проверяем, существует ли категория с таким же именем
-    $term = term_exists($category_name, 'category');
+    $name = strval($category_name);
+    $slug = strval($category_slug);
+    $term = term_exists($name, 'category');
 
     if (!$term) {
         // Создаем новую категорию
         $result = wp_insert_term(
-            $category_name, // Название категории
+            $name, // Название категории
             'category',     // Таксономия
             [
-                'slug' => $category_slug, // Слаг (необязательно)
+                'slug' => $slug, // Слаг (необязательно)
                 'parent' => $parent_id     // ID родительской категории (необязательно)
             ]
         );

@@ -21,7 +21,7 @@ if (!empty($crb_gk_gallery[0])) {
     <li class="gk-card">
         <a href="<?php echo $crb_gk_permalink ?>">
             <div class="gk-card__image">
-                <img src="<?php echo $image_url[0] ?>" alt="" width="380" height="195" />
+                <img loading="lazy" src="<?php echo $image_url[0] ?>" alt="" width="380" height="195" />
             </div>
             <div class="gk-card__info info">
                 <h3 class="info__title title--lg title--promo-slide"><? echo $gk_name ?></h3>

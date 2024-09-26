@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
       slug_page: params.slug_page,
     },
     success: function (response) {
-      loader.hide();
+      loader.hide();      
       if (response.pageGk) {
         content.html(response.pageGk);
       } else {
@@ -19,6 +19,7 @@ jQuery(document).ready(function ($) {
       }
     },
     error: function (xhr, status, error) {
+      loader.hide();
       console.error(error);
     },
   });

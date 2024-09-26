@@ -39,12 +39,16 @@ function get_card_gk_single()
             $apartament_finishing = carbon_get_post_meta($id_post, 'product-finishing');
             $liter = carbon_get_post_meta($id_post, 'product-builder-liter');
             $categories = get_the_category($id_post);
+            $floor = carbon_get_post_meta($id_post, 'product-stage');
+            $rooms = carbon_get_post_meta($id_post, 'product-rooms');
+            $area = carbon_get_post_meta($id_post, 'product-area');
 
-            if (!isset($map_apartaments[$liter])) {
-                $map_apartaments[$liter] = [];
-            }
+            $apartament = new stdClass();
+            $apartament->id_post = $id_post;
+            $apartament->rooms = $rooms;
+            $apartament->area = $area;
 
-            $map_apartaments[$liter][] = $id_post;
+            $map_apartaments[$liter][$floor][] = $apartament;
 
             foreach ($categories as $category) {
                 if ($category->parent == CATEGORIES_ID::AREA && !in_array($category->term_id, array_column($categories_area, 'term_id'))) { // Проверяем, является ли родительская категория 

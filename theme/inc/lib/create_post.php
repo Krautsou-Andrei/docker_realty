@@ -22,8 +22,8 @@ function create_post($data)
     $product_stages = $data->product_stages;
     $product_year_build = $data->product_year_build;
     $product_street = $data->product_street;
-    $product_latitude = $data->coordinates[0] ?? '';
-    $product_longitude = $data->coordinates[1] ?? '';
+    $product_latitude = $data->coordinates[1] ?? '';
+    $product_longitude = $data->coordinates[0] ?? '';
     $product_building_type = $data->product_building_type;
     $product_finishing = $data->product_finishing;
     $product_building_name = $data->building_name;

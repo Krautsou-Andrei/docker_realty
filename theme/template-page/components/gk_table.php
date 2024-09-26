@@ -48,7 +48,7 @@ $crb_gk_plan = $args['crb_gk_plan'];
                             <?php foreach ($map_apartaments[1] as $floor) { ?>
                                 <div class="gk-schema-apartaments">
                                     <?php foreach ($floor as $apartament) { ?>
-                                        <div class="gk-schema-apartaments__room active"><a href="<?php echo get_permalink($apartament->id_post) ?>"><?php echo intval($apartament->rooms) ? $apartament->rooms :  mb_substr($apartament->rooms, 0, 1) ?></a></div>
+                                        <a href="<?php echo get_permalink($apartament->id_post) ?>"> <div class="gk-schema-apartaments__room active"><?php echo intval($apartament->rooms) ? $apartament->rooms :  mb_substr($apartament->rooms, 0, 1) ?></div></a>
                                     <?php } ?>
                                 </div>
                             <?php } ?>

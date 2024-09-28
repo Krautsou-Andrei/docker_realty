@@ -70,13 +70,16 @@ $categories_area_checked = isset($args['categories_area_checked']) ? $args['cate
             </div>
         <?php } ?>
 
-        <?php if (!empty($map_apartaments)) { ?>
+        <?php if (!empty($map_apartaments) && !empty($map_apartaments[$current_liter]['floors'])) { ?>
             <div class="gk-schema">
                 <div class="gk-schema-floor">
                     <div>Этаж</div>
-                    <?php foreach ($map_apartaments[$current_liter]['floors'] as $key => $floor) { ?>
-                        <div><?php echo $key ?></div>
-                    <?php } ?>
+                    <?php foreach ($map_apartaments[$current_liter]['floors'] as $key => $floor) {
+                        if (count($floor) !== 0) {
+                    ?>
+                            <div><?php echo $key ?></div>
+                    <?php }
+                    } ?>
                 </div>
                 <div class="gk-schema__wrapper">
                     <div class="gk-schema__line">
@@ -97,6 +100,8 @@ $categories_area_checked = isset($args['categories_area_checked']) ? $args['cate
                     </div>
                 </div>
             </div>
+        <?php } else { ?>
+            <div class="empty-filter"> Ничего не найдено</div>
         <?php } ?>
 
     </section>

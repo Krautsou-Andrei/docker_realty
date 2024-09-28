@@ -25,8 +25,33 @@ function get_table_gk()
         }
     }
 
+    $map_apartaments = $decoded_params_table_array['map_apartaments'];
+
+    foreach ($map_apartaments[$current_liter]['floors'] as $key => $floor) {
+
+        $map_apartaments[$current_liter]['floors'][$key] = array_filter($map_apartaments[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked, $categories_area_checked) {
+            if ((in_array($item['rooms'], $categories_rooms_checked) || empty($categories_rooms_checked)) && (in_array(ceil($item['area']), $categories_area_checked) || empty($categories_area_checked))) {
+                return $item;
+            }
+        });
+
+        if (empty($map_apartaments[$current_liter]['floors'][$key])) {
+            unset($map_apartaments[$current_liter]['floors'][$key]);
+        }
+    }
 
     $params_table = [
+        'literal' => $decoded_params_table_array['literal'],
+        'categories_area' => $decoded_params_table_array['categories_area'],
+        'categories_rooms' => $decoded_params_table_array['categories_rooms'],
+        'map_apartaments' => $map_apartaments,
+        'crb_gk_plan' => $decoded_params_table_array['crb_gk_plan'],
+        'current_liter' => $current_liter,
+        'categories_rooms_checked' => $categories_rooms_checked,
+        'categories_area_checked' => $categories_area_checked,
+    ];
+
+    $params_table_init = [
         'literal' => $decoded_params_table_array['literal'],
         'categories_area' => $decoded_params_table_array['categories_area'],
         'categories_rooms' => $decoded_params_table_array['categories_rooms'],
@@ -47,8 +72,10 @@ function get_table_gk()
 
     $response = array(
         'pageGkTable' => $page_gk_table,
-        'inputTableParams' =>  http_build_query($params_table),
-        'form_apartamens' => $form_apartamens
+        'inputTableParams' =>  http_build_query($params_table_init),
+        'form_apartamens' => $form_apartamens,
+
+
     );
 
     wp_send_json($response);

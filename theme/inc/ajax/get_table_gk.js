@@ -16,12 +16,14 @@ jQuery(document).ready(function ($) {
 
     $(SELECTORS.FORM_INPUT).change(function () {
       const formTableLiter = $(SELECTORS.FORM_LITER).serializeArray();
-      const formApartamens = $(SELECTORS.FORM_APARTAMENTS).serializeArray();
+      const formApartamens =
+        $(this).attr("name") == "gk-liter"
+          ? []
+          : $(SELECTORS.FORM_APARTAMENTS).serializeArray();
 
       const currentLiter = formTableLiter[0].value;
       const container_table = $(SELECTORS.CONTAINER_TABLE);
 
-      params_table = "";
       $.ajax({
         url: ajax_object.ajaxurl,
         type: "POST",
@@ -32,8 +34,6 @@ jQuery(document).ready(function ($) {
           form_apartamens: formApartamens,
         },
         success: function (response) {
-          //   loader.hide();
-          console.log("response", response.form_apartamens);
           if (response.pageGkTable) {
             container_table.html(response.pageGkTable);
             initializeFormFilter();
@@ -44,12 +44,9 @@ jQuery(document).ready(function ($) {
           }
         },
         error: function (xhr, status, error) {
-          //   loader.hide();
           console.error(error);
         },
       });
     });
-
-    // const loader = $("[data-loader]");
   };
 });

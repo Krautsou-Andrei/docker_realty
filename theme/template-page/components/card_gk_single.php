@@ -82,15 +82,17 @@ $params_table_query = http_build_query($params_table);
                                 </div>
                             </div>
                             <div class="custom-scrollbar"></div>
-                            <div class="product__gallery">
-                                <div data-type="popup-gallery">
-                                    <img src="<?php echo $image_preview_url_two[0] ?>" alt="" width="226" height="166" />
+                            <?php if (!empty($image_preview_url_two)) { ?>
+                                <div class="product__gallery">
+                                    <div data-type="popup-gallery">
+                                        <img src="<?php echo $image_preview_url_two[0] ?>" alt="" width="226" height="166" />
+                                    </div>
+                                    <div data-type="popup-gallery">
+                                        <img src="<?php echo $image_preview_url_three[0] ?>" alt="" width="226" height="166" />
+                                        <span data-type="popup-gallery"><?php echo count($crb_gk_gallery) ?></span>
+                                    </div>
                                 </div>
-                                <div data-type="popup-gallery">
-                                    <img src="<?php echo $image_preview_url_three[0] ?>" alt="" width="226" height="166" />
-                                    <span data-type="popup-gallery"><?php echo count($crb_gk_gallery) ?></span>
-                                </div>
-                            </div>
+                            <?php } ?>
                         </div>
                         <div class="product-single-slide-gallery swiper">
                             <div class="product-single-slide-gallery__wrapper swiper-wrapper">

@@ -25,8 +25,6 @@ function get_card_gk_single()
     $price_meter_all = [];
     $finishing = [];
     $literal = [];
-    $categories_area = [];
-    $categories_rooms = [];
     $map_apartaments = [];
 
     if ($query->have_posts()) {
@@ -43,19 +41,29 @@ function get_card_gk_single()
             $rooms = carbon_get_post_meta($id_post, 'product-rooms');
             $area = carbon_get_post_meta($id_post, 'product-area');
 
-            $apartament = new stdClass();
-            $apartament->id_post = $id_post;
-            $apartament->rooms = $rooms;
-            $apartament->area = $area;
+            $apartament = [];
+            $apartament['id_post'] = $id_post;
+            $apartament['rooms'] = $rooms;
+            $apartament['area'] = $area;
 
-            $map_apartaments[$liter][$floor][] = $apartament;
+            if (!isset($map_apartaments[$liter]['floors'])) {
+                $map_apartaments[$liter]['floors'] = [];
+            }
+            if (!isset($map_apartaments[$liter]['area'])) {
+                $map_apartaments[$liter]['area'] = [];
+            }
+            if (!isset($map_apartaments[$liter]['rooms'])) {
+                $map_apartaments[$liter]['rooms'] = [];
+            }
+
+            $map_apartaments[$liter]['floors'][$floor][] = $apartament;
 
             foreach ($categories as $category) {
-                if ($category->parent == CATEGORIES_ID::AREA && !in_array($category->term_id, array_column($categories_area, 'term_id'))) { // Проверяем, является ли родительская категория 
-                    $categories_area[] = $category;
+                if ($category->parent == CATEGORIES_ID::AREA && !in_array($category->term_id, array_column($map_apartaments[$liter]['area'], 'term_id'))) {
+                    $map_apartaments[$liter]['area'][] = (array) $category;
                 }
-                if ($category->parent == CATEGORIES_ID::ROOMS && !in_array($category->term_id, array_column($categories_rooms, 'term_id'))) {
-                    $categories_rooms[] = $category;
+                if ($category->parent == CATEGORIES_ID::ROOMS && !in_array($category->term_id, array_column($map_apartaments[$liter]['rooms'], 'term_id'))) {
+                    $map_apartaments[$liter]['rooms'][] = (array) $category;
                 }
             }
 
@@ -73,13 +81,17 @@ function get_card_gk_single()
         wp_reset_postdata();
     }
 
-    usort($categories_area, function ($a, $b) {
-        return strcmp(intval($a->name), intval($b->name));
-    });
+    foreach ($map_apartaments as $liter => $data) {
+        usort($map_apartaments[$liter]['area'], function ($a, $b) {
+            return strcmp(intval($a['name']), intval($b['name']));
+        });
+    }
 
-    usort($categories_rooms, function ($a, $b) {
-        return strcmp(intval($a->name), intval($b->name));
-    });
+    foreach ($map_apartaments as $liter => $data) {
+        usort($map_apartaments[$liter]['rooms'], function ($a, $b) {
+            return strcmp(intval($a['name']), intval($b['name']));
+        });
+    }
 
     usort($literal, function ($a, $b) {
         return strcmp(intval($a), intval($b));
@@ -103,8 +115,6 @@ function get_card_gk_single()
         'min_price_meter' => $price_meter_all ? min($price_meter_all) : '',
         'finishing' => $finishing,
         'literal' => $literal,
-        'categories_area' => $categories_area,
-        'categories_rooms' => $categories_rooms,
         'map_apartaments' => $map_apartaments,
     ];
 
@@ -120,6 +130,7 @@ function get_card_gk_single()
 
     $response = array(
         'pageGk' => $page_gk,
+        '  $map_apartaments[$liter]' =>  $map_apartaments[2]['rooms']
     );
 
     wp_send_json($response);

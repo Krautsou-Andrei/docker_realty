@@ -178,6 +178,7 @@ require get_template_directory() . '/inc/pagination-documents.php';
 require get_template_directory() . '/inc/filter-post-single-page.php';
 require get_template_directory() . '/inc/filter-post-home-page.php';
 require get_template_directory() . '/inc/ajax/get_card_gk_single.php';
+require get_template_directory() . '/inc/ajax/get_table_gk.php';
 
 // require get_template_directory() . '/inc/template-hooks.php';
 

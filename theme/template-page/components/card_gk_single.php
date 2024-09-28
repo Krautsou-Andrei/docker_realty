@@ -1,5 +1,6 @@
 <?php
 
+
 $crb_gk_name = $args['crb_gk_name'];
 $crb_gk_plan = $args['crb_gk_plan'];
 $crb_gk_gallery = $args['crb_gk_gallery'];
@@ -13,8 +14,6 @@ $min_price = $args['min_price'];
 $min_price_meter = $args['min_price_meter'];
 $finishing = $args['finishing'];
 $literal = $args['literal'];
-$categories_area = $args['categories_area'];
-$categories_rooms = $args['categories_rooms'];
 $map_apartaments = $args['map_apartaments'];
 
 $image_preview_url = '';
@@ -35,16 +34,18 @@ $all_finishing = implode(', ', $finishing);
 
 $params_table = [
     'literal' => $literal,
-    'categories_area' => $categories_area,
     'map_apartaments' => $map_apartaments,
     'crb_gk_plan' => $crb_gk_plan,
 ];
+
+$params_table_query = http_build_query($params_table);
 
 ?>
 <script>
 
 </script>
 <section class="single-gk-card">
+    <input hidden type="text" value="<?php echo $params_table_query ?>" data-input-table-params />
     <div class="single-gk-card__container">
         <div class="single-gk-card-wrapper">
             <div class="single-gk-card__info">
@@ -72,7 +73,7 @@ $params_table = [
 
                                     ?>
                                             <div class="product-single-slider__slide swiper-slide" data-type="popup-gallery">
-                                                <img class="swiper-lazy" data-src="<?php echo $image_url[0] ?>" src="<?php bloginfo('template_url'); ?>'/assets/images/1px.png" alt="" data-type="popup-gallery" />
+                                                <img class="swiper-lazy" data-src="<?php echo $image_url[0] ?>" src="<?php bloginfo('template_url'); ?>/assets/images/1px.png" alt="" data-type="popup-gallery" />
                                                 <div class="swiper-lazy-preloader"></div>
                                             </div>
 
@@ -151,41 +152,10 @@ $params_table = [
 
                     </div>
                 </div>
-                <div class="product__gk-filter">
-                    <section class="page-gk-filter">
-                        <form class="page-gk-filter__form" action="">
-                            <?php if (!empty($categories_rooms)) { ?>
-                                <div class="gk-filter-rooms">
-                                    <div class="gk-filter-rooms__title">Количество комнат</div>
-                                    <?php foreach ($categories_rooms as $room) { ?>
-                                        <label>
-                                            <input type="checkbox" />
-                                            <span><?php echo $room->name ?></span>
-                                        </label>
-                                    <?php } ?>
-                                </div>
-                            <?php } ?>
+                <div class="" data-container-table>
 
-                            <?php if (!empty($categories_area)) { ?>
-                                <div class="gk-filter-area">
-                                    <div class="gk-filter-area__title">Общая площадь</div>
-                                    <div class="gk-filter-area__wrapper">
-                                        <?php foreach ($categories_area as $area) { ?>
-                                            <label>
-                                                <input type="checkbox" />
-                                                <span><?php echo intval($area->name) ?> м2</span>
-                                            </label>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            <?php  } ?>
-
-                        </form>
-                    </section>
-
-                </div>
-                <div class="product__more">
                     <?php get_template_part('template-page/components/gk_table', null, $params_table) ?>
+
                 </div>
             </div>
         </div>

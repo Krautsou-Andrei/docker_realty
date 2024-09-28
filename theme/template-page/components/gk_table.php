@@ -1,61 +1,103 @@
 <?php
 
 $literal = $args['literal'];
-$categories_area = $args['categories_area'];
 $map_apartaments = $args['map_apartaments'];
 $crb_gk_plan = $args['crb_gk_plan'];
+$current_liter = isset($args['current_liter']) ? $args['current_liter'] : $literal[0];
+$categories_rooms_checked = isset($args['categories_rooms_checked']) ? $args['categories_rooms_checked'] : [];
+$categories_area_checked = isset($args['categories_area_checked']) ? $args['categories_area_checked'] : [];
+
 
 ?>
+<div class="product__gk-filter">
+    <section class="page-gk-filter">
+        <form action="#" class="page-gk-filter__form" data-form-table-apartamens>
+            <?php if (!empty($map_apartaments[$current_liter]['rooms'])) { ?>
+                <div class="gk-filter-rooms">
+                    <div class="gk-filter-rooms__title">Количество комнат</div>
+                    <?php foreach ($map_apartaments[$current_liter]['rooms'] as $room) { ?>
+                        <label>
+                            <input type="checkbox" name="gk-apartament-rooms" value="<?php echo $room['name'] ?>" data-form-table-input <?php echo in_array($room['name'], $categories_rooms_checked) ? 'checked' : '' ?> />
+                            <span><?php echo $room['name'] ?></span>
+                        </label>
+                    <?php } ?>
+                </div>
+            <?php } ?>
 
-<section class="gk-table">
-    <?php if (!empty($literal)) { ?>
-        <div class="gk-table__tab tab-gk">
-            <?php
-            foreach ($literal as $index => $liter) {
-            ?>
-                <label class="tab-gk__label">
-                    <input hidden type="radio" name="gk-liter" <?php if ($index === 0) {
-                                                                    echo 'checked';
-                                                                } ?> />
-                    <span>Литера <?php echo $liter; ?></span>
-                </label>
-            <?php
-            }
-            ?>
-        </div>
-    <?php } ?>
+            <?php if (!empty($map_apartaments[$current_liter]['area'])) { ?>
+                <div class="gk-filter-area">
+                    <div class="gk-filter-area__title">Общая площадь</div>
+                    <div class="gk-filter-area__wrapper">
+                        <?php foreach ($map_apartaments[$current_liter]['area'] as $area) { ?>
+                            <label>
+                                <input type="checkbox" name="gk-apartament-area" value="<?php echo intval($area['name']) ?>" data-form-table-input <?php echo in_array($area['name'], $categories_area_checked) ? 'checked' : '' ?> />
+                                <span><?php echo intval($area['name']) ?> м2</span>
+                            </label>
+                        <?php } ?>
+                    </div>
+                </div>
+            <?php  } ?>
+
+        </form>
+    </section>
+
+</div>
+<div class="product__more" data-container-table>
+    <section class="gk-table">
+        <?php if (!empty($literal)) { ?>
+
+            <form class="gk-table__tab tab-gk" action="#" data-form-table-liter>
+                <?php
+                foreach ($literal as $index => $liter) {
+                ?>
+                    <label class="tab-gk__label">
+                        <input hidden type="radio" name="gk-liter" value="<?php echo $liter; ?>" <?php if ($liter == $current_liter) {
+                                                                                                        echo 'checked';
+                                                                                                    } ?> data-form-table-input />
+                        <span>Литера <?php echo $liter; ?></span>
+                    </label>
+                <?php
+                }
+                ?>
+            </form>
+
+        <?php } ?>
 
 
-    <?php if (!empty($crb_gk_plan)) { ?>
-        <div class="gk-plan">
-            <button type="button" data-type="popup-plan"><span data-type="popup-plan">Схема литеров</span></button>
-        </div>
-    <?php } ?>
-
-    <?php if (!empty($map_apartaments)) { ?>
-        <div class="gk-schema">
-            <div class="gk-schema-floor">
-                <div>Этаж</div>
-                <?php foreach ($map_apartaments[1] as $key => $floor) { ?>
-                    <div><?php echo $key ?></div>
-                <?php } ?>
+        <?php if (!empty($crb_gk_plan)) { ?>
+            <div class="gk-plan">
+                <button type="button" data-type="popup-plan"><span data-type="popup-plan">Схема литеров</span></button>
             </div>
-            <div class="gk-schema__wrapper">
-                <div class="gk-schema__line">
-                    <div class="gk-schema-row">
-                        <div class="gk-schema__block">
-                            <div class="gk-schema__service"></div>
-                            <?php foreach ($map_apartaments[1] as $floor) { ?>
-                                <div class="gk-schema-apartaments">
-                                    <?php foreach ($floor as $apartament) { ?>
-                                        <a href="<?php echo get_permalink($apartament->id_post) ?>"> <div class="gk-schema-apartaments__room active"><?php echo intval($apartament->rooms) ? $apartament->rooms :  mb_substr($apartament->rooms, 0, 1) ?></div></a>
-                                    <?php } ?>
-                                </div>
-                            <?php } ?>
+        <?php } ?>
+
+        <?php if (!empty($map_apartaments)) { ?>
+            <div class="gk-schema">
+                <div class="gk-schema-floor">
+                    <div>Этаж</div>
+                    <?php foreach ($map_apartaments[$current_liter]['floors'] as $key => $floor) { ?>
+                        <div><?php echo $key ?></div>
+                    <?php } ?>
+                </div>
+                <div class="gk-schema__wrapper">
+                    <div class="gk-schema__line">
+                        <div class="gk-schema-row">
+                            <div class="gk-schema__block">
+                                <div class="gk-schema__service"></div>
+                                <?php foreach ($map_apartaments[$current_liter]['floors'] as $floor) { ?>
+                                    <div class="gk-schema-apartaments">
+                                        <?php foreach ($floor as $apartament) { ?>
+                                            <a href="<?php echo get_permalink($apartament['id_post']) ?>">
+                                                <div class="gk-schema-apartaments__room active"><?php echo intval($apartament['rooms']) ? $apartament['rooms'] :  mb_substr($apartament['rooms'], 0, 1) ?></div>
+                                            </a>
+                                        <?php } ?>
+                                    </div>
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    <?php } ?>
-</section>
+        <?php } ?>
+
+    </section>
+</div>

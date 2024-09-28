@@ -38,14 +38,11 @@ $params_table = [
     'crb_gk_plan' => $crb_gk_plan,
 ];
 
-$params_table_query = http_build_query($params_table);
-
+$params_table_query = json_encode($params_table);
 ?>
-<script>
 
-</script>
 <section class="single-gk-card">
-    <input hidden type="text" value="<?php echo $params_table_query ?>" data-input-table-params />
+    <input hidden type="text" value="<?php echo htmlspecialchars($params_table_query); ?>" data-input-table-params />
     <div class="single-gk-card__container">
         <div class="single-gk-card-wrapper">
             <div class="single-gk-card__info">

@@ -6,10 +6,29 @@ function get_table_gk()
     $current_liter = $_POST['current_liter'];
     $form_apartamens = $_POST['form_apartamens'];
 
-    $decoded_params_table = urldecode($params_table_query);
-    $decoded_params_table_array = [];
-    parse_str($decoded_params_table,  $decoded_params_table_array);
 
+    if (empty($params_table_query)) {
+        echo json_encode(['error' => 'Параметр params_table пуст']);
+        exit;
+    }
+
+    // Пробуем декодировать JSON
+    $decoded_params_table_array = json_decode($params_table_query, true);
+
+    // Проверяем, если это null и есть ошибка декодирования
+    if ($decoded_params_table_array === null && json_last_error() !== JSON_ERROR_NONE) {
+        // Удаляем экранирование
+        $params_table_query = stripslashes($params_table_query);
+
+        // Пробуем декодировать снова
+        $decoded_params_table_array = json_decode($params_table_query, true);
+
+        // Проверяем на ошибки снова
+        if ($decoded_params_table_array === null) {
+            echo json_encode(['error' => 'Ошибка декодирования JSON: ' . json_last_error_msg()]);
+            exit;
+        }
+    }
 
     $categories_rooms_checked = [];
     $categories_area_checked = [];
@@ -21,11 +40,14 @@ function get_table_gk()
         }
 
         if ($field['name'] == 'gk-apartament-area') {
-            $categories_area_checked[] = $field['value'];
+            $categories_area_checked[] = intval($field['value']);
         }
     }
 
-    $map_apartaments = $decoded_params_table_array['map_apartaments'];
+    $map_apartaments_init = $decoded_params_table_array['map_apartaments'];
+    $map_apartaments = $decoded_params_table_array['map_apartaments']; 
+
+    $current_area = [];
 
     foreach ($map_apartaments[$current_liter]['floors'] as $key => $floor) {
 
@@ -38,7 +60,33 @@ function get_table_gk()
         if (empty($map_apartaments[$current_liter]['floors'][$key])) {
             unset($map_apartaments[$current_liter]['floors'][$key]);
         }
+
+        foreach ($map_apartaments_init[$current_liter]['floors'][$key] as $apartament) {
+            if (in_array($apartament['rooms'], $categories_rooms_checked)) {
+                $current_area[] = ceil($apartament['area']);
+            }
+        }
     }
+
+
+
+    if (empty(array_intersect($categories_area_checked, $current_area)) && !empty($current_area) && !empty($categories_area_checked)) {
+        foreach ($map_apartaments_init[$current_liter]['floors'] as $key => $floor) {
+            $map_apartaments[$current_liter]['floors'][$key] = array_filter($map_apartaments_init[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked) {
+                if ((in_array($item['rooms'], $categories_rooms_checked) || empty($categories_rooms_checked))) {
+                    return $item;
+                }
+            });
+        }
+    }
+
+    $map_apartaments[$current_liter]['area'] = array_filter($map_apartaments[$current_liter]['area'], function ($item) use ($current_area) {
+        if (in_array($item['name'], $current_area) || empty($current_area)) {
+            return $item;
+        }
+    });
+
+    krsort($map_apartaments[$current_liter]['floors']);
 
     $params_table = [
         'literal' => $decoded_params_table_array['literal'],
@@ -55,7 +103,7 @@ function get_table_gk()
         'literal' => $decoded_params_table_array['literal'],
         'categories_area' => $decoded_params_table_array['categories_area'],
         'categories_rooms' => $decoded_params_table_array['categories_rooms'],
-        'map_apartaments' => $decoded_params_table_array['map_apartaments'],
+        'map_apartaments' => $map_apartaments_init,
         'crb_gk_plan' => $decoded_params_table_array['crb_gk_plan'],
         'current_liter' => $current_liter,
         'categories_rooms_checked' => $categories_rooms_checked,
@@ -72,10 +120,8 @@ function get_table_gk()
 
     $response = array(
         'pageGkTable' => $page_gk_table,
-        'inputTableParams' =>  http_build_query($params_table_init),
+        'inputTableParams' =>  json_encode($params_table_init),
         'form_apartamens' => $form_apartamens,
-
-
     );
 
     wp_send_json($response);

@@ -130,7 +130,6 @@ function get_card_gk_single()
 
     $response = array(
         'pageGk' => $page_gk,
-        '  $map_apartaments[$liter]' =>  $map_apartaments[2]['rooms']
     );
 
     wp_send_json($response);

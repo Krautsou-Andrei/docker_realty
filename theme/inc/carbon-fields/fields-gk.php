@@ -26,6 +26,8 @@ function page_new_building_fields_gk()
             Field::make('text', 'crb_gk_address', 'Адрес')->set_help_text('пр-кт Дзержинского')->set_width(50),
             Field::make('text', 'crb_gk_latitude', 'Ширина')->set_help_text('44.75047100002018')->set_width(50),
             Field::make('text', 'crb_gk_longitude', 'Долгота')->set_help_text('37.730149')->set_width(50),
+            Field::make('text', 'crb_gk_min_price', 'Минимальная цена за квадратный метр')->set_help_text('112 000')->set_width(50),
+
 
         ]);
 }

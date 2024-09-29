@@ -27,6 +27,9 @@ function create_post($data)
     $product_building_type = $data->product_building_type;
     $product_finishing = $data->product_finishing;
     $product_building_name = $data->building_name;
+    $product_block_id = $data->block_id;
+
+
     $product_agent_url = 'https://2bishop.ru/files/avatars/agph_23286_5jpeg.jpg';
     $product_agent_phone = carbon_get_theme_option('crb_phone_link');
 
@@ -69,6 +72,9 @@ function create_post($data)
 
     if ($existing_posts) {
         $post_id = $existing_posts[0]; // Получаем ID существующего поста
+        if (!empty($product_block_id)) {
+            update_min_price_gk($product_block_id, $product_price_meter);
+        }
     } else {
         $post_id = wp_insert_post(array(
             'post_title'   => $title,
@@ -86,7 +92,7 @@ function create_post($data)
             ]
         ));
 
-        if (!is_wp_error($post_id)) {    
+        if (!is_wp_error($post_id)) {
             carbon_set_post_meta($post_id, 'product-id', $product_id);
             carbon_set_post_meta($post_id, 'product-gallery', [$attachment_id]);
             carbon_set_post_meta($post_id, 'product-price', $product_price);
@@ -107,9 +113,36 @@ function create_post($data)
             carbon_set_post_meta($post_id, 'product-agent-phone', $product_agent_phone);
             carbon_set_post_meta($post_id, 'product-agent-name', 'Арсен');
             carbon_set_post_meta($post_id, 'product-agent-photo', [$id_image_agent]);
+
+            update_min_price_gk($product_block_id, $product_price_meter);
         } else {
             // Вывод сообщения об ошибке
             echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
+        }
+    }
+}
+function update_min_price_gk($product_block_id, $product_price_meter)
+{
+    if (!empty($product_block_id)) {
+        $args_post = array(
+            'post_type'      => 'page', // Тип поста
+            'post_status'    => 'publish', // Только опубликованные страницы
+            'key'      => 'crb_gk_id', // Мета-ключ
+            'meta_value'    => $product_block_id, // Значение мета-ключа
+            'posts_per_page' => 1, // Ограничиваем количество выводимых страниц
+        );
+
+        $pages = get_posts($args_post);
+
+        if (!empty($pages)) {
+
+            $page = $pages[0];
+
+            $min_price_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_price');
+
+            if (empty($min_price_gk) || intval($min_price_gk) > intval($product_price_meter)) {
+                carbon_set_post_meta($page->ID, 'crb_gk_min_price', $product_price_meter);
+            }
         }
     }
 }

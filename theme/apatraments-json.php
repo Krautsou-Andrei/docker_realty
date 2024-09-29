@@ -123,6 +123,7 @@ foreach ($items as $name => $item) {
         $data->product_building_type = $building_type_ids[$item->building_type] ?? '';
         $data->product_finishing = $finishings_ids[$item->finishing] ?? '';
         $data->building_name = $item->building_name ?? '';
+        $data->block_id = $item->block_id ?? '';
 
         create_post($data);
     }

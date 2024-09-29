@@ -42,28 +42,6 @@ wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
                         </div>');
     }
     ?>
-    <div class=" main-catalog__filter">
-      <section class="filter-catalog">
-        <div class="filter-catalog__container">
-          <div class="filter-catalog-mobile">
-            <div class="filter-catalog-mobile__button">
-              <?php $referer = wp_get_referer() ?>
-              <a class="button-catalog-filter" href="<?php echo esc_url($referer) ?>">
-                <img src=" <?php bloginfo('template_url'); ?>/assets/images/back.svg" alt="">
-                <span>Назад </span>
-              </a>
-            </div>
-            <div class="filter-catalog-mobile__button" data-type="popup-filter">
-              <button class="button-catalog-filter" data-type="popup-filter">
-                <img src="<?php bloginfo('template_url'); ?>/assets/images/filter.svg" alt="" data-type="popup-filter">
-                <span data-type="popup-filter">Фильтры </span>
-              </button>
-            </div>
-          </div>
-          <?php get_template_part('template-page/components/filter-catalog') ?>
-        </div>
-      </section>
-    </div>
     <div class="main-favorites__cards-preview">
       <section class="favorites">
         <div class="favoritesg__container">

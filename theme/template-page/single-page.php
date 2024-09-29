@@ -375,9 +375,6 @@ require_once get_template_directory() . '/inc/lib/get_cookies_favorites.php';
   </section>
 </div>
 </div>
-<div class="single-page__promo">
-  <?php get_template_part('template-page/components/promo'); ?>
-</div>
 <div class="single-page__questions">
   <?php get_template_part('template-page/components/questions'); ?>
 </div>

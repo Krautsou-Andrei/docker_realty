@@ -2,6 +2,7 @@
 
 $gk = $args;
 
+$gk_id = $gk['id'];
 $gk_name =  $gk['crb_gk_name'];
 $gk_plane =  $gk['crb_gk_plan'];
 $crb_gk_gallery = $gk['crb_gk_gallery'];
@@ -17,6 +18,35 @@ if (!empty($crb_gk_gallery[0])) {
 }
 
 ?>
+<script>
+    jQuery(document).ready(function($) {
+        const loader = $("[data-loader]");
+        const content = $(`#content-container-min-price-gk-${<?php echo $gk_id ?>}`);
+        const contentNotPrice = $(`#content-container-not-price-gk-${<?php echo $gk_id ?>}`);
+
+        $.ajax({
+            url: ajax_object.ajaxurl,
+            type: "POST",
+            data: {
+                action: "get_min_price",
+                id_page_gk: <?php echo $gk_id ?>,
+            },
+            success: function(response) {
+                loader.hide();
+                if (response.minPrice) {
+                    content.html(response.minPrice);
+                } else {
+                    contentNotPrice.html("Распродано");
+                }
+            },
+            error: function(xhr, status, error) {
+                loader.hide();
+                console.error(error);
+            },
+        });
+    })
+</script>
+
 <div class="catalog-gk__card">
     <li class="gk-card">
         <a href="<?php echo $crb_gk_permalink ?>">
@@ -26,7 +56,14 @@ if (!empty($crb_gk_gallery[0])) {
             <div class="gk-card__info info">
                 <h3 class="info__title title--lg title--promo-slide"><? echo $gk_name ?></h3>
                 <p class="info__description"><? echo preg_replace('/<p.*?>(.*?)<\/p>/', '$1', $gk_description)  ?></p>
-                <p class="info__price">от 115 000 ₽ за м²</p>
+
+                <p class="info__price">
+                    <span id="content-container-not-price-gk-<?php echo $gk_id ?>">
+                        от
+                        <img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" width="16" height="16" data-loader />
+                        <span class="" id="content-container-min-price-gk-<?php echo $gk_id ?>"></span> ₽ за м²</span>
+                </p>
+
                 <p class="info__location"><span><? echo $gk_city ?></span><span>, <? echo $gk_address ?></span></p>
             </div>
         </a>

@@ -1,53 +1,101 @@
-<form action="" class="filter-catalog__form form-filter-catalog" method='get'>
-  <div class="form-filter-catalog__list">  
+<?php
+require_once get_template_directory() . '/inc/lib/get_names_children_categories.php';
+require_once get_template_directory() . '/inc/lib/search_id_category_by_name.php';
+require_once get_template_directory() . '/inc/enums/categories_name.php';
+
+$filter_city = isset($_GET['city']) ? $_GET['city'] : '';
+$filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : '';
+$filter_rooms = isset($_GET['rooms']) ? $_GET['rooms'] : '';
+$filter_rooms_array = isset($_GET['rooms']) ? explode(',', $_GET['rooms']) : [];
+
+$search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : '');
+
+// $cities_parent_category_id  = search_id_category_by_name(CATEGORIES_NAME::CITIES);
+// $cities_names = !empty($cities_parent_category_id) ? get_names_children_categories($cities_parent_category_id) : [];
+
+$rooms_paren_category_id = search_id_category_by_name(CATEGORIES_NAME::ROOMS);
+$rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories($rooms_paren_category_id) : [];
+
+
+?>
+
+
+
+<form action="/wp-content/themes/realty/inc/lib/filter-new-building.php?>" class="filter-catalog__form form-filter-catalog" method="get">
+  <div class="form-filter-catalog__list">
+    <input hidden type="radio" name="type" value="novostrojki" data-name="Дома" id="" checked />
     <div class="label-option-radio-wrapper label label-city" id="filter-city" data-checked>
       <div class="option-radio">
-        <span class="option-radio__label" data-checked-view data-default-value="Город">Город</span>
+        <span class="option-radio__label" data-checked-view data-default-value="Город"><?php echo !empty($search_param_city) ? $search_param_city : 'Город' ?></span>
         <span data-arrow></span>
       </div>
+
       <div class="option-radio__select" data-select>
         <ul>
           <li>
             <label>
               <span>Новороссийск</span>
-              <input type="radio" name="option-radio-type-build" value="Новороссийск" id="">
+              <input type="radio" name="option-radio-city" value="Новороссийск" data-name="Новороссийск" id="" <?php echo $filter_city === '2306' ? 'checked' : '' ?> />
               <span></span>
             </label>
           </li>
           <li>
             <label>
               <span>Краснодар</span>
-              <input type="radio" name="option-radio-type-build" value="Краснодар" id="">
+              <input type="radio" name="option-radio-city" value="Краснодар" data-name="Краснодар" id="" <?php echo $filter_city === '2301' ? 'checked' : '' ?> />
               <span></span>
             </label>
           </li>
         </ul>
       </div>
     </div>
-    <div class="label-option-checkbox-wrapper label label-rooms" id="filter-rooms" data-checked>
-      <div class="option-checkbox">
-        <span class="option-checkbox__label" data-checked-view data-default-value="Комнаты">Комнаты</span>
+    <div class="label-option-radio-wrapper label label-type" id="filter-flat" data-checked>
+      <div class="option-radio">
+        <span class="option-radio__label" data-checked-view data-default-value="Тип объекта"><?php echo !empty($filter_type_build) ? $filter_type_build : 'Тип объекта' ?></span>
         <span data-arrow></span>
       </div>
-      <div class="option-checkbox__select" data-select>
+      <div class="option-radio__select" data-select>
         <ul>
           <li>
             <label>
-              <span>1-комн.</span>
-              <input type="checkbox" name="option-checkbox-rooms" value="1-комн.">
+              <span>Квартиры</span>
+              <input type="radio" name="option-radio-type-build" value="Квартиры" data-name="Квартиры" id="" <?php echo $filter_type_build === 'Квартиры' ? 'checked' : '' ?> />
               <span></span>
             </label>
           </li>
           <li>
             <label>
-              <span>2-комн.</span>
-              <input type="checkbox" name="option-checkbox-rooms" value="2-комн." id="">
+              <span>Дома</span>
+              <input type="radio" name="option-radio-type-build" value="Дома" data-name="Дома" id="" <?php echo $filter_type_build === 'Дома' ? 'checked' : '' ?> />
               <span></span>
             </label>
           </li>
         </ul>
       </div>
     </div>
+    <?php if (!empty($rooms_names)) { ?>
+      <div class="label-option-checkbox-wrapper label label-rooms" id="filter-rooms" data-filter-rooms data-checked>
+        <div class="option-checkbox">
+          <span class="option-checkbox__label" data-checked-view data-default-value="<?php echo CATEGORIES_NAME::ROOMS ?>"><?php echo !empty($filter_rooms) ? $filter_rooms : CATEGORIES_NAME::ROOMS ?></span>
+          <span data-arrow></span>
+        </div>
+        <div class="option-checkbox__select" data-select>
+          <ul>
+            <?php foreach ($rooms_names as $room_name) {
+              $name = intval($room_name) ? intval($room_name) . '-комн.' : $room_name;
+            ?>
+              <li>
+                <label>
+                  <span> <?php echo  $name ?></span>
+                  <input type="checkbox" name="option-checkbox-rooms[]" value="<?php echo  $name ?>" <?php echo in_array($name, $filter_rooms_array) ? 'checked' : '' ?>>
+                  <span></span>
+                </label>
+              </li>
+            <?php } ?>
+          </ul>
+        </div>
+      </div>
+    <?php } ?>
     <div class="label-option-radio-wrapper label label-area" id="filter-area" data-checked>
       <div class="option-checkbox">
         <span class="option-checkbox__label" data-checked-view data-default-value="Площадь">Площадь</span>

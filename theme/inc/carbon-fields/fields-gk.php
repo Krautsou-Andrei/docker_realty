@@ -32,6 +32,6 @@ function page_new_building_fields_gk()
             Field::make('text', 'crb_gk_max_area', 'Максимальная площадь')->set_help_text('50')->set_width(50),
             Field::make('text', 'crb_gk_min_rooms', 'Минимальное количество комнат в ЖК')->set_help_text('1')->set_width(50),
             Field::make('text', 'crb_gk_max_rooms', 'Максимальное количество комнат в ЖК')->set_help_text('5')->set_width(50),
-            Field::make('checkbox', 'crb_gk_is_studio', 'Есть студии')->set_help_text('установить галочку если есть студия')->set_width(50),
+            Field::make('checkbox', 'crb_gk_is_studio', 'Есть студии')->set_option_value('yes')->set_help_text('установить галочку если есть студия')->set_width(50),
         ]);
 }

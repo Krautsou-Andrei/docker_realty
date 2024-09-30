@@ -77,6 +77,16 @@ function create_post($data)
 
     if ($existing_posts) {
         $post_id = $existing_posts[0]; // Получаем ID существующего поста
+        carbon_set_post_meta($post_id, 'product-title', $title);
+        carbon_set_post_meta($post_id, 'product-price', $product_price);
+        carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);
+        carbon_set_post_meta($post_id, 'product-year-build', $date_build);
+        carbon_set_post_meta($post_id, 'product-finishing', $product_finishing);
+        $updated_post = array(
+            'ID'         => $post_id,
+            'post_title' => $title . ' ' . $product_id,
+        );
+        wp_update_post($updated_post);
         if (!empty($product_block_id)) {
             update_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
         }
@@ -179,7 +189,7 @@ function update_min_max_value_gk($product_block_id, $product_price_meter, $produ
             }
 
             if ($product_room_id == ROOMS_ID::STUDIO_0 || $product_room_id == ROOMS_ID::STUDIO) {
-                carbon_set_post_meta($page->ID, 'crb_gk_is_studio', 1);
+                carbon_set_post_meta($page->ID, 'crb_gk_is_studio', 'yes');
             }
         }
     }

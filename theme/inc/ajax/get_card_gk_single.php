@@ -99,6 +99,8 @@ function get_card_gk_single()
 
     foreach ($map_apartaments as $liter => $floors) {
         krsort($map_apartaments[$liter]); // Сортируем массив по ключам для текущего литера
+
+        krsort($map_apartaments[$liter]['floors']);
     }
 
     $params_page_gk = [

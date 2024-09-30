@@ -107,7 +107,7 @@ foreach ($items as $name => $item) {
         $data = new stdClass();
 
         $data->id = $item->_id;
-        $data->product_gallery = $item->plan[0] ? $item->plan : ["http://localhost:8080/wp-content/uploads/2024/09/no-photo-lg.png"];
+        $data->product_gallery = $item->plan[0] ? $item->plan : [home_url('/wp-content/uploads/2024/09/no-photo-lg.png')];
         $data->product_price = $item->price ?? 0;
         $data->product_price_meter = $item->price && $item->area_total ? round(floatval($item->price) / floatval($item->area_total), 2) :  0;
         $data->product_rooms = $rooms_ids[$item->room] ?? 0;

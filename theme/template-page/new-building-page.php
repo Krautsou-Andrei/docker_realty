@@ -6,29 +6,83 @@ Template Name: Страница новостройки
 require_once get_template_directory() . '/inc/enums/default_enum.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
+require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 
 get_header();
+
 ?>
 <main class="page">
   <div class="main-favorites">
     <?php $crb_new_building_title = carbon_get_post_meta(get_the_ID(), 'crb_new_building_title');
 
-    $filter_city = explode('/', $_SERVER['REQUEST_URI'])[2];
-    $countSale = 6;
+    $filter_city = isset($_GET['city']) ? $_GET['city'] : '';
+    $search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : '');
+    $title_city =  $filter_city === '2306' ? 'в Новороссийске' : ($filter_city === '2301' ? 'в Краснодаре' : '');
 
-    $title_city = $filter_city === 'novorossiysk' ? 'в Новороссийске' : ($filter_city === 'krasnodar' ? 'в Краснодаре' : '');
-    $search_param_city = $filter_city === 'novorossiysk' ? 'Новороссийск' : ($filter_city === 'krasnodar' ? 'Краснодар' : '');
+    $filter_price = isset($_GET['select_price']) ?  explode('-', $_GET['select_price']) : [];
+    $filter_area = isset($_GET['select_area']) ? explode('-', $_GET['select_area']) : [];
+
+    $filter_price_ot = isset($filter_price[0]) ? $filter_price[0] : '';
+    $filter_price_do = isset($filter_price[1]) ? $filter_price[1] : '';
+
+    $filter_area_ot = isset($filter_area[0]) ? $filter_area[0] : '';
+    $filter_area_do = isset($filter_area[1]) ? $filter_area[1] : '';
+
+    $filter_check_price = isset($_GET['check_price']) ? $_GET['check_price'] : '';
+
+    $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $search_param_city) ?? 1;
 
     $paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
     $args = array(
-      'post_type' => 'page', // Тип поста (может быть 'post', 'page', 'custom-post-type' и т.д.)
-      'posts_per_page' => 9, // Количество постов на странице (-1 для вывода всех постов)
-      'paged' => $paged,
-      'post_status' => 'publish',
+      'post_type'      => 'page', // Тип поста
+      'posts_per_page' => 9, // Количество постов на странице
+      'paged'          => $paged,
+      'post_status'    => 'publish',
+      'post_parent'    => $id_page, // Указываем родительскую категорию
       'meta_key'      => '_wp_page_template', // Мета-ключ для шаблона
       'meta_value'    => TEMPLATE_NAME::PAGE_GK, // Имя шаблона     
+      'meta_query'     => array(
+        'relation' => 'AND', // Указываем, что условия должны выполняться одновременно
+      ),
     );
+
+    // Добавляем условия для фильтрации по цене, если они заданы
+    if (!empty($filter_price_ot)) {
+      $args['meta_query'][] = array(
+        'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter', // Мета-ключ для минимальной цены
+        'value'   => $filter_price_ot,
+        'compare' => '>=', // Больше или равно
+        'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
+      );
+    }
+
+    if (!empty($filter_price_do)) {
+      $args['meta_query'][] = array(
+        'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter', // Мета-ключ для минимальной цены
+        'value'   => $filter_price_do,
+        'compare' => '<=', // Меньше или равно
+        'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
+      );
+    }
+
+    if (!empty($filter_area_ot)) {
+      $args['meta_query'][] = array(
+        'key'     => 'crb_gk_min_area',
+        'value'   => $filter_area_ot,
+        'compare' => '>=', // Больше или равно
+        'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
+      );
+    }
+
+    if (!empty($filter_area_do)) {
+      $args['meta_query'][] = array(
+        'key'     => 'crb_gk_max_area',
+        'value'   => $filter_area_do,
+        'compare' => '<=', // Меньше или равно
+        'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
+      );
+    }
 
     $query = new WP_Query($args);
     $total_posts = $query->found_posts;
@@ -148,37 +202,38 @@ get_header();
 
             wp_reset_postdata();
             ?>
-            <script>
-              function redirectToURL(url) {
-                window.location.href = url;
-              }
 
-              const buttonsOrder = document.querySelectorAll('.button--phone-order')
-
-              buttonsOrder.forEach((button) => {
-                button.addEventListener('click', showFullNumber)
-              })
-
-              function showFullNumber(event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                const phoneLink = event.currentTarget;
-                const phoneSpan = phoneLink.querySelector('span');
-                const numberText = phoneSpan.textContent;
-                const phoneNumber = phoneLink.href;
-                const formattedNumber = phoneNumber.replace(/^tel:\+(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/, '+$1 $2 $3-$4-$5');
-
-                if (numberText === formattedNumber) {
-                  window.location.href = phoneLink.href
-                } else {
-                  phoneSpan.textContent = formattedNumber;
-                }
-
-              }
-            </script>
 
         </div>
+        <script>
+          function redirectToURL(url) {
+            window.location.href = url;
+          }
+
+          const buttonsOrder = document.querySelectorAll('.button--phone-order')
+
+          buttonsOrder.forEach((button) => {
+            button.addEventListener('click', showFullNumber)
+          })
+
+          function showFullNumber(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const phoneLink = event.currentTarget;
+            const phoneSpan = phoneLink.querySelector('span');
+            const numberText = phoneSpan.textContent;
+            const phoneNumber = phoneLink.href;
+            const formattedNumber = phoneNumber.replace(/^tel:\+(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/, '+$1 $2 $3-$4-$5');
+
+            if (numberText === formattedNumber) {
+              window.location.href = phoneLink.href
+            } else {
+              phoneSpan.textContent = formattedNumber;
+            }
+
+          }
+        </script>
         <div class="catalog__questions">
           <?php get_template_part('template-page/components/questions'); ?>
         </div>

@@ -4,11 +4,25 @@ require_once get_template_directory() . '/inc/lib/search_id_category_by_name.php
 require_once get_template_directory() . '/inc/enums/categories_name.php';
 
 $filter_city = isset($_GET['city']) ? $_GET['city'] : '';
+$search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : '');
+
 $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : '';
+
 $filter_rooms = isset($_GET['rooms']) ? $_GET['rooms'] : '';
 $filter_rooms_array = isset($_GET['rooms']) ? explode(',', $_GET['rooms']) : [];
 
-$search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : '');
+$filter_price_array = isset($_GET['select_price']) ?  explode('-', $_GET['select_price']) : [];
+$filter_price = isset($_GET['select_price']) ?   $_GET['select_price'] : '';
+$filter_price_ot = isset($filter_price_array[0]) ? $filter_price_array[0] : '';
+$filter_price_do = isset($filter_price_array[1]) ? $filter_price_array[1] : '';
+
+$filter_check_price = isset($_GET['check_price']) ? $_GET['check_price'] : '';
+
+$filter_area_array = isset($_GET['select_area']) ? explode('-', $_GET['select_area']) : [];
+$filter_area = isset($_GET['select_area']) ? $_GET['select_area'] : '';
+$filter_area_ot = isset($filter_area_array[0]) ? $filter_area_array[0] : '';
+$filter_area_do = isset($filter_area_array[1]) ? $filter_area_array[1] : '';
+
 
 // $cities_parent_category_id  = search_id_category_by_name(CATEGORIES_NAME::CITIES);
 // $cities_names = !empty($cities_parent_category_id) ? get_names_children_categories($cities_parent_category_id) : [];
@@ -24,6 +38,8 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
 <form action="/wp-content/themes/realty/inc/lib/filter-new-building.php?>" class="filter-catalog__form form-filter-catalog" method="get">
   <div class="form-filter-catalog__list">
     <input hidden type="radio" name="type" value="novostrojki" data-name="Дома" id="" checked />
+    <input hidden type="text" name="select-price" value="<?php echo $filter_price ?>" id="" checked data-select-price />
+    <input hidden type="text" name="select-area" value="<?php echo $filter_area ?>" id="" checked data-select-area />
     <div class="label-option-radio-wrapper label label-city" id="filter-city" data-checked>
       <div class="option-radio">
         <span class="option-radio__label" data-checked-view data-default-value="Город"><?php echo !empty($search_param_city) ? $search_param_city : 'Город' ?></span>
@@ -35,14 +51,14 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
           <li>
             <label>
               <span>Новороссийск</span>
-              <input type="radio" name="option-radio-city" value="Новороссийск" data-name="Новороссийск" id="" <?php echo $filter_city === '2306' ? 'checked' : '' ?> />
+              <input type="radio" name="option-radio-city" value="Новороссийск" data-name="Новороссийск" id="" <?php echo $filter_city === '2306' ? 'checked' : '' ?> data-input-visible />
               <span></span>
             </label>
           </li>
           <li>
             <label>
               <span>Краснодар</span>
-              <input type="radio" name="option-radio-city" value="Краснодар" data-name="Краснодар" id="" <?php echo $filter_city === '2301' ? 'checked' : '' ?> />
+              <input type="radio" name="option-radio-city" value="Краснодар" data-name="Краснодар" id="" <?php echo $filter_city === '2301' ? 'checked' : '' ?> data-input-visible />
               <span></span>
             </label>
           </li>
@@ -59,14 +75,14 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
           <li>
             <label>
               <span>Квартиры</span>
-              <input type="radio" name="option-radio-type-build" value="Квартиры" data-name="Квартиры" id="" <?php echo $filter_type_build === 'Квартиры' ? 'checked' : '' ?> />
+              <input type="radio" name="option-radio-type-build" value="Квартиры" data-name="Квартиры" id="" <?php echo $filter_type_build === 'Квартиры' ? 'checked' : '' ?> data-input-visible />
               <span></span>
             </label>
           </li>
           <li>
             <label>
               <span>Дома</span>
-              <input type="radio" name="option-radio-type-build" value="Дома" data-name="Дома" id="" <?php echo $filter_type_build === 'Дома' ? 'checked' : '' ?> />
+              <input type="radio" name="option-radio-type-build" value="Дома" data-name="Дома" id="" <?php echo $filter_type_build === 'Дома' ? 'checked' : '' ?> data-input-visible />
               <span></span>
             </label>
           </li>
@@ -87,7 +103,7 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
               <li>
                 <label>
                   <span> <?php echo  $name ?></span>
-                  <input type="checkbox" name="option-checkbox-rooms[]" value="<?php echo  $name ?>" <?php echo in_array($name, $filter_rooms_array) ? 'checked' : '' ?>>
+                  <input type="checkbox" name="option-checkbox-rooms[]" value="<?php echo  $name ?>" <?php echo in_array($name, $filter_rooms_array) ? 'checked' : '' ?>data-input-visible>
                   <span></span>
                 </label>
               </li>
@@ -98,7 +114,7 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
     <?php } ?>
     <div class="label-option-radio-wrapper label label-area" id="filter-area" data-checked>
       <div class="option-checkbox">
-        <span class="option-checkbox__label" data-checked-view data-default-value="Площадь">Площадь</span>
+        <span class="option-checkbox__label" data-checked-view data-default-value="Площадь"><?php echo !empty($filter_area) ? $filter_area : 'Площадь' ?></span>
         <span data-arrow></span>
       </div>
       <div class="option-checkbox__select select-area" data-select>
@@ -106,10 +122,10 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
           <span class="select-area__title">Общая, м²</span>
           <div class="select-area__wrapper-label">
             <label>
-              <input type="number" name="option-select-area-from" placeholder="от" id="area-from" min="1" max="1000">
+              <input type="number" name="option-select-area-from" placeholder="от" id="area-from" min="1" data-input-visible value="<?php echo !empty($filter_area_ot) ? $filter_area_ot : ''  ?>">
             </label>
             <label>
-              <input type="number" name="option-select-area-to" placeholder="до" id="area-to" min="1" max="1000">
+              <input type="number" name="option-select-area-to" placeholder="до" id="area-to" min="1" data-input-visible value="<?php echo !empty($filter_area_do) ? $filter_area_do : ''  ?>">
             </label>
           </div>
         </div>
@@ -120,14 +136,14 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
     </div>
     <div class="label-option-checkbox-wrapper label label-price" id="filter-price" data-checked>
       <div class="option-checkbox">
-        <span class="option-checkbox__label" data-checked-view data-default-value="Цена">Цена</span>
+        <span class="option-checkbox__label" data-checked-view data-default-value="Цена"><?php echo !empty($filter_price) ? $filter_price : 'Цена'  ?> </span>
         <span data-arrow></span>
       </div>
       <div class="option-checkbox__select select-area" data-select>
         <div class="select-price__top">
           <div class="select-price__title">
             <label class="switch">
-              <input type="checkbox" id="check-price" checked>
+              <input type="checkbox" id="check-price" name="check-price" value="<?php echo $filter_check_price ?>" <?php echo $filter_check_price == 'on' ? 'checked' : '' ?> data-check-price>
               <span class="slider"></span>
             </label>
             <span id="all-area">За всю площадь</span>
@@ -135,11 +151,11 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
           </div>
           <div class="select-price__wrapper-label">
             <label>
-              <input type="number" name="option-select-price-from" placeholder="от" id="price-from" min="1" max="1000">
+              <input type="number" name="option-select-price-from" placeholder="от" id="price-from" min="1" data-input-visible value="<?php echo !empty($filter_price_ot) ? $filter_price_ot : ''  ?>">
               <span>₽</span>
             </label>
             <label>
-              <input type="number" name="option-select-price-to" placeholder="до" id="price-to" min="1" max="1000">
+              <input type="number" name="option-select-price-to" placeholder="до" id="price-to" min="1" data-input-visible value="<?php echo !empty($filter_price_do) ? $filter_price_do : ''  ?>">
               <span>₽</span>
             </label>
           </div>

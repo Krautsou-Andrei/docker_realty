@@ -51,3 +51,14 @@ function num_word($value, $words, $show = true)
 	}
 	return $out;
 }
+
+add_filter('intermediate_image_sizes', 'remove_default_image_sizes');
+
+function remove_default_image_sizes($sizes)
+{
+	// Удаляем стандартные размеры миниатюр
+	$sizes = array_diff($sizes, array('thumbnail', 'medium', 'large'));
+
+	return $sizes;
+}
+

@@ -24,6 +24,7 @@ function product_fields()
       Field::make('checkbox', 'product_more_content', 'Фильтр могут подойти')->set_option_value('yes')->set_width(33),
       Field::make('checkbox', 'product_type_aparts', 'Квартира или студия')->set_option_value('yes')->set_help_text('Если квартира является студией, поставить галочку')->set_width(33),
       Field::make('text', 'product-id', 'Индекс объявления')->set_help_text('12328600010')->set_width(50)->set_required(true),
+      Field::make('text', 'product-title', 'Заголовок')->set_help_text('Заголовок')->set_width(50)->set_required(true),
       Field::make('media_gallery', 'product-gallery', 'Галерея')->set_width(75),
       Field::make('textarea', 'product-description', 'Описание'),
     ])

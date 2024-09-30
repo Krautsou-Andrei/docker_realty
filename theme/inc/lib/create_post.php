@@ -82,7 +82,7 @@ function create_post($data)
         }
     } else {
         $post_id = wp_insert_post(array(
-            'post_title'   => $title,
+            'post_title'   => $title . ' ' . $product_id,
             'post_status'  => 'publish',
             'post_type'    => 'post',
             'post_category' => [
@@ -99,6 +99,7 @@ function create_post($data)
 
         if (!is_wp_error($post_id)) {
             carbon_set_post_meta($post_id, 'product-id', $product_id);
+            carbon_set_post_meta($post_id, 'product-title', $title);
             carbon_set_post_meta($post_id, 'product-gallery', [$attachment_id]);
             carbon_set_post_meta($post_id, 'product-price', $product_price);
             carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);

@@ -26,7 +26,7 @@ require_once get_template_directory() . '/inc/lib/get_cookies_favorites.php';
               <?php
 
               $product_id = carbon_get_post_meta(get_the_ID(), 'product-id');
-              $product_title = get_the_title(get_the_ID());
+              $product_title = carbon_get_post_meta(get_the_ID(), 'product-title');
               $product_gallery = carbon_get_post_meta(get_the_ID(), 'product-gallery');
               $product_label = carbon_get_post_meta(get_the_ID(), 'product-label');
               $product_price = carbon_get_post_meta(get_the_ID(), 'product-price');

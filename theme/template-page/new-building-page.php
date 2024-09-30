@@ -15,8 +15,8 @@ get_header();
   <div class="main-favorites">
     <?php $crb_new_building_title = carbon_get_post_meta(get_the_ID(), 'crb_new_building_title');
 
-    $filter_city = isset($_GET['city']) ? $_GET['city'] : '';
-    $search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : '');
+    $filter_city = isset($_GET['city']) ? $_GET['city'] : '2306';
+    $search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : 'Новороссийск');
     $title_city =  $filter_city === '2306' ? 'в Новороссийске' : ($filter_city === '2301' ? 'в Краснодаре' : '');
 
     $filter_price = isset($_GET['select_price']) ?  explode('-', $_GET['select_price']) : [];

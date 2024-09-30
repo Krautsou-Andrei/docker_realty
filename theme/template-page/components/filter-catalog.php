@@ -3,7 +3,10 @@ require_once get_template_directory() . '/inc/lib/get_names_children_categories.
 require_once get_template_directory() . '/inc/lib/search_id_category_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_name.php';
 
-$filter_city = isset($_GET['city']) ? $_GET['city'] : '';
+$filter_city = isset($_GET['city']) ? $_GET['city'] : '2306';
+
+
+
 $search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : '');
 
 $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : '';

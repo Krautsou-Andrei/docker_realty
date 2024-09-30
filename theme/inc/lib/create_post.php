@@ -73,7 +73,7 @@ function create_post($data)
     if ($existing_posts) {
         $post_id = $existing_posts[0]; // Получаем ID существующего поста
         if (!empty($product_block_id)) {
-            update_min_price_gk($product_block_id, $product_price_meter);
+            update_min_price_gk($product_block_id, $product_price_meter, $product_price, $product_area);
         }
     } else {
         $post_id = wp_insert_post(array(
@@ -114,14 +114,14 @@ function create_post($data)
             carbon_set_post_meta($post_id, 'product-agent-name', 'Арсен');
             carbon_set_post_meta($post_id, 'product-agent-photo', [$id_image_agent]);
 
-            update_min_price_gk($product_block_id, $product_price_meter);
+            update_min_price_gk($product_block_id, $product_price_meter, $product_price, $product_area);
         } else {
             // Вывод сообщения об ошибке
             echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
         }
     }
 }
-function update_min_price_gk($product_block_id, $product_price_meter)
+function update_min_price_gk($product_block_id, $product_price_meter, $product_price, $product_area)
 {
     if (!empty($product_block_id)) {
         $args_post = array(
@@ -139,9 +139,24 @@ function update_min_price_gk($product_block_id, $product_price_meter)
             $page = $pages[0];
 
             $min_price_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_price');
+            $min_price_gk_metr = carbon_get_post_meta($page->ID, 'crb_gk_min_price_meter');
 
-            if (empty($min_price_gk) || intval($min_price_gk) > intval($product_price_meter)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_min_price', $product_price_meter);
+            $min_area_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_area');
+            $max_area_gk = carbon_get_post_meta($page->ID, 'crb_gk_max_area');
+
+
+            if (empty($min_price_gk) || intval($min_price_gk) > intval($product_price)) {
+                carbon_set_post_meta($page->ID, 'crb_gk_min_price', $product_price);
+            }
+            if (empty($min_price_gk_metr) || intval($min_price_gk_metr) > intval($product_price_meter)) {
+                carbon_set_post_meta($page->ID, 'crb_gk_min_price_meter', $product_price_meter);
+            }
+
+            if (empty($min_area_gk) || intval($min_area_gk) > intval($product_area)) {
+                carbon_set_post_meta($page->ID, 'crb_gk_min_area', $product_area);
+            }
+            if (empty($max_area_gk) || intval($max_area_gk) < intval($product_area)) {
+                carbon_set_post_meta($page->ID, 'crb_gk_max_area', $product_area);
             }
         }
     }

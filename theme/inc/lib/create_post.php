@@ -154,7 +154,7 @@ function update_min_max_value_gk($product_block_id, $product_price_meter, $produ
             $max_area_gk = carbon_get_post_meta($page->ID, 'crb_gk_max_area');
 
             $min_rooms_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_rooms');
-            $max_rooms_gk = carbon_get_post_meta($page->ID, 'crb_gk_mam_rooms');
+            $max_rooms_gk = carbon_get_post_meta($page->ID, 'crb_gk_max_rooms');
 
             if (empty($min_price_gk) || intval($min_price_gk) > intval($product_price)) {
                 carbon_set_post_meta($page->ID, 'crb_gk_min_price', $product_price);
@@ -171,10 +171,10 @@ function update_min_max_value_gk($product_block_id, $product_price_meter, $produ
             }
 
             if (empty($min_rooms_gk) || intval($min_rooms_gk) > intval($product_rooms)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_min_rooms', $product_rooms);
+                carbon_set_post_meta($page->ID, 'crb_gk_min_rooms', intval($product_rooms));
             }
             if (empty($max_rooms_gk) || intval($max_rooms_gk) < intval($product_rooms)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_mam_rooms', $product_rooms);
+                carbon_set_post_meta($page->ID, 'crb_gk_max_rooms', intval($product_rooms));
             }
 
             if ($product_room_id == ROOMS_ID::STUDIO_0 || $product_room_id == ROOMS_ID::STUDIO) {

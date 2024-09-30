@@ -113,6 +113,8 @@ foreach ($items as $name => $item) {
         $data->product_rooms = $rooms_ids[$item->room] ?? 0;
         $data->product_room_id = $item->room ?? '';
         $data->product_area = $item->area_total ?? 0;
+        $data->product_area_kitchen = $item->area_kitchen ?? '';
+        $data->product_area_rooms_total = $item->area_rooms_total ?? '';
         $data->product_stage = $item->floor ?? '';
         $data->product_stages = $item->floors ?? '';
         $data->product_year_build = $item->building_deadline ?? '';
@@ -124,6 +126,8 @@ foreach ($items as $name => $item) {
         $data->product_finishing = $finishings_ids[$item->finishing] ?? '';
         $data->building_name = $item->building_name ?? '';
         $data->block_id = $item->block_id ?? '';
+        $data->product_apartament_number = $item->number ?? '';
+        $data->product_apartamens_wc = $item->wc_count ?? '';
 
         create_post($data);
     }

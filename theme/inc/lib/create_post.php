@@ -5,6 +5,7 @@ require_once get_template_directory() . '/inc/lib/create_title_post.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
+require_once get_template_directory() . '/inc/enums/rooms_id.php';
 
 function create_post($data)
 {
@@ -12,6 +13,8 @@ function create_post($data)
     $product_rooms = $data->product_rooms;
     $product_room_id = $data->product_room_id;
     $product_area = $data->product_area;
+    $product_area_kitchen = $data->product_area_kitchen;
+    $product_area_rooms_total = $data->product_area_rooms_total;
     $product_stage = $data->product_stage;
     $product_city = $data->product_city;
     $product_gk = $data->product_gk;
@@ -28,6 +31,8 @@ function create_post($data)
     $product_finishing = $data->product_finishing;
     $product_building_name = $data->building_name;
     $product_block_id = $data->block_id;
+    $product_apartament_number = $data->product_apartament_number;
+    $product_apartamens_wc = $data->product_apartamens_wc;
 
 
     $product_agent_url = 'https://2bishop.ru/files/avatars/agph_23286_5jpeg.jpg';
@@ -73,7 +78,7 @@ function create_post($data)
     if ($existing_posts) {
         $post_id = $existing_posts[0]; // Получаем ID существующего поста
         if (!empty($product_block_id)) {
-            update_min_price_gk($product_block_id, $product_price_meter, $product_price, $product_area);
+            update_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
         }
     } else {
         $post_id = wp_insert_post(array(
@@ -99,6 +104,8 @@ function create_post($data)
             carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);
             carbon_set_post_meta($post_id, 'product-rooms', intval($product_rooms) ? intval($product_rooms) : $product_rooms);
             carbon_set_post_meta($post_id, 'product-area',  $product_area);
+            carbon_set_post_meta($post_id, 'product-area-kitchen', $product_area_kitchen);
+            carbon_set_post_meta($post_id, 'product-area-total-rooms', $product_area_rooms_total);
             carbon_set_post_meta($post_id, 'product-stage', $product_stage);
             carbon_set_post_meta($post_id, 'product-stages', $product_stages);
             carbon_set_post_meta($post_id, 'product-year-build', $date_build);
@@ -109,19 +116,21 @@ function create_post($data)
             carbon_set_post_meta($post_id, 'product-latitude', $product_latitude);
             carbon_set_post_meta($post_id, 'product-longitude', $product_longitude);
             carbon_set_post_meta($post_id, 'product-builder-liter', $product_building_name);
+            carbon_set_post_meta($post_id, 'product-apartamens-number', $product_apartament_number);
+            carbon_set_post_meta($post_id, 'product-apartamens-wc', $product_apartamens_wc);
 
             carbon_set_post_meta($post_id, 'product-agent-phone', $product_agent_phone);
             carbon_set_post_meta($post_id, 'product-agent-name', 'Арсен');
             carbon_set_post_meta($post_id, 'product-agent-photo', [$id_image_agent]);
 
-            update_min_price_gk($product_block_id, $product_price_meter, $product_price, $product_area);
+            update_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
         } else {
             // Вывод сообщения об ошибке
             echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
         }
     }
 }
-function update_min_price_gk($product_block_id, $product_price_meter, $product_price, $product_area)
+function update_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id)
 {
     if (!empty($product_block_id)) {
         $args_post = array(
@@ -144,6 +153,8 @@ function update_min_price_gk($product_block_id, $product_price_meter, $product_p
             $min_area_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_area');
             $max_area_gk = carbon_get_post_meta($page->ID, 'crb_gk_max_area');
 
+            $min_rooms_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_rooms');
+            $max_rooms_gk = carbon_get_post_meta($page->ID, 'crb_gk_mam_rooms');
 
             if (empty($min_price_gk) || intval($min_price_gk) > intval($product_price)) {
                 carbon_set_post_meta($page->ID, 'crb_gk_min_price', $product_price);
@@ -157,6 +168,17 @@ function update_min_price_gk($product_block_id, $product_price_meter, $product_p
             }
             if (empty($max_area_gk) || intval($max_area_gk) < intval($product_area)) {
                 carbon_set_post_meta($page->ID, 'crb_gk_max_area', $product_area);
+            }
+
+            if (empty($min_rooms_gk) || intval($min_rooms_gk) > intval($product_rooms)) {
+                carbon_set_post_meta($page->ID, 'crb_gk_min_rooms', $product_rooms);
+            }
+            if (empty($max_rooms_gk) || intval($max_rooms_gk) < intval($product_rooms)) {
+                carbon_set_post_meta($page->ID, 'crb_gk_mam_rooms', $product_rooms);
+            }
+
+            if ($product_room_id == ROOMS_ID::STUDIO_0 || $product_room_id == ROOMS_ID::STUDIO) {
+                carbon_set_post_meta($page->ID, 'crb_gk_is_studio', 1);
             }
         }
     }

@@ -25,4 +25,12 @@ function update_fields_gk($post_id, $block, $name_city)
     carbon_set_post_meta($post_id, 'crb_gk_address', $block->address[0]);
     carbon_set_post_meta($post_id, 'crb_gk_latitude',  $block->geometry->coordinates[0]);
     carbon_set_post_meta($post_id, 'crb_gk_longitude', $block->geometry->coordinates[1]);
+
+    carbon_set_post_meta($post_id, 'crb_gk_min_price', '');
+    carbon_set_post_meta($post_id, 'crb_gk_min_price_meter', '');
+    carbon_set_post_meta($post_id, 'crb_gk_min_area', '');
+    carbon_set_post_meta($post_id, 'crb_gk_max_area', '');
+    carbon_set_post_meta($post_id, 'crb_gk_min_rooms', '');
+    carbon_set_post_meta($post_id, 'crb_gk_mam_rooms', '');
+    carbon_set_post_meta($post_id, 'crb_gk_is_studio', '');
 }

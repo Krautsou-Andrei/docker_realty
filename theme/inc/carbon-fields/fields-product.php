@@ -37,9 +37,15 @@ function product_fields()
       Field::make('text', 'product-mortgage', 'Ипотека')->set_help_text('1 - наличие, 0 - отсутсвие')->set_width(50),
       Field::make('text', 'product-label', 'Лейбл')->set_help_text('Только у нас и т.д.')->set_width(50),
       Field::make('text', 'product-rooms', 'Количество комнат')->set_help_text('Указать количество комнат')->set_width(50)->set_required(true),
+
+      Field::make('text', 'product-area-kitchen', 'Площадь кухни')->set_help_text('Указать площадь кухни')->set_width(50)->set_required(true),
+      Field::make('text', 'product-area-total-rooms', 'Жилая площадь')->set_help_text('Указать площадь жилую')->set_width(50)->set_required(true),
+
       Field::make('text', 'product-area', 'Площадь квартиры')->set_help_text('Указать площадь квартиры')->set_width(50)->set_required(true),
       Field::make('text', 'product-stage', 'Этаж')->set_help_text('Указать этаж, например 9')->set_width(50)->set_required(true),
       Field::make('text', 'product-stages', 'Всего этажей')->set_help_text('Указать этаж, например 16')->set_width(50)->set_required(true),
+      Field::make('text', 'product-apartamens-number', 'Номер квартиры')->set_help_text('Указать номер квартиры')->set_width(50)->set_required(true),
+      Field::make('text', 'product-apartamens-wc', 'Количество туалетов')->set_help_text('Указать количество туалетов')->set_width(50),
     ])
     ->add_tab('О доме', [
       Field::make('text', 'product-developer', 'Застройщик')->set_width(50),

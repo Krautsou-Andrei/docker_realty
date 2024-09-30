@@ -16,35 +16,35 @@
               <li>
                 <label>
                   <span>Квартиры</span>
-                  <input type="radio" name="type" value="kvartiry" data-name="Квартиры" data-value id="" checked />
+                  <input type="radio" name="type" value="kvartiry" data-name="Квартиры" data-value id="" checked data-input-visible/>
                   <span></span>
                 </label>
               </li>
               <li>
                 <label>
                   <span>Дома</span>
-                  <input type="radio" name="type" value="doma" data-name="Дома" id="" />
+                  <input type="radio" name="type" value="doma" data-name="Дома" id="" data-input-visible/>
                   <span></span>
                 </label>
               </li>
                <li>
                 <label>
                   <span>Новостройки</span>
-                  <input type="radio" name="type" value="novostrojki" data-name="Новостройки" id="" />
+                  <input type="radio" name="type" value="novostrojki" data-name="Новостройки" id="" data-input-visible/>
                   <span></span>
                 </label>
               </li>
                <li>
                 <label>
                   <span>Участки</span>
-                  <input type="radio" name="type" value="uchastki" data-name="Участки" id="" />
+                  <input type="radio" name="type" value="uchastki" data-name="Участки" id="" data-input-visible/>
                   <span></span>
                 </label>
               </li>
                <li>
                 <label>
                   <span>Коммерция</span>
-                  <input type="radio" name="type" value="kommercheskaya" data-name="Коммерция" id="" />
+                  <input type="radio" name="type" value="kommercheskaya" data-name="Коммерция" id="" data-input-visible/>
                   <span></span>
                 </label>
               </li>
@@ -59,11 +59,11 @@
         </div>
         <div class="option-radio__select" data-select>
           <ul>
-            <li><label><span>Студия</span><input type="radio" name="rooms" value="Студия" id=""><span></span></label></li>
-            <li><label><span>1-комн.</span><input type="radio" name="rooms" value="1-комн." id=""><span></span></label></li>
-            <li><label><span>2-комн.</span><input type="radio" name="rooms" value="2-комн." id=""><span></span></label></li>
-            <li><label><span>3-комн.</span><input type="radio" name="rooms" value="3-комн." id=""><span></span></label></li>
-            <li><label><span>4-комн.</span><input type="radio" name="rooms" value="4-комн." id=""><span></span></label></li>
+            <li><label><span>Студия</span><input type="radio" name="rooms" value="Студия" id="" data-input-visible><span></span></label></li>
+            <li><label><span>1-комн.</span><input type="radio" name="rooms" value="1-комн." id="" data-input-visible><span></span></label></li>
+            <li><label><span>2-комн.</span><input type="radio" name="rooms" value="2-комн." id="" data-input-visible><span></span></label></li>
+            <li><label><span>3-комн.</span><input type="radio" name="rooms" value="3-комн." id="" data-input-visible><span></span></label></li>
+            <li><label><span>4-комн.</span><input type="radio" name="rooms" value="4-комн." id="" data-input-visible><span></span></label></li>
           </ul>
         </div>
       </div>
@@ -78,21 +78,21 @@
             <li>
               <label>
                 <span>до 35</span>
-                <input type="radio" name="area" value="до 35" id="">
+                <input type="radio" name="area" value="до 35" id="" data-input-visible>
                 <span></span>
               </label>
             </li>
             <li>
               <label>
                 <span>35-55</span>
-                <input type="radio" name="area" value="35-55" id="">
+                <input type="radio" name="area" value="35-55" id="" data-input-visible>
                 <span></span>
               </label>
             </li>
             <li>
               <label>
                 <span>больше 55</span>
-                <input type="radio" name="area" value="больше 55" id="">
+                <input type="radio" name="area" value="больше 55" id="" data-input-visible>
                 <span></span>
               </label>
             </li>			
@@ -103,10 +103,10 @@
       <div class="label-price-wrapper label label-price">
         <label>
           <span>Цена</span>
-          <input type="text" name="price_from" placeholder="от">
+          <input type="text" name="price_from" placeholder="от" data-input-visible>
         </label><span>—</span>
         <label>
-          <input type="text" name="price_to" placeholder="до">
+          <input type="text" name="price_to" placeholder="до" data-input-visible>
           <span>₽</span>
         </label>
       </div>
@@ -120,14 +120,14 @@
               <li>
                 <label>
                   <span>Центральный</span>
-                  <input type="checkbox" name="option-checkbox-district" value="Центральный" id="" checked />
+                  <input type="checkbox" name="option-checkbox-district" value="Центральный" id="" checked data-input-visible />
                   <span></span>
                 </label>
               </li>
               <li>
                 <label>
                   <span>Приморский</span>
-                  <input type="checkbox" name="option-checkbox-district" value="Приморский" id="" />
+                  <input type="checkbox" name="option-checkbox-district" value="Приморский" id="" data-input-visible/>
                   <span></span>
                 </label>
               </li>
@@ -144,7 +144,7 @@
             </div>
             <div class="" data-select>
               <ul>
-                  <li><label><span>Новороссийск</span><input type="radio" name="city" value="Новороссийск" checked data-selected-city-get><span></span></label></li>
+                  <li><label><span>Новороссийск</span><input type="radio" name="city" value="Новороссийск" checked data-selected-city-get data-input-visible><span></span></label></li>
               </ul>
             </div>
         </div>

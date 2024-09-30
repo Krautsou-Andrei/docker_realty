@@ -79,13 +79,13 @@
 								<ul>
 									<li>
 										<label>
-											<input type="radio" name="option-radio-city" value="Новороссийск" id="" checked>
+											<input type="radio" name="option-radio-city" value="Новороссийск" id="" checked data-input-visible>
 											<span>Новороссийск</span>
 										</label>
 									</li>
 									<li>
 										<label>
-											<input type="radio" name="option-radio-city" value="Краснодар" id="">
+											<input type="radio" name="option-radio-city" value="Краснодар" id="" data-input-visible>
 											<span>Краснодар</span>
 										</label>
 									</li>

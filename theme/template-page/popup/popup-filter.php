@@ -10,11 +10,11 @@
           <div class="labels-wrapper">
             <div class="label-city-wrapper">
               <label>
-                <input type="radio" name="flter-mobile-catalog-city" value="Новороссийск" checked>
+                <input type="radio" name="flter-mobile-catalog-city" value="Новороссийск" checked data-input-visible>
                 <span>Новороссийск</span>
               </label>
               <label>
-                <input type="radio" name="flter-mobile-catalog-city" value="Краснодар">
+                <input type="radio" name="flter-mobile-catalog-city" value="Краснодар" data-input-visible>
                 <span>Краснодар</span>
               </label>
             </div>
@@ -29,14 +29,14 @@
                     <li>
                       <label>
                         <span>Квартиры</span>
-                        <input type="radio" name="option-radio-type-build" value="Квартиры" id="" checked>
+                        <input type="radio" name="option-radio-type-build" value="Квартиры" id="" checked data-input-visible>
                         <span></span>
                       </label>
                     </li>
                     <li>
                       <label>
                         <span>Дома</span>
-                        <input type="radio" name="option-radio-type-build" value="Дома" id="">
+                        <input type="radio" name="option-radio-type-build" value="Дома" id="" data-input-visible>
                         <span></span>
                       </label>
                     </li>
@@ -53,14 +53,14 @@
                     <li>
                       <label>
                         <span>1-комн.</span>
-                        <input type="checkbox" name="option-checkbox-rooms" value="1-комн." checked>
+                        <input type="checkbox" name="option-checkbox-rooms" value="1-комн." checked data-input-visible>
                         <span></span>
                       </label>
                     </li>
                     <li>
                       <label>
                         <span>2-комн.</span>
-                        <input type="checkbox" name="option-checkbox-rooms" value="2-комн." id="">
+                        <input type="checkbox" name="option-checkbox-rooms" value="2-комн." id="" data-input-visible>
                         <span></span>
                       </label>
                     </li>
@@ -79,14 +79,14 @@
                     <li>
                       <label>
                         <span>Центральный</span>
-                        <input type="checkbox" name="option-checkbox-district" value="Центральный" id="" checked>
+                        <input type="checkbox" name="option-checkbox-district" value="Центральный" id="" checked data-input-visible>
                         <span></span>
                       </label>
                     </li>
                     <li>
                       <label>
                         <span>Приморский</span>
-                        <input type="checkbox" name="option-checkbox-district" value="Приморский" id="">
+                        <input type="checkbox" name="option-checkbox-district" value="Приморский" id="" data-input-visible>
                         <span></span>
                       </label>
                     </li>
@@ -103,14 +103,14 @@
                     <li>
                       <label>
                         <span>18-35</span>
-                        <input type="radio" name="option-radio-area" value="18-35" id="" checked>
+                        <input type="radio" name="option-radio-area" value="18-35" id="" checked data-input-visible>
                         <span></span>
                       </label>
                     </li>
                     <li>
                       <label>
                         <span>35-55</span>
-                        <input type="radio" name="option-radio-area" value="35-55" id="">
+                        <input type="radio" name="option-radio-area" value="35-55" id="" data-input-visible>
                         <span></span>
                       </label>
                     </li>
@@ -121,10 +121,10 @@
             <div class="label-price-wrapper">
               <label>
                 <span>Цена</span>
-                <input type="text" placeholder="от">
+                <input type="text" placeholder="от" data-input-visible>
               </label><span>—</span>
               <label>
-                <input type="text" placeholder="до">
+                <input type="text" placeholder="до" data-input-visible>
                 <span>₽</span>
               </label>
             </div>

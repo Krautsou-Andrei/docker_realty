@@ -10,14 +10,14 @@
           <li>
             <label>
               <span>Новороссийск</span>
-              <input type="radio" name="option-radio-city" value="Новороссийск" id="" checked />
+              <input type="radio" name="option-radio-city" value="Новороссийск" id="" checked data-input-visible/>
               <span></span>
             </label>
           </li>
           <li>
             <label>
               <span>Краснодар</span>
-              <input type="radio" name="option-radio-city" value="Краснодар" id="" />
+              <input type="radio" name="option-radio-city" value="Краснодар" id="" data-input-visible/>
               <span></span>
             </label>
           </li>

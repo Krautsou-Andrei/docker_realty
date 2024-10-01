@@ -19,6 +19,8 @@ get_header();
     $search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : 'Новороссийск');
     $title_city =  $filter_city === '2306' ? 'в Новороссийске' : ($filter_city === '2301' ? 'в Краснодаре' : '');
 
+    $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : 'Квартиры';
+
     $filter_price = isset($_GET['select_price']) ?  explode('-', $_GET['select_price']) : [];
     $filter_area = isset($_GET['select_area']) ? explode('-', $_GET['select_area']) : [];
 
@@ -48,6 +50,14 @@ get_header();
     );
 
     // Добавляем условия для фильтрации по цене, если они заданы
+    if (!empty($filter_type_build)) {
+      $args['meta_query'][] = array(
+        'key'     => 'crb_gk_is_house',
+        'value'   => $filter_type_build == 'Квартиры' ? '' : 'yes',
+        'compare' => '=', // Меньше или равно
+      );
+    }
+
     if (!empty($filter_price_ot)) {
       $args['meta_query'][] = array(
         'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter', // Мета-ключ для минимальной цены
@@ -83,6 +93,7 @@ get_header();
         'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
       );
     }
+
 
     $query = new WP_Query($args);
     $total_posts = $query->found_posts;

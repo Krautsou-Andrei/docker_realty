@@ -9,7 +9,7 @@ $filter_city = isset($_GET['city']) ? $_GET['city'] : '2306';
 
 $search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : '');
 
-$filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : '';
+$filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : 'Квартиры';
 
 $filter_rooms = isset($_GET['rooms']) ? $_GET['rooms'] : '';
 $filter_rooms_array = isset($_GET['rooms']) ? explode(',', $_GET['rooms']) : [];

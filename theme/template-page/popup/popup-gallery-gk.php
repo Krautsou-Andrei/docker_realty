@@ -1,4 +1,6 @@
 <?php
+require_once get_template_directory() . '/inc/lib/get_image_url.php';
+
 $product_id = carbon_get_post_meta(get_the_ID(), 'crb_gk_id');
 $product_agent_phone = carbon_get_theme_option('crb_phone_link');
 $product_gallery = carbon_get_post_meta(get_the_ID(), 'crb_gk_gallery');
@@ -59,7 +61,7 @@ $format_phone_agent = '+' . substr($agent_phone, 0, 1) . ' ' . substr($agent_pho
                                     echo '
                         <li class="slider-preview__slide swiper-slide">
                         <div class="slide-wrapper">
-                        <img src="' . ($image_url[0] !== null ? $image_url[0] : $image_id) . '" alt="">
+                        <img src="' . get_image_url($image_url) . '" alt="">
                         </div>
                         </li>';
                                 }
@@ -78,7 +80,7 @@ $format_phone_agent = '+' . substr($agent_phone, 0, 1) . ' ' . substr($agent_pho
                                     $image_url = wp_get_attachment_image_src($image_id, 'full');
 
                                     echo '<li class="slider-popup-gallery__slide swiper-slide">
-                        <img src="' . ($image_url[0] !== null ? $image_url[0] : $image_id) . '" alt="" width="82" height="64">
+                        <img src="' . get_image_url($image_url) . '" alt="" width="82" height="64">
                       </li>';
                                 }
                                 ?>

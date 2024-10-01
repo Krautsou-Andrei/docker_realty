@@ -4,6 +4,7 @@ Template Name: Страница товара
 */
 
 require_once get_template_directory() . '/inc/lib/get_cookies_favorites.php';
+require_once get_template_directory() . '/inc/lib/get_image_url.php';
 ?>
 <div class="main-second-product">
   <?php
@@ -85,7 +86,7 @@ require_once get_template_directory() . '/inc/lib/get_cookies_favorites.php';
                       <?php
                       if (!empty($product_gallery[0])) {
                         $image_url = wp_get_attachment_image_src($product_gallery[0], 'full');
-                        echo ' <img class="product-image-wrapper__preview"  data-type="popup-gallery"  src="' . $image_url[0] . '" alt="" data-post-id="' . get_the_ID() . '"  >';
+                        echo ' <img class="product-image-wrapper__preview"  data-type="popup-gallery"  src="' . get_image_url($image_url) . '" alt="" data-post-id="' . get_the_ID() . '"  >';
                       }
                       ?>
                     </div>
@@ -96,9 +97,9 @@ require_once get_template_directory() . '/inc/lib/get_cookies_favorites.php';
                       if (!empty($product_gallery)) {
                         foreach ($product_gallery as $image_id) {
                           $image_url = wp_get_attachment_image_src($image_id, 'full');
-                          echo '  <div class="product-single-slider__slide swiper-slide" >
-                                    <img src="' . $image_url[0] . '" alt="" data-type="popup-gallery">
-                                  </div>';
+                          echo '<div class="product-single-slider__slide swiper-slide">
+                          <img src="' . get_image_url($image_url[0]) . '" alt="" data-type="popup-gallery">
+                        </div>';
                         }
                       }
                       ?>

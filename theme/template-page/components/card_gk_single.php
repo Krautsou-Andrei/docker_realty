@@ -1,20 +1,17 @@
 <?php
+$id_page_gk = get_the_ID();
 
+$crb_gk_name = carbon_get_post_meta($id_page_gk, 'crb_gk_name');
+$crb_gk_plan = carbon_get_post_meta($id_page_gk, 'crb_gk_plan');
+$crb_gk_gallery = carbon_get_post_meta($id_page_gk, 'crb_gk_gallery');
+$crb_gk_description =  carbon_get_post_meta($id_page_gk, 'crb_gk_description');
+$crb_gk_city =  carbon_get_post_meta($id_page_gk, 'crb_gk_city');
+$crb_gk_address = carbon_get_post_meta($id_page_gk, 'crb_gk_address');
+$crb_gk_latitude =   carbon_get_post_meta($id_page_gk, 'crb_gk_latitude');
+$crb_gk_longitude = carbon_get_post_meta($id_page_gk, 'crb_gk_longitude');
 
-$crb_gk_name = $args['crb_gk_name'];
-$crb_gk_plan = $args['crb_gk_plan'];
-$crb_gk_gallery = $args['crb_gk_gallery'];
-$crb_gk_description =  $args['crb_gk_description'];
-$crb_gk_city =  $args['crb_gk_city'];
-$crb_gk_address = $args['crb_gk_address'];
-$crb_gk_latitude =  $args['crb_gk_latitude'];
-$crb_gk_longitude = $args['crb_gk_longitude'];
-$update_page = $args['update_page'];
-$min_price = $args['min_price'];
-$min_price_meter = $args['min_price_meter'];
-$finishing = $args['finishing'];
-$literal = $args['literal'];
-$map_apartaments = $args['map_apartaments'];
+// $literal = $args['literal'];
+// $map_apartaments = $args['map_apartaments'];
 
 $image_preview_url = '';
 $image_preview_url_two = '';
@@ -30,24 +27,29 @@ if (!empty($crb_gk_gallery[2])) {
     $image_preview_url_three  = wp_get_attachment_image_src($crb_gk_gallery[2], 'full');
 }
 
-$all_finishing = implode(', ', $finishing);
+// $all_finishing = implode(', ', $finishing);
 
-$params_table = [
-    'literal' => $literal,
-    'map_apartaments' => $map_apartaments,
-    'crb_gk_plan' => $crb_gk_plan,
-];
+// $params_table = [
+//     'literal' => $literal,
+//     'map_apartaments' => $map_apartaments,
+//     'crb_gk_plan' => $crb_gk_plan,
+// ];
 
-$params_table_query = json_encode($params_table);
+// $params_table_query = json_encode($params_table);
 ?>
 
 <section class="single-gk-card">
-    <input hidden type="text" value="<?php echo htmlspecialchars($params_table_query); ?>" data-input-table-params />
+    <input hidden type="text" value="" data-input-table-params />
     <div class="single-gk-card__container">
         <div class="single-gk-card-wrapper">
             <div class="single-gk-card__info">
                 <div class="single-gk-card__title">
-                    <button class="button-back" type="button" aria-label="Назад"></button>
+                    <div class="single-gk-card__back-button button--back">
+                        <?php $referer = wp_get_referer() ?>
+                        <a class="" href="<?php echo esc_url($referer) ?>">
+                            <img src="<?php bloginfo('template_url'); ?>/assets/images/back.svg" alt="" />
+                        </a>
+                    </div>
                     <h1 class="title--xl title--catalog title--singe-page"><?php echo $crb_gk_name ?></h1>
                 </div>
                 <p class="single-gk-card__subtitle">
@@ -115,46 +117,13 @@ $params_table_query = json_encode($params_table);
                             <button class="show-more" type="button" data-more><span>Узнать больше</span></button>
                         </div>
                     </div>
-                    <div class="single-gk-card__order">
-                        <article class="agent-order" data-agent-order>
-                            <p class="agent-order__date">Информация обновлена <?php echo $update_page ?></p>
-                            <?php if (!empty($min_price)) { ?>
-                                <h2 class="agent-order__price title--xl title--product-agent">от <?php echo number_format(round(floatval($min_price)), 0, '.', ' ') ?> ₽</h2>
-                                <div class="agent-order__label">Хорошая цена!</div>
-                            <?php } ?>
-                            <div class="agent-order__info">
-                                <?php if (!empty($all_finishing)) { ?>
-                                    <div class="agent-order__price-one-metr agent-price-one-mert">
-                                        <span class="agent-conditions__title">Отделка</span>
-                                        <span class="agent-conditions__space"></span>
-                                        <span class="agent-conditions__price"><?php echo $all_finishing ?></span>
-                                    </div>
-                                <?php  } ?>
-                                <?php if (!empty($min_price_meter)) { ?>
-                                    <div class="agent-order__price-one-metr agent-price-one-mert">
-                                        <span class="agent-conditions__title">Цена за метр</span>
-                                        <span class="agent-conditions__space"></span>
-                                        <span class="agent-conditions__price">от <?php echo number_format(round(floatval($min_price_meter)), 0, '.', ' ') ?> ₽/м² </span>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                            <div class="button-wrapper">
-                                <div class="agent-order__button">
-                                    <a class="button button--phone-order" href="tel:+79104898888"><span> +7 910 489-88-...</span></a>
-                                    <button class="button--favorites-mobile" type="button" data-favorite-cookies="'64" data-button-favorite-mobile data-delete-favorite="1"><span></span></button>
-                                </div>
-                                <div class="agent-order__callback">
-                                    <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>
-                                </div>
-                            </div>
-                        </article>
-
-                    </div>
+                    <?php get_template_part('template-page/components/card_agent') ?>
+                </div>
+                <div data-loader class="loader">
+                    <img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" />
                 </div>
                 <div class="" data-container-table>
-
-                    <?php get_template_part('template-page/components/gk_table', null, $params_table) ?>
-
+                  
                 </div>
             </div>
         </div>

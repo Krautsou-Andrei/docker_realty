@@ -98,7 +98,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                         foreach ($product_gallery as $image_id) {
                           $image_url = wp_get_attachment_image_src($image_id, 'full');
                           echo '<div class="product-single-slider__slide swiper-slide">
-                          <img src="' . get_image_url($image_url[0]) . '" alt="" data-type="popup-gallery">
+                          <img src="' . get_image_url($image_url) . '" alt="" data-type="popup-gallery">
                         </div>';
                         }
                       }
@@ -112,7 +112,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                         <?php
                         if (!empty($product_gallery[1])) {
                           $image_url = wp_get_attachment_image_src($product_gallery[1], 'full');
-                          echo ' <img src="' . $image_url[0] . '" alt="" width="226" height="166" data-type="popup-gallery">';
+                          echo ' <img src="' . get_image_url($image_url) . '" alt="" width="226" height="166" data-type="popup-gallery">';
                         }
                         ?>
                       </div>
@@ -120,7 +120,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                         <?php
                         if (!empty($product_gallery[2])) {
                           $image_url = wp_get_attachment_image_src($product_gallery[2], 'full');
-                          echo ' <img src="' . $image_url[0] . '" alt="" width="226" height="166" data-type="popup-gallery">';
+                          echo ' <img src="' . get_image_url($image_url) . '" alt="" width="226" height="166" data-type="popup-gallery">';
                         }
                         ?>
                         <span data-type="popup-gallery"><?php echo count($product_gallery) ?></span>
@@ -136,7 +136,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
 
                     ?>
                         <div class="product-single-slide-gallery__slide swiper-slide">
-                          <img src="<?php echo $image_url[0] ?>" alt="" />
+                          <img src="<?php echo get_image_url($image_url) ?>" alt="" />
                         </div>
                     <? }
                     } ?>

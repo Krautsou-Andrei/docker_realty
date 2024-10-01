@@ -103,35 +103,32 @@ function get_card_gk_single()
         krsort($map_apartaments[$liter]['floors']);
     }
 
-    $params_page_gk = [
-        'crb_gk_name' => carbon_get_post_meta($id_page_gk, 'crb_gk_name'),
+    $params_table = [
+        'literal' => $literal,
+        'map_apartaments' => $map_apartaments,
         'crb_gk_plan' => carbon_get_post_meta($id_page_gk, 'crb_gk_plan'),
-        'crb_gk_gallery' => carbon_get_post_meta($id_page_gk, 'crb_gk_gallery'),
-        'crb_gk_description' =>  carbon_get_post_meta($id_page_gk, 'crb_gk_description'),
-        'crb_gk_city' =>  carbon_get_post_meta($id_page_gk, 'crb_gk_city'),
-        'crb_gk_address' => carbon_get_post_meta($id_page_gk, 'crb_gk_address'),
-        'crb_gk_latitude' =>  carbon_get_post_meta($id_page_gk, 'crb_gk_latitude'),
-        'crb_gk_longitude' =>  carbon_get_post_meta($id_page_gk, 'crb_gk_longitude'),
+    ];
+
+    $params_agent_info = [
         'update_page' => get_the_modified_date('d-m-Y', $id_page_gk),
         'min_price' => $price_all ? min($price_all) : '',
         'min_price_meter' => $price_meter_all ? min($price_meter_all) : '',
         'finishing' => $finishing,
-        'literal' => $literal,
-        'map_apartaments' => $map_apartaments,
     ];
 
-
-
     ob_start();
-
-    get_template_part('template-page/components/card_gk_single', null, $params_page_gk);
-
+    get_template_part('template-page/components/gk_table', null, $params_table);
     $page_gk = ob_get_clean();
 
+    ob_start();
+    get_template_part('template-page/blocks/card_agent_info', null, $params_agent_info);
+    $agent_info = ob_get_clean();
     wp_reset_postdata();
 
     $response = array(
         'pageGk' => $page_gk,
+        'agentInfo' => $agent_info,
+        'paramsTable' => json_encode($params_table),
     );
 
     wp_send_json($response);

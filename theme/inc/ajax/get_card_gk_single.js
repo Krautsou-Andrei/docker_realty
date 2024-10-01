@@ -1,6 +1,15 @@
 jQuery(document).ready(function ($) {
-  const loader = $("[data-loader]");
-  const content = $("#content-container-page-gk");
+  const SELECTORS = {
+    CONTAINER_CARD_AGENT: "[data-container-card-agent-info]",
+    CONTAINER_TABLE: "[data-container-table]",
+    INPUT_TABLE_PARAMS: "[data-input-table-params]",
+    LOADER: "[data-loader]",
+  };
+
+  const loader = $(SELECTORS.LOADER);
+  const content = $(SELECTORS.CONTAINER_TABLE);
+  const contentAgentInfo = $(SELECTORS.CONTAINER_CARD_AGENT);
+  const inputTableParams = $(SELECTORS.INPUT_TABLE_PARAMS);
 
   $.ajax({
     url: ajax_object.ajaxurl,
@@ -12,10 +21,15 @@ jQuery(document).ready(function ($) {
     },
     success: function (response) {
       loader.hide();
+      if (response.paramsTable) {
+        inputTableParams.val(response.paramsTable);
+      }
+
+      if (response.agentInfo) {
+        contentAgentInfo.html(response.agentInfo);
+      }
       if (response.pageGk) {
         content.html(response.pageGk);
-        updateMainScript();
-        initializeFormFilter();
       } else {
         content.html("Ничего не найдено");
       }
@@ -23,6 +37,10 @@ jQuery(document).ready(function ($) {
     error: function (xhr, status, error) {
       loader.hide();
       console.error(error);
+    },
+    complete: function () {
+      updateMainScript();
+      initializeFormFilter();
     },
   });
 

@@ -24,7 +24,6 @@ wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
   <div class="main-favorites">
     <?php $crb_new_building_title = carbon_get_post_meta(get_the_ID(), 'crb_new_building_title');
 
-
     $filter_city = explode('/', $_SERVER['REQUEST_URI'])[2];
     $countSale = 6;
 
@@ -56,46 +55,11 @@ wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
               <h1 class="favorites__title title--xl title--catalog">
                 <?php echo $crb_new_building_title . ' ' . $title_city; ?>
               </h1>
-              <!-- <p class="favorites__subtitle">Найдено <?php echo num_word($total_posts, DEFAULT_ENUM::RESIDENTAL_COMPLEX) ?></p> -->
             </div>
           </div>
-          <div data-loader class="loader">
-            <img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" />
+          <div class="favorites-wrapper">
+            <?php get_template_part('template-page/components/card_gk_single', null, $params_page_gk); ?>
           </div>
-          <div id='content-container-page-gk' class="favorites-wrapper">
-
-
-
-          </div>
-          <script>
-            function redirectToURL(url) {
-              window.location.href = url;
-            }
-
-            const buttonsOrder = document.querySelectorAll('.button--phone-order')
-
-            buttonsOrder.forEach((button) => {
-              button.addEventListener('click', showFullNumber)
-            })
-
-            function showFullNumber(event) {
-              event.preventDefault();
-              event.stopPropagation();
-
-              const phoneLink = event.currentTarget;
-              const phoneSpan = phoneLink.querySelector('span');
-              const numberText = phoneSpan.textContent;
-              const phoneNumber = phoneLink.href;
-              const formattedNumber = phoneNumber.replace(/^tel:\+(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/, '+$1 $2 $3-$4-$5');
-
-              if (numberText === formattedNumber) {
-                window.location.href = phoneLink.href
-              } else {
-                phoneSpan.textContent = formattedNumber;
-              }
-
-            }
-          </script>
         </div>
         <div class="catalog__questions">
           <?php get_template_part('template-page/components/questions'); ?>

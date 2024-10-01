@@ -191,6 +191,9 @@ function update_min_max_value_gk($product_block_id, $product_price_meter, $produ
             if ($product_room_id == ROOMS_ID::STUDIO_0 || $product_room_id == ROOMS_ID::STUDIO) {
                 carbon_set_post_meta($page->ID, 'crb_gk_is_studio', 'yes');
             }
+            if ($product_room_id == ROOMS_ID::COTTADGE || $product_room_id == ROOMS_ID::TON_HOUSE) {
+                carbon_set_post_meta($page->ID, 'crb_gk_is_house', 'yes');
+            }
         }
     }
 }

@@ -33,4 +33,5 @@ function update_fields_gk($post_id, $block, $name_city)
     carbon_set_post_meta($post_id, 'crb_gk_min_rooms', '');
     carbon_set_post_meta($post_id, 'crb_gk_mam_rooms', '');
     carbon_set_post_meta($post_id, 'crb_gk_is_studio', '');
+    carbon_set_post_meta($post_id, 'crb_gk_is_house', '');
 }

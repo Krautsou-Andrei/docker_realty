@@ -20,7 +20,7 @@ function update_fields_gk($post_id, $block, $name_city)
     carbon_set_post_meta($post_id, 'crb_gk_name', $block->name);
     carbon_set_post_meta($post_id, 'crb_gk_plan', $ids_gallery_plan);
     carbon_set_post_meta($post_id, 'crb_gk_gallery', $ids_gallery);
-    carbon_set_post_meta($post_id, 'crb_gk_description', $block->description,);
+    carbon_set_post_meta($post_id, 'crb_gk_description', preg_replace('/<p.*?>(.*?)<\/p>/', '$1</br>', $block->description));
     carbon_set_post_meta($post_id, 'crb_gk_city', $name_city);
     carbon_set_post_meta($post_id, 'crb_gk_address', $block->address[0]);
     carbon_set_post_meta($post_id, 'crb_gk_latitude',  $block->geometry->coordinates[0]);

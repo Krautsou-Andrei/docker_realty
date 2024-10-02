@@ -13,11 +13,34 @@ function create_page($parent_id, $page, $template, $city_name)
 
     create_category($page_title, $page_slug, CATEGORIES_ID::GK);
 
+    $value_exists = false;
+
+    $crb_gk_city = carbon_get_post_meta($parent_id, 'crb_gk');
+
+    foreach ($crb_gk_city as $gk) {
+        if ($gk['crb_gk_name_sity'] === $page_title) {
+            $value_exists = true;
+            break;
+        }
+    }
+
+    if (!$value_exists) {
+        $new_value = array(
+            'crb_gk_name_sity' => $page_title,
+        );
+        $crb_gk_city[] = $new_value;
+        carbon_set_post_meta($parent_id, 'crb_gk', $crb_gk_city);
+    }
+
     // Проверка, существует ли страница с таким же слагом
     if ($page_enabled_id) {
         update_fields_gk($page_enabled_id, $page, $city_name);
         return;
     }
+
+
+
+
 
     // Создание массива данных для новой страницы
     $page_data = array(

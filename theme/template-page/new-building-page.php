@@ -7,6 +7,9 @@ require_once get_template_directory() . '/inc/enums/default_enum.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
+require_once get_template_directory() . '/inc/lib/sort_gk.php';
+require_once get_template_directory() . '/inc/maps/map_cities.php';
+require_once get_template_directory() . '/inc/maps/map_title_by_cities.php';
 
 get_header();
 
@@ -16,13 +19,15 @@ get_header();
     <?php $crb_new_building_title = carbon_get_post_meta(get_the_ID(), 'crb_new_building_title');
 
     $filter_city = isset($_GET['city']) ? $_GET['city'] : '2306';
-    $search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : 'Новороссийск');
-    $title_city =  $filter_city === '2306' ? 'в Новороссийске' : ($filter_city === '2301' ? 'в Краснодаре' : '');
+
+    $search_param_city = isset($MAP_CITIES[$filter_city]) ? $MAP_CITIES[$filter_city] : 'Новороссийск';
+    $title_city =  isset($MAP_TITLE_BY_CITIES[$filter_city]) ? $MAP_TITLE_BY_CITIES[$filter_city] : 'в Краснодаре';
 
     $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : 'Квартиры';
 
     $filter_price = isset($_GET['select_price']) ?  explode('-', $_GET['select_price']) : [];
     $filter_area = isset($_GET['select_area']) ? explode('-', $_GET['select_area']) : [];
+
 
     $filter_price_ot = isset($filter_price[0]) ? $filter_price[0] : '';
     $filter_price_do = isset($filter_price[1]) ? $filter_price[1] : '';
@@ -36,6 +41,8 @@ get_header();
 
     $paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
+    $page_ids = sort_gk($search_param_city);
+
     $args = array(
       'post_type'      => 'page', // Тип поста
       'posts_per_page' => 9, // Количество постов на странице
@@ -43,14 +50,16 @@ get_header();
       'post_status'    => 'publish',
       'post_parent'    => $id_page, // Указываем родительскую категорию
       'meta_key'      => '_wp_page_template', // Мета-ключ для шаблона
-      'meta_value'    => TEMPLATE_NAME::PAGE_GK, // Имя шаблона     
+      'meta_value'    => TEMPLATE_NAME::PAGE_GK, // Имя шаблона   
+      'post__in'       => $page_ids, // Фильтруем по ID страниц
+      'orderby'        => 'post__in', // Сохраняем порядок из массива
       'meta_query'     => array(
         'relation' => 'AND', // Указываем, что условия должны выполняться одновременно
       ),
     );
 
     // Добавляем условия для фильтрации по цене, если они заданы
-    if (!empty($filter_type_build)) {
+    if ($filter_type_build !== '') {
       $args['meta_query'][] = array(
         'key'     => 'crb_gk_is_house',
         'value'   => $filter_type_build == 'Квартиры' ? '' : 'yes',
@@ -58,7 +67,8 @@ get_header();
       );
     }
 
-    if (!empty($filter_price_ot)) {
+    if ($filter_price_ot !== '') {
+
       $args['meta_query'][] = array(
         'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter', // Мета-ключ для минимальной цены
         'value'   => $filter_price_ot,
@@ -67,7 +77,7 @@ get_header();
       );
     }
 
-    if (!empty($filter_price_do)) {
+    if ($filter_price_do !== '') {
       $args['meta_query'][] = array(
         'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter', // Мета-ключ для минимальной цены
         'value'   => $filter_price_do,
@@ -76,7 +86,7 @@ get_header();
       );
     }
 
-    if (!empty($filter_area_ot)) {
+    if ($filter_area_ot !== '') {
       $args['meta_query'][] = array(
         'key'     => 'crb_gk_min_area',
         'value'   => $filter_area_ot,
@@ -85,7 +95,7 @@ get_header();
       );
     }
 
-    if (!empty($filter_area_do)) {
+    if ($filter_area_do !== '') {
       $args['meta_query'][] = array(
         'key'     => 'crb_gk_max_area',
         'value'   => $filter_area_do,

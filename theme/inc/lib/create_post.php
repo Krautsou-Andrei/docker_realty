@@ -82,6 +82,13 @@ function create_post($data)
         carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);
         carbon_set_post_meta($post_id, 'product-year-build', $date_build);
         carbon_set_post_meta($post_id, 'product-finishing', $product_finishing);
+        carbon_set_post_meta($post_id, 'product-area-kitchen', $product_area_kitchen);
+        carbon_set_post_meta($post_id, 'product-area-total-rooms', $product_area_rooms_total);
+        carbon_set_post_meta($post_id, 'product-latitude', $product_latitude);
+        carbon_set_post_meta($post_id, 'product-longitude', $product_longitude);
+        carbon_set_post_meta($post_id, 'product-builder-liter', $product_building_name);
+        carbon_set_post_meta($post_id, 'product-apartamens-number', $product_apartament_number);
+        carbon_set_post_meta($post_id, 'product-apartamens-wc', $product_apartamens_wc);
         $updated_post = array(
             'ID'         => $post_id,
             'post_title' => $title . ' ' . $product_id,

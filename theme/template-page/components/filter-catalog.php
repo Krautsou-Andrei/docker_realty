@@ -2,12 +2,11 @@
 require_once get_template_directory() . '/inc/lib/get_names_children_categories.php';
 require_once get_template_directory() . '/inc/lib/search_id_category_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_name.php';
+require_once get_template_directory() . '/inc/maps/map_cities.php';
 
 $filter_city = isset($_GET['city']) ? $_GET['city'] : '2306';
 
-
-
-$search_param_city = $filter_city === '2306' ? 'Новороссийск' : ($filter_city === '2301' ? 'Краснодар' : '');
+$search_param_city = isset($MAP_CITIES[$filter_city]) ? $MAP_CITIES[$filter_city] : 'Новороссийск';
 
 $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : 'Квартиры';
 
@@ -125,7 +124,7 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
           <span class="select-area__title">Общая, м²</span>
           <div class="select-area__wrapper-label">
             <label>
-              <input type="number" name="option-select-area-from" placeholder="от" id="area-from" min="1" data-input-visible value="<?php echo !empty($filter_area_ot) ? $filter_area_ot : ''  ?>">
+              <input type="number" name="option-select-area-from" placeholder="от" id="area-from" min="0" data-input-visible value="<?php echo !empty($filter_area_ot) ? $filter_area_ot : ''  ?>">
             </label>
             <label>
               <input type="number" name="option-select-area-to" placeholder="до" id="area-to" min="1" data-input-visible value="<?php echo !empty($filter_area_do) ? $filter_area_do : ''  ?>">
@@ -154,7 +153,7 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
           </div>
           <div class="select-price__wrapper-label">
             <label>
-              <input type="number" name="option-select-price-from" placeholder="от" id="price-from" min="1" data-input-visible value="<?php echo !empty($filter_price_ot) ? $filter_price_ot : ''  ?>">
+              <input type="number" name="option-select-price-from" placeholder="от" id="price-from" min="0" data-input-visible value="<?php echo !empty($filter_price_ot) ? $filter_price_ot : ''  ?>">
               <span>₽</span>
             </label>
             <label>

@@ -35,6 +35,7 @@ services:
       - "./.srv/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
       - "./mlsfiles/:/var/www/html/wp-content/mlsfiles"
       - "./map/:/var/www/html/map"
+      - "./assets/:/var/www/html/assets"
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     depends_on:

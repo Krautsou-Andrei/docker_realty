@@ -10,9 +10,6 @@ $crb_gk_address = carbon_get_post_meta($id_page_gk, 'crb_gk_address');
 $crb_gk_latitude =   carbon_get_post_meta($id_page_gk, 'crb_gk_latitude');
 $crb_gk_longitude = carbon_get_post_meta($id_page_gk, 'crb_gk_longitude');
 
-// $literal = $args['literal'];
-// $map_apartaments = $args['map_apartaments'];
-
 $image_preview_url = '';
 $image_preview_url_two = '';
 $image_preview_url_three = '';
@@ -27,15 +24,6 @@ if (!empty($crb_gk_gallery[2])) {
     $image_preview_url_three  = wp_get_attachment_image_src($crb_gk_gallery[2], 'full');
 }
 
-// $all_finishing = implode(', ', $finishing);
-
-// $params_table = [
-//     'literal' => $literal,
-//     'map_apartaments' => $map_apartaments,
-//     'crb_gk_plan' => $crb_gk_plan,
-// ];
-
-// $params_table_query = json_encode($params_table);
 ?>
 
 <section class="single-gk-card">

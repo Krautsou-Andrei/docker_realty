@@ -70,6 +70,12 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
 
               $is_favorite = in_array(get_the_ID(), $post_ids_favorites);
 
+              $params_map = [
+                'city' => $product_city,
+                'coordinates' => [$product_latitude, $product_longitude],
+                'coordinates_center' => [$product_latitude, $product_longitude],
+              ];
+
               ?>
               <?php $referer = wp_get_referer() ?>
               <a class="button-back" href="<?php echo esc_url($referer) ?>" aria-label="Назад"></a>
@@ -314,15 +320,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                     </div>
                   </section>
                 </div>
-                <div id="single-map" class="product__map">
-                  <div class="single-page-map-title"><?php echo $product_city . (!empty($product_sub_locality) ? ", " . $product_sub_locality : '') .  (!empty($product_street) ? ", " . $product_street : ''); ?></div>
-                  <div class="map-wrapper">
-                    <?php
-                    $shortcode = '[yamap center="' .  $product_latitude . ', ' .  $product_longitude . '" height="100%" controls="zoomControl" zoom="17" type="yandex#map" scrollzoom="0" mobiledrag="0"][yaplacemark coord="' .  $product_latitude . ', ' .  $product_longitude . '" icon="islands#redDotIcon" color="#ff751f"][/yamap]';
-                    echo do_shortcode($shortcode);
-                    ?>
-                  </div>
-                </div>
+                <?php get_template_part('template-page/blocks/yandex_map', null, $params_map) ?>
               </div>
               <div class="single-page__order">
                 <article class="agent-order" data-agent-order>

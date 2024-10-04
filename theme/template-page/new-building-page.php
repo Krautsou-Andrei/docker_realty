@@ -58,6 +58,12 @@ get_header();
       ),
     );
 
+    $args['meta_query'][] = [
+      'key'     => 'crb_gk_is_not_view',
+      'value'   => '',
+      'compare' => '='
+    ];
+
     // Добавляем условия для фильтрации по цене, если они заданы
     if ($filter_type_build !== '') {
       $args['meta_query'][] = array(
@@ -104,7 +110,6 @@ get_header();
       );
     }
 
-
     $query = new WP_Query($args);
     $total_posts = $query->found_posts;
     $locations = [];
@@ -128,7 +133,7 @@ get_header();
 
     $params_map = [
       'city' => $search_param_city,
-      'coordinates_center' =>isset($locations[0]) ? $locations[0]['coordinates'] : [],
+      'coordinates_center' => isset($locations[0]) ? $locations[0]['coordinates'] : [],
       'locations' => $locations,
       'title' => 'Новостройки в Новороссийске',
 
@@ -169,7 +174,7 @@ get_header();
     <div class="main-favorites__cards-preview">
       <section class="catalog-gk">
         <div class="catalog-gk__container">
-          <div class="favorites__title-wrapper">            
+          <div class="favorites__title-wrapper">
             <div class="title-wrapper">
               <h1 class="catalog-gk__title title--xl title--catalog">
                 <?php echo $crb_new_building_title . ' ' . $title_city; ?>
@@ -244,9 +249,11 @@ get_header();
             ?>
 
 
-            <div class="single-page catalog-gk__map">
-              <?php get_template_part('template-page/blocks/yandex_map', null, $params_map); ?>
-            </div>
+            <?php if ($total_posts !== 0) { ?>
+              <div class="single-page catalog-gk__map">
+                <?php get_template_part('template-page/blocks/yandex_map', null, $params_map); ?>
+              </div>
+            <?php } ?>
         </div>
         <script>
           function redirectToURL(url) {

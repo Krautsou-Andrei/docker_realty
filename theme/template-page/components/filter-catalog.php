@@ -132,6 +132,9 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
           </div>
         </div>
         <div class="select-area__button">
+          <button class="button" type="button" data-button-reset><span>Сбросить</span></button>
+        </div>
+        <div class="select-area__button">
           <button class="button" type="button" data-button-success><span>Применить</span></button>
         </div>
       </div>
@@ -161,6 +164,9 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
               <span>₽</span>
             </label>
           </div>
+        </div>
+        <div class="select-price__button">
+          <button class="button" type="button" data-button-reset><span>Сбросить</span></button>
         </div>
         <div class="select-price__button">
           <button class="button" type="button" data-button-success><span>Применить</span></button>

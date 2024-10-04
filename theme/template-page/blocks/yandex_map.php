@@ -1,10 +1,9 @@
 <?php
-$city = isset($args['city']) ? json_encode($args['city']) : 'Новороссийск';
+$city = isset($args['city']) ? json_encode($args['city']) : json_encode('Новороссийск');
 $coordinates = isset($args['coordinates']) ? (json_encode($args['coordinates'])) : '[]';
 $coordinates_center = isset($args['coordinates_center']) ? (json_encode($args['coordinates_center'])) : '[]';
 $title = isset($args['title']) ? $args['title'] : '';
-
-
+$locations = isset($args['locations']) ? json_encode($args['locations']) : json_encode('[]');
 
 ?>
 
@@ -49,18 +48,42 @@ $title = isset($args['title']) ? $args['title'] : '';
                     gridSize: 32,
                     clusterDisableClickZoom: false,
                 });
+            const coordinates = <?php echo $coordinates ?>;
 
-            var myPlacemark = new ymaps.Placemark(<?php echo $coordinates ?>, {
-                balloonContent: ""
-            }, {
-                iconLayout: "default#imageWithContent",
-                iconImageHref: "/wp-content/themes/realty/assets/images/yamap/ico_adres.svg",
-                iconImageSize: [26, 30],
-                iconImageOffset: [-13, -30],
-                balloonOffset: [17, 0],
-                balloonPanelMaxMapArea: 0,
-                hideIconOnBalloonOpen: false
-            });
+            if (coordinates.length > 0) {
+                var myPlacemark = new ymaps.Placemark(coordinates, {
+                    balloonContent: ""
+                }, {
+                    iconLayout: "default#imageWithContent",
+                    iconImageHref: "/wp-content/themes/realty/assets/images/yamap/ico_adres.svg",
+                    iconImageSize: [26, 30],
+                    iconImageOffset: [-13, -30],
+                    balloonOffset: [17, 0],
+                    balloonPanelMaxMapArea: 0,
+                    hideIconOnBalloonOpen: false
+                });
+
+                myMap.geoObjects.add(myPlacemark);
+            } else {
+                var locations = <?php echo $locations; ?>;
+
+                locations.forEach(function(location) {
+                    var myPlacemarkCustom = new ymaps.Placemark(location.coordinates, {
+                        balloonContent: location.balloonContent
+                    }, {
+                        iconLayout: "default#imageWithContent",
+                        iconImageHref: "/wp-content/themes/realty/assets/images/yamap/ico_adres.svg",
+                        iconImageSize: [26, 30],
+                        iconImageOffset: [-13, -30],
+                        balloonOffset: [17, 0],
+                        balloonPanelMaxMapArea: 0,
+                        hideIconOnBalloonOpen: false
+                    });
+
+                    myMap.geoObjects.add(myPlacemarkCustom);
+                });
+
+            }
 
             objectManager.objects.options.set("iconLayout", "default#imageWithContent");
             objectManager.objects.options.set("iconImageSize", [20, 20]);
@@ -71,7 +94,6 @@ $title = isset($args['title']) ? $args['title'] : '';
             objectManager.clusters.options.set("iconColor', '#4C4DA2");
 
             myMap.geoObjects.add(objectManager);
-            myMap.geoObjects.add(myPlacemark);
 
             jQuery(document).ready(function($) {
                 function handleCheckboxChange() {

@@ -71,7 +71,7 @@ get_header();
 
       $args['meta_query'][] = array(
         'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter', // Мета-ключ для минимальной цены
-        'value'   => $filter_price_ot,
+        'value'   => $filter_price_ot == 0 ? 1 : $filter_price_ot,
         'compare' => '>=', // Больше или равно
         'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
       );
@@ -89,7 +89,7 @@ get_header();
     if ($filter_area_ot !== '') {
       $args['meta_query'][] = array(
         'key'     => 'crb_gk_min_area',
-        'value'   => $filter_area_ot,
+        'value'   => $filter_area_ot == 0 ? 1 : $filter_area_ot,
         'compare' => '>=', // Больше или равно
         'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
       );
@@ -107,8 +107,33 @@ get_header();
 
     $query = new WP_Query($args);
     $total_posts = $query->found_posts;
+    $locations = [];
 
-    // $desiredValue = $parts[2];
+
+    if ($query->have_posts()) {
+
+      while ($query->have_posts()) {
+        $query->the_post();
+        $id_post = get_the_ID();
+        $title = get_the_title();
+        $crb_gk_latitude = carbon_get_post_meta($id_post, 'crb_gk_latitude');
+        $crb_gk_longitude = carbon_get_post_meta($id_post, 'crb_gk_longitude');
+
+        $locations[] = ['coordinates' => [$crb_gk_longitude, $crb_gk_latitude], 'balloonContent' => $title];;
+      }
+
+
+      wp_reset_postdata();
+    }
+
+    $params_map = [
+      'city' => $search_param_city,
+      'coordinates_center' =>isset($locations[0]) ? $locations[0]['coordinates'] : [],
+      'locations' => $locations,
+      'title' => 'Новостройки в Новороссийске',
+
+    ];
+
     if (function_exists('yoast_breadcrumb')) {
       yoast_breadcrumb('<div class="main-favorites__breadcrumbs">
                           <section class="breadcrumbs">
@@ -144,13 +169,7 @@ get_header();
     <div class="main-favorites__cards-preview">
       <section class="catalog-gk">
         <div class="catalog-gk__container">
-          <div class="favorites__title-wrapper">
-            <div class="favorites__back-button">
-              <?php $referer = wp_get_referer() ?>
-              <a class="" href="<?php echo esc_url($referer) ?>">
-                <img src="<?php bloginfo('template_url'); ?>/assets/images/back.svg" alt="" />
-              </a>
-            </div>
+          <div class="favorites__title-wrapper">            
             <div class="title-wrapper">
               <h1 class="catalog-gk__title title--xl title--catalog">
                 <?php echo $crb_new_building_title . ' ' . $title_city; ?>
@@ -225,6 +244,9 @@ get_header();
             ?>
 
 
+            <div class="single-page catalog-gk__map">
+              <?php get_template_part('template-page/blocks/yandex_map', null, $params_map); ?>
+            </div>
         </div>
         <script>
           function redirectToURL(url) {

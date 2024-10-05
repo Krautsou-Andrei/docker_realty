@@ -40,4 +40,9 @@ function update_fields_gk($post_id, $block, $name_city)
     if (empty($crb_gk_is_not_view)) {
         carbon_set_post_meta($post_id, 'crb_gk_is_not_view', '');
     }
+
+    $updated_page = array(
+        'ID'         => $post_id,
+    );
+    wp_update_post($updated_page);
 }

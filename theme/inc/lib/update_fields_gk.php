@@ -43,6 +43,7 @@ function update_fields_gk($post_id, $block, $name_city)
 
     $updated_page = array(
         'ID'         => $post_id,
+        'post_title' => $block->name,
     );
     wp_update_post($updated_page);
 }

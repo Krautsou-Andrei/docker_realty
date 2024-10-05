@@ -26,33 +26,33 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
             <div class="single-page__title">
               <?php
 
-              $product_id = carbon_get_post_meta(get_the_ID(), 'product-id');
-              $product_title = carbon_get_post_meta(get_the_ID(), 'product-title');
+              $product_agent_phone  = carbon_get_post_meta(get_the_ID(), 'product-agent-phone');
+              $product_agent_photo  = carbon_get_post_meta(get_the_ID(), 'product-agent-photo');
+              $product_area = carbon_get_post_meta(get_the_ID(), 'product-area');
+              $product_building_type = carbon_get_post_meta(get_the_ID(), 'product-building-type');
+              $product_city = carbon_get_post_meta(get_the_ID(), 'product-city');
+              $product_contract = carbon_get_post_meta(get_the_ID(), 'product-contract');
+              $product_developer = carbon_get_post_meta(get_the_ID(), 'product-developer');
+              $product_description = carbon_get_post_meta(get_the_ID(), 'product-description');
+              $product_facade = carbon_get_post_meta(get_the_ID(), 'product-facade');
+              $product_finishing = carbon_get_post_meta(get_the_ID(), 'product-finishing');
+              $product_floor = carbon_get_post_meta(get_the_ID(), 'product-stage');
+              $product_floor_total = carbon_get_post_meta(get_the_ID(), 'product-stages');
               $product_gallery = carbon_get_post_meta(get_the_ID(), 'product-gallery');
+              $product_kitchen_space = carbon_get_post_meta(get_the_ID(),'product-area-kitchen');
               $product_label = carbon_get_post_meta(get_the_ID(), 'product-label');
+              $product_latitude = carbon_get_post_meta(get_the_ID(), 'product-latitude');
+              $product_lift = carbon_get_post_meta(get_the_ID(), 'product-lift');             
+              $product_mortgage = carbon_get_post_meta(get_the_ID(), 'product-mortgage');
               $product_price = carbon_get_post_meta(get_the_ID(), 'product-price');
               $product_price_meter = carbon_get_post_meta(get_the_ID(), 'product-price-meter');
               $product_price_mortgage = carbon_get_post_meta(get_the_ID(), 'product-price-mortgage');
-              $product_description = carbon_get_post_meta(get_the_ID(), 'product-description');
-              $product_agent_photo = carbon_get_post_meta(get_the_ID(), 'product-agent-photo');
-              $product_agent_phone  = carbon_get_post_meta(get_the_ID(), 'product-agent-phone');
-              $product_update_date = get_the_modified_date('d-m-Y', get_the_ID());
-              $product_city = carbon_get_post_meta(get_the_ID(), 'product-city');
-              $product_street = carbon_get_post_meta(get_the_ID(), 'product-street');
-              $product_year_build = carbon_get_post_meta(get_the_ID(), 'product-year-build');
-              $product_info_building = carbon_get_post_meta(get_the_ID(), 'product-info-building');
-              $product_renovation = carbon_get_post_meta(get_the_ID(), 'product-renovation');
-              $product_lift = carbon_get_post_meta(get_the_ID(), 'product-lift');
-              $product_building_type = carbon_get_post_meta(get_the_ID(), 'product-building-type');
-              $product_parking_type = carbon_get_post_meta(get_the_ID(), 'product-parking-type');
-              $product_mortgage = carbon_get_post_meta(get_the_ID(), 'product-mortgage');
-              $product_latitude = carbon_get_post_meta(get_the_ID(), 'product-latitude');
-              $product_longitude = carbon_get_post_meta(get_the_ID(), 'product-longitude');
-              $product_developer = carbon_get_post_meta(get_the_ID(), 'product-developer');
-              $product_facade = carbon_get_post_meta(get_the_ID(), 'product-facade');
-              $product_finishing = carbon_get_post_meta(get_the_ID(), 'product-finishing');
               $product_payment = carbon_get_post_meta(get_the_ID(), 'product-payment');
-              $product_contract = carbon_get_post_meta(get_the_ID(), 'product-contract');
+              $product_renovation = carbon_get_post_meta(get_the_ID(), 'product-renovation');
+              $product_street = carbon_get_post_meta(get_the_ID(), 'product-street');
+              $product_update_date = get_the_modified_date('d-m-Y', get_the_ID());
+              $product_year_build = carbon_get_post_meta(get_the_ID(), 'product-year-build');
+              $product_longitude = carbon_get_post_meta(get_the_ID(), 'product-longitude');
 
 
               $agent_phone = preg_replace('/[^0-9]/', '', $product_agent_phone);

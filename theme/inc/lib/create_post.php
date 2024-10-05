@@ -33,6 +33,7 @@ function create_post($data)
     $product_block_id = $data->block_id;
     $product_apartament_number = $data->product_apartament_number;
     $product_apartamens_wc = $data->product_apartamens_wc;
+    $product_height = $data->product_height;
 
 
     $product_agent_url = 'https://2bishop.ru/files/avatars/agph_23286_5jpeg.jpg';
@@ -89,6 +90,8 @@ function create_post($data)
         carbon_set_post_meta($post_id, 'product-builder-liter', $product_building_name);
         carbon_set_post_meta($post_id, 'product-apartamens-number', $product_apartament_number);
         carbon_set_post_meta($post_id, 'product-apartamens-wc', $product_apartamens_wc);
+        carbon_get_post_meta($post_id, 'product_height', $product_height);
+
         $updated_post = array(
             'ID'         => $post_id,
             'post_title' => $title . ' ' . $product_id,
@@ -136,6 +139,7 @@ function create_post($data)
             carbon_set_post_meta($post_id, 'product-builder-liter', $product_building_name);
             carbon_set_post_meta($post_id, 'product-apartamens-number', $product_apartament_number);
             carbon_set_post_meta($post_id, 'product-apartamens-wc', $product_apartamens_wc);
+            carbon_get_post_meta($post_id, 'product_height', $product_height);
 
             carbon_set_post_meta($post_id, 'product-agent-phone', $product_agent_phone);
             carbon_set_post_meta($post_id, 'product-agent-name', 'Арсен');

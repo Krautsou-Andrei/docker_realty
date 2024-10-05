@@ -33,7 +33,7 @@ function product_fields()
       Field::make('text', 'product-price-meter', 'Цена за метр кв.')->set_help_text('Цены в рублях, только цифры')->set_width(50)->set_required(true),
       Field::make('text', 'product-price-mortgage', 'В ипотеку')->set_help_text('Цены в рублях, только цифры')->set_width(50),
       Field::make('text', 'product-year-build', 'Год постройки')->set_help_text('только цифры')->set_width(50),
-      Field::make('text', 'product-info-building', 'Дом')->set_help_text('Дом сдан или нет')->set_width(50),
+      Field::make('text', 'product_height', 'Высота потолков')->set_help_text('2,89')->set_width(50),
       Field::make('text', 'product-renovation', 'Отделка')->set_width(50),
       Field::make('text', 'product-mortgage', 'Ипотека')->set_help_text('1 - наличие, 0 - отсутсвие')->set_width(50),
       Field::make('text', 'product-label', 'Лейбл')->set_help_text('Только у нас и т.д.')->set_width(50),

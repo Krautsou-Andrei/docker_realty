@@ -131,6 +131,7 @@ function start()
             $data->block_id = $item->block_id ?? '';
             $data->product_apartament_number = $item->number ?? '';
             $data->product_apartamens_wc = $item->wc_count ?? '';
+            $data->product_height = $item->height ?? '';
 
             create_post($data);
         }

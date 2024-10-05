@@ -28,6 +28,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
 
               $product_agent_phone  = carbon_get_post_meta(get_the_ID(), 'product-agent-phone');
               $product_agent_photo  = carbon_get_post_meta(get_the_ID(), 'product-agent-photo');
+              $product_apartamens_wc = carbon_get_post_meta(get_the_ID(), 'product-apartamens-wc');
               $product_area = carbon_get_post_meta(get_the_ID(), 'product-area');
               $product_building_type = carbon_get_post_meta(get_the_ID(), 'product-building-type');
               $product_city = carbon_get_post_meta(get_the_ID(), 'product-city');
@@ -39,10 +40,11 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
               $product_floor = carbon_get_post_meta(get_the_ID(), 'product-stage');
               $product_floor_total = carbon_get_post_meta(get_the_ID(), 'product-stages');
               $product_gallery = carbon_get_post_meta(get_the_ID(), 'product-gallery');
-              $product_kitchen_space = carbon_get_post_meta(get_the_ID(),'product-area-kitchen');
+              $product_height = carbon_get_post_meta(get_the_ID(), 'product_height');
+              $product_kitchen_space = carbon_get_post_meta(get_the_ID(), 'product-area-kitchen');
               $product_label = carbon_get_post_meta(get_the_ID(), 'product-label');
               $product_latitude = carbon_get_post_meta(get_the_ID(), 'product-latitude');
-              $product_lift = carbon_get_post_meta(get_the_ID(), 'product-lift');             
+              $product_lift = carbon_get_post_meta(get_the_ID(), 'product-lift');
               $product_mortgage = carbon_get_post_meta(get_the_ID(), 'product-mortgage');
               $product_price = carbon_get_post_meta(get_the_ID(), 'product-price');
               $product_price_meter = carbon_get_post_meta(get_the_ID(), 'product-price-meter');
@@ -50,6 +52,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
               $product_payment = carbon_get_post_meta(get_the_ID(), 'product-payment');
               $product_renovation = carbon_get_post_meta(get_the_ID(), 'product-renovation');
               $product_street = carbon_get_post_meta(get_the_ID(), 'product-street');
+              $product_title = carbon_get_post_meta(get_the_ID(), 'product-title');
               $product_update_date = get_the_modified_date('d-m-Y', get_the_ID());
               $product_year_build = carbon_get_post_meta(get_the_ID(), 'product-year-build');
               $product_longitude = carbon_get_post_meta(get_the_ID(), 'product-longitude');
@@ -178,20 +181,6 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                       }
                       ?>
                       <?php
-                      if (!empty($product_living_space)) {
-                        echo '<div class="second-product-info__item">
-                                <img src="' .  get_template_directory_uri() . '/assets/images/plan.svg" alt="" width="48" height="48">
-                                <div class="info">
-                                  <span class="title">
-                                    <span>Жилая площадь</span>
-                                    <span>жилая пл.</span>
-                                  </span>
-                                  <span class="value">' . $product_living_space . ' м²</span>
-                                </div>
-                              </div>';
-                      }
-                      ?>
-                      <?php
                       if (!empty($product_kitchen_space)) {
                         echo '<div class="second-product-info__item">
                                 <img src="' .  get_template_directory_uri() . '/assets/images/kitchen.svg" alt="" width="48" height="48">
@@ -264,15 +253,53 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                     </div>
                   </div>
                 </div>
-                <div class="product__description">
-                  <div class="second-product-description no-active" data-more-text><?php echo nl2br(esc_html($product_description)) ?>
+                <?php if (!empty($product_description)) { ?>
+                  <div class="product__description">
+                    <div class="second-product-description no-active" data-more-text><?php echo nl2br(esc_html($product_description)) ?>
+                    </div>
                   </div>
-                </div>
-                <div class="product__button-more">
-                  <button class="show-more" type="button" data-more><span>Узнать больше</span></button>
-                </div>
+                  <div class="product__button-more">
+                    <button class="show-more" type="button" data-more><span>Узнать больше</span></button>
+                  </div>
+                <?php } ?>
                 <div class="product__more">
                   <section class="more-list">
+                    <div class="more-list__column more-column">
+                      <label class="more-tabs__label">
+                        <input class="more-tabs__input" type="radio" name="more-list" checked>
+                        <span class="more-column__title title--lg">О квартире</span>
+                      </label>
+                      <div class="more-column__list">
+                        <div class="more-column__row">
+                          <span>Тип жилья</span><span>Новостройка</span>
+                        </div>
+                        <?php if (!empty($product_area)) { ?>
+                          <div class="more-column__row">
+                            <span>Общая площадь</span><span><?php echo $product_area ?></span>
+                          </div>
+                        <?php } ?>
+                        <?php if (!empty($product_kitchen_space)) { ?>
+                          <div class="more-column__row">
+                            <span>Площадь кухни</span><span><?php echo $product_kitchen_space ?></span>
+                          </div>
+                        <?php } ?>
+                        <?php if (!empty($product_height)) { ?>
+                          <div class="more-column__row">
+                            <span>Высота потолков</span><span><?php echo $product_height ?></span>
+                          </div>
+                        <?php } ?>
+                        <?php if (!empty($product_finishing)) { ?>
+                          <div class="more-column__row">
+                            <span>Отделка</span><span><?php echo $product_finishing ?></span>
+                          </div>
+                        <?php } ?>
+                        <?php if (!empty($product_apartamens_wc)) { ?>
+                          <div class="more-column__row">
+                            <span>Санузел</span><span><?php echo $product_apartamens_wc ?></span>
+                          </div>
+                        <?php } ?>
+                      </div>
+                    </div>
                     <div class="more-list__column more-column">
                       <label class="more-tabs__label">
                         <input class="more-tabs__input" type="radio" name="more-list">

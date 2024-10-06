@@ -30,6 +30,7 @@ function page_new_building_fields_gk()
             Field::make('text', 'crb_gk_min_price_meter', 'Минимальная цена за квадратный метр')->set_help_text('112 000')->set_width(50),
             Field::make('text', 'crb_gk_min_area', 'Минимальная площадь')->set_help_text('20')->set_width(50),
             Field::make('text', 'crb_gk_max_area', 'Максимальная площадь')->set_help_text('50')->set_width(50),
+            Field::make('text', 'crb_gk_rooms', 'Комнатность')->set_help_text('Присутвующая комнатность в ЖК')->set_width(100),
             Field::make('text', 'crb_gk_min_rooms', 'Минимальное количество комнат в ЖК')->set_help_text('1')->set_width(50),
             Field::make('text', 'crb_gk_max_rooms', 'Максимальное количество комнат в ЖК')->set_help_text('5')->set_width(50),
             Field::make('checkbox', 'crb_gk_is_studio', 'Есть студии')->set_option_value('yes')->set_help_text('установить галочку если есть студия')->set_width(33),

@@ -37,6 +37,19 @@ get_header();
 
     $filter_check_price = isset($_GET['check_price']) ? $_GET['check_price'] : '';
 
+    $filter_rooms = isset($_GET['rooms']) ? $_GET['rooms'] : '';
+    $filter_rooms_array = isset($_GET['rooms']) ? explode(',', $_GET['rooms']) : [];
+
+    $rooms_query = [];
+
+    foreach ($filter_rooms_array as $room) {
+      if (intval($room)) {
+        $rooms_query[] = intval($room);
+      } else {
+        $rooms_query[] = $room;
+      }
+    }
+
     $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $search_param_city) ?? 1;
 
     $paged = get_query_var('paged') ? get_query_var('paged') : 1;
@@ -64,31 +77,30 @@ get_header();
       'compare' => '='
     ];
 
-    // Добавляем условия для фильтрации по цене, если они заданы
     if ($filter_type_build !== '') {
       $args['meta_query'][] = array(
         'key'     => 'crb_gk_is_house',
         'value'   => $filter_type_build == 'Квартиры' ? '' : 'yes',
-        'compare' => '=', // Меньше или равно
+        'compare' => '=',
       );
     }
 
     if ($filter_price_ot !== '') {
 
       $args['meta_query'][] = array(
-        'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter', // Мета-ключ для минимальной цены
+        'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter',
         'value'   => $filter_price_ot == 0 ? 1 : $filter_price_ot,
-        'compare' => '>=', // Больше или равно
-        'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
+        'compare' => '>=',
+        'type'    => 'NUMERIC'
       );
     }
 
     if ($filter_price_do !== '') {
       $args['meta_query'][] = array(
-        'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter', // Мета-ключ для минимальной цены
+        'key'     => !empty($filter_check_price) ? 'crb_gk_min_price' : 'crb_gk_min_price_meter',
         'value'   => $filter_price_do,
-        'compare' => '<=', // Меньше или равно
-        'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
+        'compare' => '<=',
+        'type'    => 'NUMERIC'
       );
     }
 
@@ -96,8 +108,8 @@ get_header();
       $args['meta_query'][] = array(
         'key'     => 'crb_gk_min_area',
         'value'   => $filter_area_ot == 0 ? 1 : $filter_area_ot,
-        'compare' => '>=', // Больше или равно
-        'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
+        'compare' => '>=',
+        'type'    => 'NUMERIC'
       );
     }
 
@@ -105,9 +117,23 @@ get_header();
       $args['meta_query'][] = array(
         'key'     => 'crb_gk_max_area',
         'value'   => $filter_area_do,
-        'compare' => '<=', // Меньше или равно
-        'type'    => 'NUMERIC' // Указываем, что сравниваются числовые значения
+        'compare' => '<=',
+        'type'    => 'NUMERIC'
       );
+    }
+
+    if (!empty($rooms_query)) {
+      $meta_query = array('relation' => 'OR');
+
+      foreach ($rooms_query as $value) {
+        $meta_query[] = array(
+          'key'     => 'crb_gk_rooms',
+          'value'   => trim($value),
+          'compare' => 'LIKE',
+        );
+      }
+
+      $args['meta_query'][] = $meta_query;
     }
 
     $query = new WP_Query($args);

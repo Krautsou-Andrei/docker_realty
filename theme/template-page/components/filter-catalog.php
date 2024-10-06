@@ -1,41 +1,30 @@
 <?php
-require_once get_template_directory() . '/inc/lib/get_names_children_categories.php';
-require_once get_template_directory() . '/inc/lib/search_id_category_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_name.php';
-require_once get_template_directory() . '/inc/maps/map_cities.php';
+require_once get_template_directory() . '/inc/lib/get_params_filter_catalog.php';
 
-$filter_city = isset($_GET['city']) ? $_GET['city'] : '2306';
+$search_params = get_params_filter_catalog();
 
-$search_param_city = isset($MAP_CITIES[$filter_city]) ? $MAP_CITIES[$filter_city] : 'Новороссийск';
+$filter_city = $search_params->filter_city;
 
-$filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : 'Квартиры';
+$search_param_city = $search_params->search_param_city;
 
-$filter_rooms = isset($_GET['rooms']) ? $_GET['rooms'] : '';
-$filter_rooms_array = isset($_GET['rooms']) ? explode(',', $_GET['rooms']) : [];
+$filter_type_build = $search_params->filter_type_build;
 
-$filter_price_array = isset($_GET['select_price']) ?  explode('-', $_GET['select_price']) : [];
-$filter_price = isset($_GET['select_price']) ?   $_GET['select_price'] : '';
-$filter_price_ot = isset($filter_price_array[0]) ? $filter_price_array[0] : '';
-$filter_price_do = isset($filter_price_array[1]) ? $filter_price_array[1] : '';
+$filter_rooms = $search_params->filter_rooms;
+$filter_rooms_array = $search_params->filter_rooms_array;
 
-$filter_check_price = isset($_GET['check_price']) ? $_GET['check_price'] : '';
+$filter_price = $search_params->filter_price;
+$filter_price_ot = $search_params->filter_price_ot;
+$filter_price_do = $search_params->filter_price_do;
 
-$filter_area_array = isset($_GET['select_area']) ? explode('-', $_GET['select_area']) : [];
-$filter_area = isset($_GET['select_area']) ? $_GET['select_area'] : '';
-$filter_area_ot = isset($filter_area_array[0]) ? $filter_area_array[0] : '';
-$filter_area_do = isset($filter_area_array[1]) ? $filter_area_array[1] : '';
+$filter_check_price = $search_params->filter_check_price;
 
+$filter_area = $search_params->filter_area;
+$filter_area_ot = $search_params->filter_area_ot;
+$filter_area_do = $search_params->filter_area_do;
 
-// $cities_parent_category_id  = search_id_category_by_name(CATEGORIES_NAME::CITIES);
-// $cities_names = !empty($cities_parent_category_id) ? get_names_children_categories($cities_parent_category_id) : [];
-
-$rooms_paren_category_id = search_id_category_by_name(CATEGORIES_NAME::ROOMS);
-$rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories($rooms_paren_category_id) : [];
-
-
+$rooms_names = $search_params->rooms_names;
 ?>
-
-
 
 <form action="/wp-content/themes/realty/inc/lib/filter-new-building.php?>" class="filter-catalog__form form-filter-catalog" method="get">
   <div class="form-filter-catalog__list">
@@ -105,7 +94,7 @@ $rooms_names = !empty($rooms_paren_category_id) ? get_names_children_categories(
               <li>
                 <label>
                   <span> <?php echo  $name ?></span>
-                  <input type="checkbox" name="option-checkbox-rooms[]" value="<?php echo  $name ?>" <?php echo in_array($name, $filter_rooms_array) ? 'checked' : '' ?>data-input-visible>
+                  <input type="checkbox" name="option-checkbox-rooms[]" value="<?php echo  $name ?>" <?php echo in_array($name, $filter_rooms_array) ? 'checked' : '' ?> data-input-visible>
                   <span></span>
                 </label>
               </li>

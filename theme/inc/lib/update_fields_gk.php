@@ -31,9 +31,10 @@ function update_fields_gk($post_id, $block, $name_city)
     carbon_set_post_meta($post_id, 'crb_gk_min_area', '');
     carbon_set_post_meta($post_id, 'crb_gk_max_area', '');
     carbon_set_post_meta($post_id, 'crb_gk_min_rooms', '');
-    carbon_set_post_meta($post_id, 'crb_gk_mam_rooms', '');
+    carbon_set_post_meta($post_id, 'crb_gk_max_rooms', '');
     carbon_set_post_meta($post_id, 'crb_gk_is_studio', '');
     carbon_set_post_meta($post_id, 'crb_gk_is_house', '');
+    carbon_set_post_meta($post_id, 'crb_gk_rooms', '');
 
 
     $crb_gk_is_not_view = carbon_get_post_meta($post_id, 'crb_gk_is_not_view', true);

@@ -1,7 +1,7 @@
 <?php ?>
 <div class="single-gk-card__order">
     <article class="agent-order" data-agent-order>
-        <div data-loader class="loader">
+        <div data-loader class="loader agent-loader">
             <img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" />
         </div>
 

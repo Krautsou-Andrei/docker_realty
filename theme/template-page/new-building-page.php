@@ -136,7 +136,7 @@ get_header();
       'coordinates_center' => isset($locations[0]) ? $locations[0]['coordinates'] : [],
       'locations' => $locations,
       'title' => 'Новостройки в Новороссийске',
-
+      'is_padding' => true,
     ];
 
     if (function_exists('yoast_breadcrumb')) {
@@ -249,12 +249,13 @@ get_header();
             ?>
 
 
-            <?php if ($total_posts !== 0) { ?>
-              <div class="single-page catalog-gk__map">
-                <?php get_template_part('template-page/blocks/yandex_map', null, $params_map); ?>
-              </div>
-            <?php } ?>
+
         </div>
+        <?php if ($total_posts !== 0) { ?>
+          <div class="single-page catalog-gk__map">
+            <?php get_template_part('template-page/blocks/yandex_map', null, $params_map); ?>
+          </div>
+        <?php } ?>
         <script>
           function redirectToURL(url) {
             window.location.href = url;

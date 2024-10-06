@@ -43,23 +43,8 @@ wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
     ?>
     <div class="main-favorites__cards-preview">
       <section class="favorites">
-        <div class="favoritesg__container">
-          <div class="favorites__title-wrapper">
-            <div class="favorites__back-button">
-              <?php $referer = wp_get_referer() ?>
-              <a class="" href="<?php echo esc_url($referer) ?>">
-                <img src="<?php bloginfo('template_url'); ?>/assets/images/back.svg" alt="" />
-              </a>
-            </div>
-            <div class="title-wrapper">
-              <h1 class="favorites__title title--xl title--catalog">
-                <?php echo $crb_new_building_title . ' ' . $title_city; ?>
-              </h1>
-            </div>
-          </div>
-          <div class="favorites-wrapper">
-            <?php get_template_part('template-page/components/card_gk_single', null, $params_page_gk); ?>
-          </div>
+        <div class="favorites-wrapper">
+          <?php get_template_part('template-page/components/card_gk_single', null, $params_page_gk); ?>
         </div>
         <div class="catalog__questions">
           <?php get_template_part('template-page/components/questions'); ?>

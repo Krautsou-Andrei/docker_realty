@@ -132,3 +132,17 @@ if (empty($floor_apartaments)) {
 
     </section>
 </div>
+<?php if (!empty($map_apartaments)) { ?>
+    <div class="product__legend">
+        <div class="legend">
+            <div class="legend__room active"></div>
+            <div class="">-</div>
+            <div class="">Свободно</div>
+        </div>
+        <div class="legend">
+            <div class="legend__room"></div>
+            <div class="">-</div>
+            <div class="">Продано</div>
+        </div>
+    </div>
+<?php } ?>

@@ -1,12 +1,18 @@
 <?php
 
+require_once get_template_directory() . '/inc/lib/get_apartaments_on_floor.php';
+
 $literal = $args['literal'];
 $map_apartaments = $args['map_apartaments'];
 $crb_gk_plan = $args['crb_gk_plan'];
 $current_liter = isset($args['current_liter']) ? $args['current_liter'] : $literal[0];
 $categories_rooms_checked = isset($args['categories_rooms_checked']) ? $args['categories_rooms_checked'] : [];
 $categories_area_checked = isset($args['categories_area_checked']) ? $args['categories_area_checked'] : [];
+$floor_apartaments = isset($args['floor_apartaments']) ? $args['floor_apartaments'] : [];
 
+if (empty($floor_apartaments)) {
+    $floor_apartaments = get_apartaments_on_floor($map_apartaments, $current_liter);
+}
 
 ?>
 <div class="product__gk-filter">
@@ -86,15 +92,35 @@ $categories_area_checked = isset($args['categories_area_checked']) ? $args['cate
                         <div class="gk-schema-row">
                             <div class="gk-schema__block">
                                 <div class="gk-schema__service"></div>
-                                <?php foreach ($map_apartaments[$current_liter]['floors'] as $floor) { ?>
-                                    <div class="gk-schema-apartaments">
-                                        <?php foreach ($floor as $apartament) { ?>
-                                            <a href="<?php echo get_permalink($apartament['id_post']) ?>">
-                                                <div class="gk-schema-apartaments__room active"><?php echo intval($apartament['rooms']) ? $apartament['rooms'] :  mb_substr($apartament['rooms'], 0, 1) ?></div>
-                                            </a>
-                                        <?php } ?>
-                                    </div>
-                                <?php } ?>
+                                <?php foreach ($map_apartaments[$current_liter]['floors'] as $floor) {
+                                    if (!empty($floor)) {
+                                        $current_floor = $floor;
+
+                                ?>
+                                        <div class="gk-schema-apartaments">
+                                            <?php foreach ($floor_apartaments as $apartment) {
+                                                $link = '';
+                                                if (in_array($apartment['rooms'], array_column($current_floor, 'rooms'))) {
+                                                    foreach ($current_floor as $key => $item) {
+                                                        if ($item['rooms'] == $apartment['rooms']) {
+                                                            $link = get_permalink($item['id_post']);
+                                                            unset($current_floor[$key]);
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+
+                                            ?>
+                                                <a href="<?php echo !empty($link) ? $link : '#'; ?>" <?php echo !empty($link) ? '' : 'style="pointer-events: none; cursor: default;"' ?>>
+                                                    <div class="gk-schema-apartaments__room <?php echo !empty($link) ? 'active' : ''  ?> ">
+                                                        <?php echo intval($apartment['rooms']) ? $apartment['rooms'] : mb_substr($apartment['rooms'], 0, 1); ?>
+                                                    </div>
+                                                </a>
+
+                                            <?php } ?>
+                                        </div>
+                                <?php }
+                                } ?>
                             </div>
                         </div>
                     </div>

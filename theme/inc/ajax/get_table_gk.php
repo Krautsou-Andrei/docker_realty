@@ -1,4 +1,5 @@
 <?php
+require_once get_template_directory() . '/inc/lib/get_apartaments_on_floor.php';
 
 function get_table_gk()
 {
@@ -45,17 +46,19 @@ function get_table_gk()
     }
 
     $map_apartaments_init = $decoded_params_table_array['map_apartaments'];
-    $map_apartaments = $decoded_params_table_array['map_apartaments']; 
+    $map_apartaments = $decoded_params_table_array['map_apartaments'];
 
     $current_area = [];
 
     foreach ($map_apartaments[$current_liter]['floors'] as $key => $floor) {
 
-        $map_apartaments[$current_liter]['floors'][$key] = array_filter($map_apartaments[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked, $categories_area_checked) {
+        $filtered = array_filter($map_apartaments[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked, $categories_area_checked) {
             if ((in_array($item['rooms'], $categories_rooms_checked) || empty($categories_rooms_checked)) && (in_array(ceil($item['area']), $categories_area_checked) || empty($categories_area_checked))) {
                 return $item;
             }
         });
+
+        $map_apartaments[$current_liter]['floors'][$key] = array_values($filtered);
 
         if (empty($map_apartaments[$current_liter]['floors'][$key])) {
             unset($map_apartaments[$current_liter]['floors'][$key]);
@@ -68,15 +71,13 @@ function get_table_gk()
         }
     }
 
-
-
     if (empty(array_intersect($categories_area_checked, $current_area)) && !empty($current_area) && !empty($categories_area_checked)) {
         foreach ($map_apartaments_init[$current_liter]['floors'] as $key => $floor) {
-            $map_apartaments[$current_liter]['floors'][$key] = array_filter($map_apartaments_init[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked) {
-                if ((in_array($item['rooms'], $categories_rooms_checked) || empty($categories_rooms_checked))) {
-                    return $item;
-                }
+            $filtered = array_filter($map_apartaments_init[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked) {
+                return (in_array($item['rooms'], $categories_rooms_checked) || empty($categories_rooms_checked));
             });
+
+            $map_apartaments[$current_liter]['floors'][$key] = array_values($filtered);
         }
     }
 
@@ -88,6 +89,8 @@ function get_table_gk()
 
     krsort($map_apartaments[$current_liter]['floors']);
 
+    $floor_apartaments = get_apartaments_on_floor($map_apartaments_init, $current_liter);
+
     $params_table = [
         'literal' => $decoded_params_table_array['literal'],
         'categories_area' => $decoded_params_table_array['categories_area'],
@@ -97,6 +100,7 @@ function get_table_gk()
         'current_liter' => $current_liter,
         'categories_rooms_checked' => $categories_rooms_checked,
         'categories_area_checked' => $categories_area_checked,
+        'floor_apartaments' => $floor_apartaments,
     ];
 
     $params_table_init = [
@@ -108,6 +112,7 @@ function get_table_gk()
         'current_liter' => $current_liter,
         'categories_rooms_checked' => $categories_rooms_checked,
         'categories_area_checked' => $categories_area_checked,
+        'floor_apartaments' => $floor_apartaments
     ];
 
     ob_start();

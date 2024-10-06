@@ -180,6 +180,7 @@ require get_template_directory() . '/inc/filter-post-home-page.php';
 require get_template_directory() . '/inc/ajax/get_card_gk_single.php';
 require get_template_directory() . '/inc/ajax/get_min_price.php';
 require get_template_directory() . '/inc/ajax/get_table_gk.php';
+require get_template_directory() . '/inc/ajax/load_gk_new_buildings.php';
 
 // require get_template_directory() . '/inc/template-hooks.php';
 

@@ -2,6 +2,7 @@
 
 require_once get_template_directory() . '/inc/enums/default_enum.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
+require_once get_template_directory() . '/inc/enums/categories_name.php';
 require_once get_template_directory() . '/inc/lib/get_slug_page.php';
 
 function get_card_gk_single()
@@ -26,6 +27,7 @@ function get_card_gk_single()
     $finishing = [];
     $literal = [];
     $map_apartaments = [];
+    $map_houses = [];
 
     if ($query->have_posts()) {
 
@@ -64,6 +66,14 @@ function get_card_gk_single()
                 }
                 if ($category->parent == CATEGORIES_ID::ROOMS && !in_array($category->term_id, array_column($map_apartaments[$liter]['rooms'], 'term_id'))) {
                     $map_apartaments[$liter]['rooms'][] = (array) $category;
+                }
+                if ($category->parent == CATEGORIES_ID::ROOMS && ($category->name == CATEGORIES_NAME::COTTADGE || $category->name == CATEGORIES_NAME::TON_HOUSE)) {
+                    $map_houses[] = [
+                        'post_id' => $id_post,
+                        'image' => carbon_get_post_meta($id_post, 'product-gallery')[0],
+                        'area' => $area,
+                        'price' => $price
+                    ];
                 }
             }
 
@@ -104,9 +114,12 @@ function get_card_gk_single()
     }
 
     $params_table = [
+        'id_page_gk' => $id_page_gk,
         'literal' => $literal,
         'map_apartaments' => $map_apartaments,
+        'map_houses' => $map_houses,
         'crb_gk_plan' => carbon_get_post_meta($id_page_gk, 'crb_gk_plan'),
+
     ];
 
     $params_agent_info = [

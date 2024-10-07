@@ -10,7 +10,7 @@
         <div class="button-wrapper">
             <div class="agent-order__button">
                 <a class="button button--phone-order" href="tel:+79104898888"><span> +7 910 489-88-...</span></a>
-                <button class="button--favorites-mobile" type="button" data-favorite-cookies="'64" data-button-favorite-mobile data-delete-favorite="1"><span></span></button>
+
             </div>
             <div class="agent-order__callback">
                 <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>

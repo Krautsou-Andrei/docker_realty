@@ -376,7 +376,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                   <div class="button-wrapper">
                     <div class="agent-order__button">
                       <a onclick="showFullNumber(event)" class="button button--phone-order" href="tel:<?php echo $product_agent_phone ?>"><span><?php echo $format_phone_agent ?></span></a>
-                      <button class="button--favorites-mobile <?php echo ($is_favorite ? 'delete' : '') ?>" type="button" data-favorite-cookies="<?php echo $product_id ?>" data-button-favorite-mobile data-delete-favorite="<?php echo $is_favorite ?>"><span></span></button>
+                      <button class="button--favorites-mobile <?php echo ($is_favorite ? 'delete' : '') ?>" type="button" data-favorite-cookies="<?php echo get_the_ID() ?>" data-button-favorite-mobile data-delete-favorite="<?php echo $is_favorite ?>"><span></span></button>
                     </div>
                     <div class="agent-order__callback">
                       <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>

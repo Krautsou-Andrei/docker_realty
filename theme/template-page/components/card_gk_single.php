@@ -111,7 +111,7 @@ if (!empty($crb_gk_gallery[2])) {
                     <img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" />
                 </div>
                 <div class="" data-container-table>
-                  
+
                 </div>
             </div>
         </div>

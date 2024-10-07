@@ -41,8 +41,7 @@ if (!empty($crb_gk_gallery[2])) {
                     <h1 class="title--xl title--catalog title--singe-page"><?php echo $crb_gk_name ?></h1>
                 </div>
                 <p class="single-gk-card__subtitle">
-                    <?php echo $crb_gk_city ?>, <?php echo $crb_gk_address ?>
-                    <a href="#single-map">Показать на карте</a>
+                    <?php echo $crb_gk_city ?>, <?php echo $crb_gk_address ?>                 
                 </p>
                 <div class="product-wrapper">
                     <div class="single-gk-card__product product">

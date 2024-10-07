@@ -59,6 +59,9 @@ wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
 <div class="popup-plan">
   <?php get_template_part('template-page/popup/popup-plan') ?>
 </div>
+<div class="popup-plan">
+  <?php get_template_part('template-page/popup/popup-video') ?>
+</div>
 <?php
 get_footer();
 ?>

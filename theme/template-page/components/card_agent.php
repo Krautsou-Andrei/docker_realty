@@ -1,4 +1,6 @@
-<?php ?>
+<?php
+$video_src = carbon_get_post_meta(get_the_ID(), 'crb_gk_video');
+?>
 <div class="single-gk-card__order">
     <article class="agent-order" data-agent-order>
         <div data-loader class="loader agent-loader">
@@ -8,9 +10,16 @@
         <div class="" data-container-card-agent-info></div>
 
         <div class="button-wrapper">
+            <?php if (!empty($video_src)) { ?>
+                <div class="agent-order__favorites">
+                    <button class="button button--video" type="button" data-type="popup-video"><span data-type="popup-video">Просмотреть видео ролик</span></button>
+                </div>
+            <?php } ?>
             <div class="agent-order__button">
                 <a class="button button--phone-order" href="tel:+79104898888"><span> +7 910 489-88-...</span></a>
-
+                <?php if (!empty($video_src)) { ?>
+                    <button class="button--video-mobile" type="button" data-type="popup-video"><span data-type="popup-video"></span></button>
+                <?php } ?>
             </div>
             <div class="agent-order__callback">
                 <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>

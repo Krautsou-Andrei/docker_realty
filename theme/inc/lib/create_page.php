@@ -38,10 +38,6 @@ function create_page($parent_id, $page, $template, $city_name)
         return;
     }
 
-
-
-
-
     // Создание массива данных для новой страницы
     $page_data = array(
         'post_title'    => $page_title,

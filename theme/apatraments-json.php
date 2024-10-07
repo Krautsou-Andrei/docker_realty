@@ -3,7 +3,6 @@
 Template Name: JSON Apartaments
 */
 
-
 declare(strict_types=1);
 require_once get_template_directory() . '/vendor/autoload.php';
 require_once get_template_directory() . '/inc/lib/create_page.php';
@@ -77,12 +76,10 @@ function start()
     $blocks = json_decode($json_blocks);
 
 
-
     foreach ($blocks as $block) {
         if (in_array($block->district, $regions_ids)) {
             $region = search_region($regions, $block->district);
-            $region_name = $region->name;
-            $region_category_id = get_term_by('name', $region_name, 'category')->term_id;
+            $region_name = $region->name;           
 
             $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
 
@@ -93,24 +90,15 @@ function start()
     }
 
 
-
-
     $json_folder_path = get_template_directory() . '/json/apartaments.json';
-    $items = Items::fromFile($json_folder_path);
+    $items = Items::fromFile($json_folder_path);  
 
-    $count = 0;
-
-    foreach ($items as $name => $item) {
-
-        // if ($count >= 2) {
-        //     break;
-        // }
-
+    foreach ($items as $name => $item) {  
         if (in_array($item->block_district, $regions_ids)) {
             $data = new stdClass();
 
             $data->id = $item->_id;
-            $data->product_gallery = $item->plan[0] ? $item->plan : [home_url('/wp-content/uploads/2024/09/no-photo-lg.png')];
+            $data->product_gallery = $item->plan[0] ? $item->plan : '';
             $data->product_price = $item->price ?? 0;
             $data->product_price_meter = $item->price && $item->area_total ? round(floatval($item->price) / floatval($item->area_total), 2) :  0;
             $data->product_rooms = $rooms_ids[$item->room] ?? 0;
@@ -134,15 +122,9 @@ function start()
             $data->product_height = $item->height ?? '';
 
             create_post($data);
-        }
-
-
-
-        $count++;
+        }    
     }
 }
-
-start();
 
 function search_region($regions, $search_id)
 {

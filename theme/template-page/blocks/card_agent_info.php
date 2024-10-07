@@ -1,6 +1,6 @@
 <?php
 $update_page = $args['update_page'];
-$min_price = $rags['min_price'];
+$min_price = $args['min_price'];
 $finishing = $args['finishing'];
 $min_price_meter = $args['min_price_meter'];
 

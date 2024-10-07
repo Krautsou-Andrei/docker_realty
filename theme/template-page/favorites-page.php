@@ -3,6 +3,7 @@
 Template Name: Страница избранное
 */
 require_once get_template_directory() . '/inc/lib/get_cookies_favorites.php';
+require_once get_template_directory() . '/inc/lib/get_image_url.php';
 get_header();
 ?>
 
@@ -39,13 +40,16 @@ get_header();
 
         foreach ($post_ids_categories as $str) {
             $value = explode(",", $str);
-            $category = $value[0];
-            $number = intval($value[1]);
-            $categoryType = $value[2];
+            $category =  isset($value[0]) ? $value[0] : '';
+            $number = isset($value[1]) ? intval($value[1]) : '';
+            $categoryType = isset($value[2]) ? $value[2] : '';
 
-            $obj = array("category" => $category, "number" => $number, "type" => $categoryType);
+            if (!empty($categoryType) && !empty($number) && !empty($category)) {
 
-            $arrayCategories[] = $obj;
+                $obj = array("category" => $category, "number" => $number, "type" => $categoryType);
+
+                $arrayCategories[] = $obj;
+            }
         }
 
 
@@ -151,9 +155,6 @@ get_header();
                     <div id='content-container' class="favorites-wrapper">
 
                         <?php
-                        // $paged = get_query_var('paged') ? get_query_var('paged') : 1;
-
-
 
                         function pluralForm($number, $forms)
                         {
@@ -165,7 +166,6 @@ get_header();
 
                         if (!empty($post_ids_favorites)) {
                             if ($query->have_posts()) {
-                                $postCount = 0;
                                 while ($query->have_posts()) {
                                     $query->the_post();
 
@@ -182,7 +182,7 @@ get_header();
                                     $product_description = carbon_get_post_meta(get_the_ID(), 'product-description');
                                     $product_agent_photo = carbon_get_post_meta(get_the_ID(), 'product-agent-photo');
                                     $product_agent_phone  = carbon_get_post_meta(get_the_ID(), 'product-agent-phone');
-                                    $product_update_date = carbon_get_post_meta(get_the_ID(), 'product-update-date');
+                                    $product_update_date = get_the_modified_date('d-m-Y', get_the_ID());
 
                                     $agent_phone = preg_replace('/[^0-9]/', '', $product_agent_phone);
                                     $format_phone_agent = '+' . substr($agent_phone, 0, 1) . ' ' . substr($agent_phone, 1, 3) . ' ' . substr($agent_phone, 4, 3) . ' - ' . substr($agent_phone, 7, 2) . ' - ...';
@@ -208,7 +208,7 @@ get_header();
 
                                     echo '
                                     <div class="favorites__card">
-                                        <article class="favorite-card" onclick="redirectToURL(\'' . esc_url($post_permalink) . '\')">
+                                        <article class="favorite-card" onclick="redirectToURL(event,\'' . esc_url($post_permalink) . '\')">
                                             <div class="favorite-card__wrapper card-preview">
                                                 <div class="card-preview__gallery preview-gallery">';
                                     if (!empty($product_gallery[0])) {
@@ -307,7 +307,7 @@ get_header();
 
                                     if (!empty($product_agent_photo)) {
                                         $image_url = wp_get_attachment_image_src($product_agent_photo, 'full');
-                                        echo '<img src="' . $product_agent_photo . '" alt="" class="order-afent" width="78" height="78">';
+                                        echo '<img src="' . get_image_url($image_url) . '" alt="" class="order-afent" width="78" height="78">';
                                     } else {
                                         echo '<img src="' .  get_template_directory_uri() . '/assets/images/not_agent_card_preview.svg" alt="" class="order-afent" width="78" height="78">';
                                     }
@@ -317,8 +317,10 @@ get_header();
                                             <div class="favorite-order-agent__button">
                                                 <a class="button  button--phone-order" href="tel:' . $product_agent_phone . '"><span>' . $format_phone_agent . '</span></a>
                                             </div>
-                                            <div class="favorite-order-agent__callback">
-                                                <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>
+                                            <div class="favorite-order-agent__callback" ">
+                                                <button class="button button--callback" type="button" data-type="popup-form-callback" >
+                                                    <span data-type="popup-form-callback">Перезвоните мне</span>
+                                                </button>
                                             </div>
                                             <div class="favorite-order-agent__favorites">
                                                 <button class="button button--favorites" type="button" data-favorite-cookies="' . get_the_ID() . '" data-button-favorite data-delete-favorite="' . $is_favorite . '">
@@ -331,15 +333,11 @@ get_header();
                                     echo '          </span>
                                                 </button>
                                             </div>
-                                            <p class="favorite-order-agent__date">' .  $result . ' дня назад</p>
+                                            <p class="favorite-order-agent__date">' .  $result . 'sназад</p>
                                         </div>
                                     </div>
                                 </article>
                             </div>';
-                                    $postCount++;
-                                    if ($postCount % $countSale == 0) {
-                                        get_template_part('template-page/components/info-sale');
-                                    }
                                 }
                             }
                         }
@@ -470,10 +468,6 @@ get_header();
                                         </div>
                                     </article>
                                 </div>';
-                                $postCount++;
-                                if ($postCount % $countSale == 0) {
-                                    get_template_part('template-page/components/info-sale');
-                                }
                             };
                         }
 
@@ -606,10 +600,6 @@ get_header();
                                                     </div>
                                                 </article>
                                             </div>';
-                                $postCount++;
-                                if ($postCount % $countSale == 0) {
-                                    get_template_part('template-page/components/info-sale');
-                                }
                             };
                         }
 
@@ -739,10 +729,6 @@ get_header();
                                             </div>
                                         </article>
                                     </div>';
-                                $postCount++;
-                                if ($postCount % $countSale == 0) {
-                                    get_template_part('template-page/components/info-sale');
-                                }
                             };
                         }
 
@@ -802,11 +788,11 @@ get_header();
                                                             <div class="preview-gallery-mobile swiper">
                                                                 <div class="preview-gallery-mobile__wrapper swiper-wrapper">';
                                 foreach ($pics as $pic) {
-                                    echo '  <div class="preview-gallery-mobile__slide swiper-slide">
+                                    echo '                                              <div class="preview-gallery-mobile__slide swiper-slide">
                                                                                             <img src="' . $imgpath . $author['COMPID'] . '/' . $pic . '" alt="" >
                                                                                         </div>';
                                 }
-                                echo '      </div>
+                                echo '                          </div>
                                                                 <div class="preview-gallery-mobile__pagination">
                                                                     <div class="swiper-pagination">
                                                                 </div>
@@ -819,7 +805,7 @@ get_header();
                                 if ($imgpath3 != '') echo '<a onclick="linkPageProduct(event,\'' . esc_url('?obj=' . $author['CARDNUM']) . '\')" class="3" href="#"><img src="' . $scriptpath . 'timthumb.php?src=' . $imgpath3 . '&w=122&h=79&zc=1" alt="" width="122" height="79"></a>';
                                 if ($imgpath4 != '') echo '<a onclick="linkPageProduct(event,\'' . esc_url('?obj=' . $author['CARDNUM']) . '\')" class="4" href="#"><img src="' . $scriptpath . 'timthumb.php?src=' . $imgpath4 . '&w=122&h=79&zc=1" alt="" width="122" height="79"></a>';
                                 if ($imgpath5 != '') echo '<a onclick="linkPageProduct(event,\'' . esc_url('?obj=' . $author['CARDNUM']) . '\')" class="5" href="#"><img src="' . $scriptpath . 'timthumb.php?src=' . $imgpath5 . '&w=122&h=79&zc=1" alt="" width="122" height="79"></a>';
-                                echo '   </div>
+                                echo '              </div>
                                                 </div>
                                                 <div class="card-preview__info card-info">
                                                     <a href="?obj=' . $author['CARDNUM'] . '">
@@ -874,18 +860,16 @@ get_header();
                                               </div>
                                             </article>
                             	        </div>';
-                                $postCount++;
-                                if ($postCount % $countSale == 0) {
-                                    get_template_part('template-page/components/info-sale');
-                                }
                             };
                         }
 
 
                         ?>
                         <script>
-                            function redirectToURL(url) {
-                                window.location.href = url;
+                            function redirectToURL(event, url) {
+                                if (event.target.innerText !== "Перезвоните мне") {
+                                    window.location.href = url;
+                                }
                             }
 
                             const buttonsOrder = document.querySelectorAll('.button--phone-order')

@@ -7,6 +7,9 @@ function get_cookies_favorites($is_string = false)
         $cookie_value = $_COOKIE['favorites'];
     }
 
+    if ($is_string && isset($_COOKIE['categories'])) {
+        $cookie_value = $_COOKIE['categories'];
+    }
 
     if (!empty($cookie_value)) {
         $unescaped_value = stripslashes($cookie_value);

@@ -260,8 +260,10 @@
 					<div class="header__contacts-burger">
 						<?php
 						$current_url = home_url($_SERVER['REQUEST_URI']);
-						$domain = parse_url($current_url, PHP_URL_HOST);
-						$favorites_url = trailingslashit($domain) . 'favorites';
+						$domain = parse_url($current_url, PHP_URL_HOST);						
+						$port = $_SERVER['SERVER_PORT'] !== '80' ? ':' . $_SERVER['SERVER_PORT'] : '';
+						
+						$favorites_url = 'http://' . $domain . $port . '/favorites/';
 						?>
 						<a class="favorite" href="<?php echo esc_url($favorites_url); ?>">
 							<img src="<?php bloginfo('template_url'); ?>/assets/images/fav.svg" alt="" width="16" height="16">

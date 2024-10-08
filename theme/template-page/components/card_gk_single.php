@@ -1,4 +1,6 @@
 <?php
+require_once get_template_directory() . '/inc/lib/get_image_url.php';
+
 $id_page_gk = get_the_ID();
 
 $crb_gk_name = carbon_get_post_meta($id_page_gk, 'crb_gk_name');
@@ -41,7 +43,7 @@ if (!empty($crb_gk_gallery[2])) {
                     <h1 class="title--xl title--catalog title--singe-page"><?php echo $crb_gk_name ?></h1>
                 </div>
                 <p class="single-gk-card__subtitle">
-                    <?php echo $crb_gk_city ?>, <?php echo $crb_gk_address ?>                 
+                    <?php echo $crb_gk_city ?>, <?php echo $crb_gk_address ?>
                 </p>
                 <div class="product-wrapper">
                     <div class="single-gk-card__product product">
@@ -59,7 +61,7 @@ if (!empty($crb_gk_gallery[2])) {
 
                                     ?>
                                             <div class="product-single-slider__slide swiper-slide" data-type="popup-gallery">
-                                                <img class="swiper-lazy" data-src="<?php echo $image_url[0] ?>" src="<?php bloginfo('template_url'); ?>/assets/images/1px.png" alt="" data-type="popup-gallery" />
+                                                <img class="swiper-lazy" data-src="<?php echo get_image_url($image_url) ?>" src="<?php bloginfo('template_url'); ?>/assets/images/1px.png" alt="" data-type="popup-gallery" />
                                                 <div class="swiper-lazy-preloader"></div>
                                             </div>
 
@@ -71,12 +73,14 @@ if (!empty($crb_gk_gallery[2])) {
                             <?php if (!empty($image_preview_url_two)) { ?>
                                 <div class="product__gallery">
                                     <div data-type="popup-gallery">
-                                        <img src="<?php echo $image_preview_url_two[0] ?>" alt="" width="226" height="166" />
+                                        <img src="<?php echo get_image_url($image_preview_url_two)  ?>" alt="" width="226" height="166" />
                                     </div>
-                                    <div data-type="popup-gallery">
-                                        <img src="<?php echo $image_preview_url_three[0] ?>" alt="" width="226" height="166" />
-                                        <span data-type="popup-gallery"><?php echo count($crb_gk_gallery) ?></span>
-                                    </div>
+                                    <?php if (!empty($image_preview_url_three)) { ?>
+                                        <div data-type="popup-gallery">
+                                            <img src="<?php echo get_image_url($image_preview_url_three) ?>" alt="" width="226" height="166" />
+                                            <span data-type="popup-gallery"><?php echo count($crb_gk_gallery) ?></span>
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             <?php } ?>
                         </div>
@@ -88,7 +92,7 @@ if (!empty($crb_gk_gallery[2])) {
 
                                 ?>
                                         <div class="product-single-slide-gallery__slide swiper-slide">
-                                            <img src="<?php echo $image_url[0] ?>" alt="" />
+                                            <img src="<?php echo get_image_url($image_url) ?>" alt="" />
                                         </div>
                                 <? }
                                 } ?>

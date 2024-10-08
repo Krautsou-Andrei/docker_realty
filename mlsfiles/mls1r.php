@@ -1236,8 +1236,7 @@ class MLSReal
                                     const input = formSeven.querySelector(`input[name=your-link]`);   
                                     const currentURL = window.location.origin;
                                     const newURL = `${currentURL}/${type}/${obj}`;    
-                                    input.value = `${newURL}`;
-                                    console.log("link", newURL);
+                                    input.value = `${newURL}`;                                  
                                 }
                             }
                           }

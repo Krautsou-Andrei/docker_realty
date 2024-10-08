@@ -400,8 +400,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
 
                         if (formSeven) {
                           const input = formSeven.querySelector(`input[name=your-link]`);
-                          input.value = `${link}`;
-                          console.log("link", link);
+                          input.value = `${link}`;                          
                         }
                       }
                     }

@@ -89,16 +89,13 @@ get_header();
 
                     if (name === 'srok') {
                       $('#credit-srok').html(`${formatter.format(this.value) } лет`);
-                    }
-
-                    console.log(this.value)
+                    }              
 
                     $.ajax({
                       url: '/wp-content/themes/realty/inc/ajax-ipoteca.php',
                       method: 'POST',
                       data: msg,
-                      success: function(data) {
-                        console.log(data);
+                      success: function(data) {                       
                         $('#result').html(data);
                       }
                     });

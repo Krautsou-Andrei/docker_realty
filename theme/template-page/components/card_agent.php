@@ -35,8 +35,7 @@ $video_src = carbon_get_post_meta(get_the_ID(), 'crb_gk_video');
 
             if (formSeven) {
                 const input = formSeven.querySelector(`input[name=your-link]`);
-                input.value = `${link}`;
-                console.log("link", link)
+                input.value = `${link}`;            
             }
         }
     }

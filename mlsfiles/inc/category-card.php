@@ -102,8 +102,7 @@ function category_card($author, $option_category_card)
 
                                 if (formSeven) {
                                 const input = formSeven.querySelector(`input[name=your-link]`);
-                                input.value = `${newURL}`;
-                                console.log("input.value",input.value);
+                                input.value = `${newURL}`;                              
                                 }
                               }  
                             

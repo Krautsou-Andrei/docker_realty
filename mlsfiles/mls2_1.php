@@ -1034,7 +1034,7 @@ class MLSReal
                             <a onclick="showFullNumber(event)" class="button button--phone-order" href="tel:' . preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7$2$3$4$5", $cnt["PHONE"]) . '"><span>' . substr(preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7 $2 $3 - $4 - $5", $cnt["PHONE"]), 0, 14) . '...</span></a>
                             <button class="button--favorites-mobile ' . ($is_favorite ? 'delete' : '') . '" type="button" data-favorite-cookies="' . $cnt['CARDNUM'] . '" data-category-cookie="HOUSES" data-category-type-cookie="UCHASTOK" data-button-favorite-mobile data-delete-favorite="' . $is_favorite . '"><span></span></button>
                         </div>
-                        <div class="agent-order__callback">
+                        <div class="agent-order__callback" onclick="setLink(event,\'' . esc_url('?obj=' . $cnt['CARDNUM']) . '\',\'uchastki\')">
                             <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>
                         </div>
                         <div class="agent-order__favorites">
@@ -1048,6 +1048,20 @@ class MLSReal
       echo '  </span>
                         </button>
                         </div>
+                         <script>
+                          function setLink(event, obj, type) {
+                            if (event.target.innerText === "Перезвоните мне") {
+                                const formSeven = document.querySelector("[data-form-callback]");
+                                if (formSeven) {
+                                    const input = formSeven.querySelector(`input[name=your-link]`);   
+                                    const currentURL = window.location.origin;
+                                    const newURL = `${currentURL}/${type}/${obj}`;    
+                                    input.value = `${newURL}`;
+                                    console.log("link", newURL);
+                                }
+                            }
+                          }
+                      </script>
                   </div>
                 </article>
               </div>

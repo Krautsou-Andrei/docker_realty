@@ -56,6 +56,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
               $product_update_date = get_the_modified_date('d-m-Y', get_the_ID());
               $product_year_build = carbon_get_post_meta(get_the_ID(), 'product-year-build');
               $product_longitude = carbon_get_post_meta(get_the_ID(), 'product-longitude');
+              $product_link = esc_js(get_permalink(get_the_ID()));
 
 
               $agent_phone = preg_replace('/[^0-9]/', '', $product_agent_phone);
@@ -378,7 +379,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                       <a onclick="showFullNumber(event)" class="button button--phone-order" href="tel:<?php echo $product_agent_phone ?>"><span><?php echo $format_phone_agent ?></span></a>
                       <button class="button--favorites-mobile <?php echo ($is_favorite ? 'delete' : '') ?>" type="button" data-favorite-cookies="<?php echo get_the_ID() ?>" data-button-favorite-mobile data-delete-favorite="<?php echo $is_favorite ?>"><span></span></button>
                     </div>
-                    <div class="agent-order__callback">
+                    <div class="agent-order__callback" onclick="setLink(event, '<?php echo $product_link ?>')">
                       <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>
                     </div>
                     <div class="agent-order__favorites">
@@ -391,6 +392,20 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                       </button>
                     </div>
                   </div>
+                  <script>
+                    function setLink(event, link) {
+
+                      if (event.target.innerText === "Перезвоните мне") {
+                        const formSeven = document.querySelector('[data-form-callback]');
+
+                        if (formSeven) {
+                          const input = formSeven.querySelector(`input[name=your-link]`);
+                          input.value = `${link}`;
+                          console.log("link", link);
+                        }
+                      }
+                    }
+                  </script>
                 </article>
               </div>
             </div>

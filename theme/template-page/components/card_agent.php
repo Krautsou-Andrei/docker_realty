@@ -21,13 +21,26 @@ $video_src = carbon_get_post_meta(get_the_ID(), 'crb_gk_video');
                     <button class="button--video-mobile" type="button" data-type="popup-video"><span data-type="popup-video"></span></button>
                 <?php } ?>
             </div>
-            <div class="agent-order__callback">
+            <div class="agent-order__callback" onclick="setLink(event, '<?php echo esc_js(get_permalink(get_the_ID())) ?>')">
                 <button class="button button--callback" type="button" data-type="popup-form-callback"><span data-type="popup-form-callback">Перезвоните мне</span></button>
             </div>
         </div>
     </article>
 </div>
 <script>
+    function setLink(event, link) {
+
+        if (event.target.innerText === "Перезвоните мне") {
+            const formSeven = document.querySelector('[data-form-callback]');
+
+            if (formSeven) {
+                const input = formSeven.querySelector(`input[name=your-link]`);
+                input.value = `${link}`;
+                console.log("link", link)
+            }
+        }
+    }
+
     function redirectToURL(url) {
         window.location.href = url;
     }

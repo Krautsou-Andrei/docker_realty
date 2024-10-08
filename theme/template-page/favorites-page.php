@@ -333,7 +333,7 @@ get_header();
                                     echo '          </span>
                                                 </button>
                                             </div>
-                                            <p class="favorite-order-agent__date">' .  $result . 'sназад</p>
+                                            <p class="favorite-order-agent__date">' .  $result . ' назад</p>
                                         </div>
                                     </div>
                                 </article>
@@ -388,7 +388,7 @@ get_header();
                                         	            function linkPageProduct(event,obj,type){
                                     	                    event.preventDefault();     
                                             	            const currentURL = window.location.origin;
-                                            	            const newURL = `${currentURL}/${type}/${obj}`;
+                                            	            const newURL = `${currentURL}/${type}/${obj}`;                                                       
                                             	            window.location.href =  newURL;
                                                         }
                                     	            </script>
@@ -444,7 +444,7 @@ get_header();
                                                 <div class="order-agent__button">
                                                     <a onclick="showFullNumber(event)" class="button button--phone-order" href="tel:' . preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7$2$3$4$5", $author["PHONE"]) . '"><span>' . substr(preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7 $2 $3 - $4 - $5", $author["PHONE"]), 0, 14) . '...</span></a>
                                                 </div>
-                                                <div class="order-agent__callback">
+                                                <div class="order-agent__callback" onclick="setLink(event,\'' . esc_url('?obj=' . $author['CARDNUM']) . '\',\'kvartiry\')">
                                                     <button class="button button--callback" type="button" data-type="popup-form-callback" >
                                                         <span data-type="popup-form-callback">Перезвоните мне</span>
                                                     </button>
@@ -467,6 +467,20 @@ get_header();
                                             </div>
                                         </div>
                                     </article>
+                                    <script>
+                                        function setLink(event, obj, type) {
+                                            if (event.target.innerText === "Перезвоните мне") {
+                                                const formSeven = document.querySelector("[data-form-callback]");
+                                                if (formSeven) {
+                                                    const input = formSeven.querySelector(`input[name=your-link]`);                                          
+                                                    const currentURL = window.location.origin;
+                                                    const newURL = `${currentURL}/${type}/${obj}`;                                                
+                                                    input.value = `${newURL}`;
+                                                    console.log("link", newURL);
+                                                }
+                                            }
+                                        }
+                                    </script>
                                 </div>';
                             };
                         }
@@ -576,7 +590,7 @@ get_header();
                                                             <div class="order-agent__button">
                                                                 <a onclick="showFullNumber(event)" class="button button--phone-order" href="tel:' . preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7$2$3$4$5", $author["PHONE"]) . '"><span>' . substr(preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7 $2 $3 - $4 - $5", $author["PHONE"]), 0, 14) . '...</span></a>
                                                             </div>
-                                                            <div class="order-agent__callback">
+                                                            <div class="order-agent__callback" onclick="setLink(event,\'' . esc_url('?obj=' . $author['CARDNUM']) . '\', \'doma\')">
                                                                 <button class="button button--callback" type="button" data-type="popup-form-callback">
                                                                     <span data-type="popup-form-callback">Перезвоните мне</span>
                                                                 </button>
@@ -597,6 +611,22 @@ get_header();
                                 $diff = $now->diff($ref);
                                 echo '   <p class="order-agent__date">' . ($diff->d > 0 ? num_word($diff->d, array('день', 'дня', 'дней')) . ' назад' : 'сегодня') . '</p>
                                                         </div>
+                                                         <script>
+                                                            function setLink(event, obj, type) {
+                                                            if (event.target.innerText === "Перезвоните мне") {
+                                                                const formSeven = document.querySelector("[data-form-callback]");
+                                                                if (formSeven) {
+                                                                    const input = formSeven.querySelector(`input[name=your-link]`);     
+                                                                    const currentURL = window.location.origin;
+                                                                    const newURL = `${currentURL}/${type}/${obj}`; 
+                                                                    input.value = `${newURL}`;
+                                                                    console.log("link", newURL);
+                                                                }
+                                                            }
+                                                            }
+                                                        </script>
+
+
                                                     </div>
                                                 </article>
                                             </div>';
@@ -704,7 +734,7 @@ get_header();
                                                     <div class="order-agent__button">
                                                         <a onclick="showFullNumber(event)" class="button button--phone-order" href="tel:' . preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7$2$3$4$5", $author["PHONE"]) . '"><span>' . substr(preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7 $2 $3 - $4 - $5", $author["PHONE"]), 0, 14) . '...</span></a>
                                                     </div>
-                                                    <div class="order-agent__callback">
+                                                    <div class="order-agent__callback" onclick="setLink(event,\'' . esc_url('?obj=' . $author['CARDNUM']) . '\',\'kommercheskaya\')">
                                                         <button class="button button--callback" type="button" data-type="popup-form-callback">
                                                             <span data-type="popup-form-callback">Перезвоните мне</span>
                                                         </button>
@@ -726,6 +756,21 @@ get_header();
                                 echo '
                                                     <p class="order-agent__date">' . ($diff->d > 0 ? num_word($diff->d, array('день', 'дня', 'дней')) . ' назад' : 'сегодня') . '</p>
                                                 </div>
+                                                 <script>
+                                                    function setLink(event, obj, type) {
+                                                        if (event.target.innerText === "Перезвоните мне") {
+                                                            const formSeven = document.querySelector("[data-form-callback]");
+                                                            if (formSeven) {
+                                                                const input = formSeven.querySelector(`input[name=your-link]`);    
+                                                                const currentURL = window.location.origin;
+                                                                const newURL = `${currentURL}/${type}/${obj}`;     
+                                                                input.value = `${newURL}`;
+                                                                console.log("link", newURL);
+                                                            }
+                                                        }
+                                                    }
+
+                                                </script>
                                             </div>
                                         </article>
                                     </div>';
@@ -835,7 +880,7 @@ get_header();
                                                     <div class="order-agent__button">
                                                         <a onclick="showFullNumber(event)" class="button button--phone-order" href="tel:' . preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7$2$3$4$5", $author["PHONE"]) . '"><span>' . substr(preg_replace("/(\\d{1})(\\d{3}|\\d{4})(\\d{3}|\\d{4})(\\d{2})(\\d{2})$/i", "+7 $2 $3 - $4 - $5", $author["PHONE"]), 0, 14) . '...</span></a>
                                                     </div>
-                                                    <div class="order-agent__callback">
+                                                    <div class="order-agent__callback" onclick="setLink(event,\'' . esc_url('?obj=' . $author['CARDNUM']) . '\', \'uchastki\')">
                                                         <button class="button button--callback" type="button" data-type="popup-form-callback">
                                                             <span data-type="popup-form-callback">Перезвоните мне</span>
                                                         </button>
@@ -857,6 +902,20 @@ get_header();
                                 echo '
                                                     <p class="order-agent__date">' . ($diff->d > 0 ? num_word($diff->d, array('день', 'дня', 'дней')) . ' назад' : 'сегодня') . '</p>
                                                 </div>
+                                                <script>
+                                                    function setLink(event, obj, type) {
+                                                        if (event.target.innerText === "Перезвоните мне") {
+                                                            const formSeven = document.querySelector("[data-form-callback]");
+                                                            if (formSeven) {
+                                                                const input = formSeven.querySelector(`input[name=your-link]`);  
+                                                                const currentURL = window.location.origin;
+                                                                const newURL = `${currentURL}/${type}/${obj}`;     
+                                                                input.value = `${newURL}`;
+                                                                console.log("link", newURL);
+                                                            }
+                                                        }
+                                                    }
+                                                </script>
                                               </div>
                                             </article>
                             	        </div>';
@@ -869,6 +928,15 @@ get_header();
                             function redirectToURL(event, url) {
                                 if (event.target.innerText !== "Перезвоните мне") {
                                     window.location.href = url;
+                                }
+                                if (event.target.innerText === "Перезвоните мне") {
+                                    const formSeven = document.querySelector('[data-form-callback]');
+
+                                    if (formSeven) {
+                                        const input = formSeven.querySelector(`input[name=your-link]`);
+                                        input.value = `${url}`;
+                                        console.log("url", url);
+                                    }
                                 }
                             }
 

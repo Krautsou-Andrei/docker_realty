@@ -1,3 +1,7 @@
+<?php
+$link_page = get_permalink(get_the_ID());
+?>
+
 <div class="popup" data-popup="popup-form-callback" data-close-overlay>
   <div class="popup__wrapper" data-close-overlay>
     <div class="popup__content">
@@ -7,20 +11,21 @@
           <h2 class="title--popup">Оставьте свои контакты</h2>
           <p class="subtitle--popup">Наш специалист скоро свяжется с вами</p>
         </div>
-        <div class="wp-block-contact-form-7-contact-form-selector">
+        <div class="wp-block-contact-form-7-contact-form-selector" data-form-callback>
           <div class="wpcf7 js" id="wpcf7-f525-p41-o1" lang="ru-RU" dir="ltr">
             <div class="screen-reader-response">
               <p role="status" aria-live="polite" aria-atomic="true">При отправке сообщения произошла ошибка. Пожалуйста, попробуйте ещё раз позже.</p>
               <ul></ul>
             </div>
+            
+              <form action="/#wpcf7-f525-p41-o1" method="post" class="popup-form" aria-label="Заказать звонок" novalidate="novalidate" data-status="failed">
 
-            <form action="/#wpcf7-f525-p41-o1" method="post" class="popup-form" aria-label="Заказать звонок" novalidate="novalidate" data-status="failed">
+                <?php
+                echo do_shortcode('[contact-form-7 id="5abbbda" title="Заказать звонок"]')
+                ?>
 
-              <?php
-              echo do_shortcode('[contact-form-7 id="5abbbda" title="Заказать звонок"]')
-              ?>
-
-            </form>
+              </form>
+          
           </div>
         </div>
         <p class="popup__info">
@@ -30,3 +35,13 @@
     </div>
   </div>
 </div>
+<script>
+  
+    const formSeven = document.querySelector('[data-form-callback]');
+    
+    if(formSeven){
+    const input = formSeven.querySelector(`input[name=your-link]`);
+    input.value = "<?php echo esc_js($link_page); ?>";        
+    }
+  
+</script>

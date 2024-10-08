@@ -48,6 +48,20 @@ function category_card($author, $option_category_card)
         $current_obj = $author['POST_PERMALINK'];
     };
 
+    $category_cookies = 'APARTS';
+
+    if (isset($option_category_card['isArea']) && $option_category_card['isArea']) {
+        $category_cookies = 'HOUSES';
+    }
+    if (isset($option_category_card['isHome']) && $option_category_card['isHome']) {
+        $category_cookies = 'HOUSES';
+    }
+    if (isset($option_category_card['isCommerce']) && $option_category_card['isCommerce']) {
+        $category_cookies = 'COMMERC';
+    }
+
+
+
 
     echo '  
         	<div class="catalog__card" onclick="linkPageProduct(event,\'' . $current_obj . '\')">                    
@@ -58,8 +72,7 @@ function category_card($author, $option_category_card)
                         function linkPageProduct(event,obj){
                             event.preventDefault();
                             const currentURL = window.location.origin;
-                            let newURL = currentURL;
-                            if(event.target.innerText !== "Перезвоните мне"){
+                            let newURL = currentURL;                           
                                 if (' . (isset($option_category_card['isAparts']) && $option_category_card['isAparts'] === true ? 'true' : 'false') . ') {
                                     newURL += `/kvartiry/${obj}`;
                                 } 
@@ -81,9 +94,18 @@ function category_card($author, $option_category_card)
                                 if (' . (isset($option_category_card['isPost']) && $option_category_card['isPost'] === true ? 'true' : 'false') . ') {
                                     newURL = `${obj}`;                               
                                 } 
+                            if(event.target.innerText !== "Перезвоните мне"){
                                 window.location.href = newURL;
-
                             }
+                              if(event.target.innerText === "Перезвоните мне"){
+                              const formSeven = document.querySelector("[data-form-callback]");
+
+                                if (formSeven) {
+                                const input = formSeven.querySelector(`input[name=your-link]`);
+                                input.value = `${newURL}`;
+                                console.log("input.value",input.value);
+                                }
+                              }  
                             
                         }
                     </script>
@@ -219,7 +241,7 @@ function category_card($author, $option_category_card)
                     </button>
                 </div>
                 <div class="order-agent__favorites">
-                    <button class="button button--favorites" type="button" data-favorite-cookies="' . $author['CARDNUM'] . '" data-category-cookie="APARTS" data-button-favorite data-delete-favorite="' . $is_favorite . '">
+                    <button class="button button--favorites" type="button" data-favorite-cookies="' . $author['CARDNUM'] . '" data-category-cookie="' . $category_cookies . '" data-button-favorite data-delete-favorite="' . $is_favorite . '">
                         <span>';
     if ($is_favorite) {
         echo "удалить";

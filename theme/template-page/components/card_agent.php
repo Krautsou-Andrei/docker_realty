@@ -1,5 +1,8 @@
 <?php
 $video_src = carbon_get_post_meta(get_the_ID(), 'crb_gk_video');
+$product_agent_phone = carbon_get_theme_option('crb_phone_link');
+$agent_phone = preg_replace('/[^0-9]/', '', $product_agent_phone);
+$format_phone_agent = '+' . substr($agent_phone, 0, 1) . ' ' . substr($agent_phone, 1, 3) . ' ' . substr($agent_phone, 4, 3) . ' - ' . substr($agent_phone, 7, 2) . ' - ...';
 ?>
 <div class="single-gk-card__order">
     <article class="agent-order" data-agent-order>
@@ -16,7 +19,7 @@ $video_src = carbon_get_post_meta(get_the_ID(), 'crb_gk_video');
                 </div>
             <?php } ?>
             <div class="agent-order__button">
-                <a class="button button--phone-order" href="tel:+79104898888"><span> +7 910 489-88-...</span></a>
+                <a class="button button--phone-order" href="tel:<?php echo $product_agent_phone ?>"><span><?php echo $format_phone_agent ?></span></a>
                 <?php if (!empty($video_src)) { ?>
                     <button class="button--video-mobile" type="button" data-type="popup-video"><span data-type="popup-video"></span></button>
                 <?php } ?>
@@ -35,7 +38,7 @@ $video_src = carbon_get_post_meta(get_the_ID(), 'crb_gk_video');
 
             if (formSeven) {
                 const input = formSeven.querySelector(`input[name=your-link]`);
-                input.value = `${link}`;            
+                input.value = `${link}`;
             }
         }
     }

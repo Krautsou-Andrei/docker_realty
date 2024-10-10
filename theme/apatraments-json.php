@@ -68,7 +68,7 @@ function start()
         $rooms_ids[$room->crm_id] = $room->name_one;
     }
 
-    prettyVarDump($regions);
+
 
 
     $json_blocks_path = get_template_directory() . '/json/blocks.json';
@@ -79,21 +79,22 @@ function start()
     foreach ($blocks as $block) {
         if (in_array($block->district, $regions_ids)) {
             $region = search_region($regions, $block->district);
-            $region_name = $region->name;           
+            $region_name = $region->name;
 
             $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
+            prettyVarDump($id_page);
 
             if (!empty($id_page)) {
                 create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
             }
         }
     }
-
+    prettyVarDump($categories_cities_name);
 
     $json_folder_path = get_template_directory() . '/json/apartaments.json';
-    $items = Items::fromFile($json_folder_path);  
+    $items = Items::fromFile($json_folder_path);
 
-    foreach ($items as $name => $item) {  
+    foreach ($items as $name => $item) {
         if (in_array($item->block_district, $regions_ids)) {
             $data = new stdClass();
 
@@ -122,7 +123,7 @@ function start()
             $data->product_height = $item->height ?? '';
 
             create_post($data);
-        }    
+        }
     }
 }
 

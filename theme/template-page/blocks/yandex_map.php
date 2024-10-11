@@ -5,6 +5,7 @@ $coordinates_center = isset($args['coordinates_center']) ? (json_encode($args['c
 $title = isset($args['title']) ? $args['title'] : '';
 $locations = isset($args['locations']) ? json_encode($args['locations']) : json_encode('[]');
 $is_padding = isset($args['is_padding']) ? $args['is_padding'] : false;
+$zoom = isset($args['zoom']) ? $args['zoom'] : 16;
 
 ?>
 
@@ -41,7 +42,7 @@ $is_padding = isset($args['is_padding']) ? $args['is_padding'] : false;
             function init() {
                 var myMap = new ymaps.Map("map", {
                         center: <?php echo $coordinates_center ?>,
-                        zoom: 16
+                        zoom: <?php echo $zoom ?>
                     }, {
                         searchControlProvider: "yandex#search"
                     }),

@@ -52,6 +52,7 @@ get_header();
       'locations' => $locations,
       'title' => 'Новостройки в Новороссийске',
       'is_padding' => true,
+      'zoom' => 13,
     ];
 
     if (function_exists('yoast_breadcrumb')) {
@@ -120,7 +121,7 @@ get_header();
                   'crb_gk_description' => carbon_get_post_meta(get_the_ID(), 'crb_gk_description'),
                   'crb_gk_city' => carbon_get_post_meta(get_the_ID(), 'crb_gk_city'),
                   'crb_gk_address' => carbon_get_post_meta(get_the_ID(), 'crb_gk_address'),
-                  'crb_gk_min_price_meter'=> carbon_get_post_meta(get_the_ID(), 'crb_gk_min_price_meter'),
+                  'crb_gk_min_price_meter' => carbon_get_post_meta(get_the_ID(), 'crb_gk_min_price_meter'),
                   'crb_gk_permalink' => get_permalink(),
                 ];
 

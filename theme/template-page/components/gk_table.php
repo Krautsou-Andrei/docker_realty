@@ -146,7 +146,9 @@ if (empty($floor_apartaments)) {
                                                     }
 
                                                 ?>
-                                                    <a href="<?php echo !empty($link) ? $link : '#'; ?>" <?php echo !empty($link) ? '' : 'style="pointer-events: none; cursor: default;"' ?>>
+                                                    <a href="<?php echo !empty($link) ? $link : '#'; ?>" <?php echo !empty($link) ? '' : 'style="pointer-events: none; cursor: default;"' ?>
+                                                        <?php echo !empty($link) ? 'data-info-apartament' : ''; ?>
+                                                        <?php echo !empty($link) ? 'data-info-apartament-id=' . $item['id_post'] : ''; ?>>
                                                         <div class="gk-schema-apartaments__room <?php echo !empty($link) ? 'active' : ''  ?> ">
                                                             <?php echo intval($apartment['rooms']) ? $apartment['rooms'] : mb_substr($apartment['rooms'], 0, 1); ?>
                                                         </div>

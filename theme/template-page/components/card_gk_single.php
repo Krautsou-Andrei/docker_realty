@@ -30,7 +30,7 @@ if (!empty($crb_gk_gallery[2])) {
 
 <section class="single-gk-card">
     <input hidden type="text" value="" data-input-table-params />
-    <div class="single-gk-card__container">
+    <div class="single-gk-card__container" data-container>
         <div class="single-gk-card-wrapper">
             <div class="single-gk-card__info">
                 <div class="single-gk-card__title">

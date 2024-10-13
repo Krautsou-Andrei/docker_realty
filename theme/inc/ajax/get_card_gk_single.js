@@ -41,6 +41,7 @@ jQuery(document).ready(function ($) {
     complete: function () {
       updateMainScript();
       initializeFormFilter();
+      new NewTooltip();
     },
   });
 

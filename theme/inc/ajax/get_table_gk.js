@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
     const inputTableParams = $(SELECTORS.INPUT_TABLE_PARAMS);
     const inputTableParamsValue = $(SELECTORS.INPUT_TABLE_PARAMS).val();
 
-    $(SELECTORS.FORM_INPUT).change(function () {     
+    $(SELECTORS.FORM_INPUT).change(function () {
       const formTableLiter = $(SELECTORS.FORM_LITER).serializeArray();
       const formApartamens =
         $(this).attr("name") == "gk-liter"
@@ -35,7 +35,7 @@ jQuery(document).ready(function ($) {
         },
         success: function (response) {
           if (response.pageGkTable) {
-            container_table.html(response.pageGkTable);          
+            container_table.html(response.pageGkTable);
           }
 
           if (response.inputTableParams) {
@@ -45,8 +45,9 @@ jQuery(document).ready(function ($) {
         error: function (xhr, status, error) {
           console.error(error);
         },
-        complete: function () {         
+        complete: function () {
           initializeFormFilter();
+          new NewTooltip();
         },
       });
     });

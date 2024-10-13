@@ -23,6 +23,8 @@ function realty_scripts()
 	wp_enqueue_script('custom-script-filter-posts-single-page', get_template_directory_uri() . '/js/filter-posts-single-page.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('custom-script-filter-posts-home-page', get_template_directory_uri() . '/js/filter-posts-home-page.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('custom-script-get-page-gk-table', get_template_directory_uri() . '/inc/ajax/get_table_gk.js', array('jquery'), '1.0', true);
+	wp_enqueue_script('custom-script-get-body-popup-apartament', get_template_directory_uri() . '/inc/ajax/get_body_popup_apartament.js', array('jquery'), '1.0', true);
+	wp_localize_script('custom-script-get-body-popup-apartament', 'ajax_object', array('ajaxurl' => admin_url('admin-ajax.php')));
 	wp_localize_script('custom-script-lazy-new-buildings', 'ajax_object', array('ajaxurl' => admin_url('admin-ajax.php')));
 	wp_localize_script('custom-script-lazy-new-gk-buildings', 'ajax_object', array('ajaxurl' => admin_url('admin-ajax.php')));
 	wp_localize_script('custom-script-load-documents', 'ajax_object', array('ajaxurl' => admin_url('admin-ajax.php')));

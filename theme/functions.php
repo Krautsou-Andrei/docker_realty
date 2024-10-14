@@ -182,6 +182,7 @@ require get_template_directory() . '/inc/ajax/get_min_price.php';
 require get_template_directory() . '/inc/ajax/get_table_gk.php';
 require get_template_directory() . '/inc/ajax/load_gk_new_buildings.php';
 require get_template_directory() . '/inc/ajax/get_body_popup_apartament.php';
+require get_template_directory() . '/inc/ajax/send_telegram_form.php';
 
 // require get_template_directory() . '/inc/template-hooks.php';
 

@@ -126,7 +126,7 @@ function start()
         }
     }
 }
-
+start();
 function search_region($regions, $search_id)
 {
     $searchRegion = array_filter($regions, function ($object) use ($search_id) {

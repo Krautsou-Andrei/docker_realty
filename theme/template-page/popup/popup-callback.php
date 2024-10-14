@@ -15,17 +15,16 @@ $link_page = get_permalink(get_the_ID());
           <div class="wpcf7 js" id="wpcf7-f525-p41-o1" lang="ru-RU" dir="ltr">
             <div class="screen-reader-response">
               <p role="status" aria-live="polite" aria-atomic="true">При отправке сообщения произошла ошибка. Пожалуйста, попробуйте ещё раз позже.</p>
-              <ul></ul>
             </div>
-            
-              <form action="/#wpcf7-f525-p41-o1" method="post" class="popup-form" aria-label="Заказать звонок" novalidate="novalidate" data-status="failed">
 
-                <?php
-                echo do_shortcode('[contact-form-7 id="5abbbda" title="Заказать звонок"]')
-                ?>
+            <form action="/#wpcf7-f525-p41-o1" method="post" class="popup-form" aria-label="Заказать звонок" novalidate="novalidate" data-status="failed">
 
-              </form>
-          
+              <?php
+              echo do_shortcode('[contact-form-7 id="5abbbda" title="Заказать звонок"]')
+              ?>
+
+            </form>
+
           </div>
         </div>
         <p class="popup__info">
@@ -36,12 +35,10 @@ $link_page = get_permalink(get_the_ID());
   </div>
 </div>
 <script>
-  
-    const formSeven = document.querySelector('[data-form-callback]');
-    
-    if(formSeven){
+  const formSeven = document.querySelector('[data-form-callback]');
+
+  if (formSeven) {
     const input = formSeven.querySelector(`input[name=your-link]`);
-    input.value = "<?php echo esc_js($link_page); ?>";        
-    }
-  
+    input.value = "<?php echo esc_js($link_page); ?>";
+  }
 </script>

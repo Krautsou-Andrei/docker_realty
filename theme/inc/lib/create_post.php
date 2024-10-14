@@ -65,6 +65,7 @@ function create_post($data)
     $id_area_category = create_category(ceil($product_area), 'area_' . ceil($product_area), CATEGORIES_ID::AREA);
 
     $title = create_title_post($product_room_id, $product_area, $product_stage);
+    $post_slug = $product_id;
 
     $args_test = [
         'post_type'      => 'post', // Укажите тип поста
@@ -108,6 +109,7 @@ function create_post($data)
         $updated_post = array(
             'ID'         => $post_id,
             'post_title' => $title . ' ' . $product_id,
+            'post_name'     => $post_slug, // Слаг страницы
         );
         wp_update_post($updated_post);
         if (!empty($product_block_id)) {
@@ -118,6 +120,7 @@ function create_post($data)
             'post_title'   => $title . ' ' . $product_id,
             'post_status'  => 'publish',
             'post_type'    => 'post',
+            'post_name'     => $post_slug, // Слаг страницы
             'post_category' => [
                 CATEGORIES_ID::CITIES,
                 CATEGORIES_ID::GK,

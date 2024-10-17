@@ -1,4 +1,5 @@
 <?php require_once get_template_directory() . '/inc/enums/categories_name.php';
+require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/lib/get_params_filter_catalog.php';
 
 $search_params = get_params_filter_catalog();
@@ -23,6 +24,20 @@ $filter_area_ot = $search_params->filter_area_ot;
 $filter_area_do = $search_params->filter_area_do;
 
 $rooms_names = $search_params->rooms_names;
+
+$args_categories_area = array(
+  'hide_empty' => false,
+  'parent' => CATEGORIES_ID::AREA,
+);
+
+$categories_area = get_categories($args_categories_area);
+$max_area = 0;
+
+foreach ($categories_area as $area) {
+  if (intval($area->name) > $max_area) {
+    $max_area = intval($area->name);
+  }
+}
 ?>
 
 <div class="popup" data-popup="popup-filter" data-close-overlay>
@@ -109,7 +124,19 @@ $rooms_names = $search_params->rooms_names;
                 </div>
               </div>
             </div>
-            <div class="label-area-wrapper">
+            <div class="select-area__top">
+              <span class="select-area__title">Общая, от <span class="view-slider-area" data-area-from-view><?php echo !empty($filter_area_ot) ? $filter_area_ot : 1  ?></span> до <span class="view-slider-area" data-area-to-view><?php echo !empty($filter_area_do) ? $filter_area_do : $max_area  ?></span> м²</span>
+              <div class="select-area__wrapper-label">
+                <div class="slider">
+                  <div class="progress" data-range-progress></div>
+                </div>
+                <div class="range-input">
+                  <input id="area-from" type="range" class="range-min" min="1" max="<?php echo $max_area ?>" value="<?php echo !empty($filter_area_ot) ? $filter_area_ot : 1  ?>" step="1" name="option-select-area-from" data-input-visible />
+                  <input id="area-to" type="range" class="range-min" min="1" max="<?php echo $max_area ?>" value="<?php echo !empty($filter_area_do) ? $filter_area_do : $max_area  ?>" step="1" name="option-select-area-to" data-input-visible />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="label-area-wrapper">
               <label>
                 <span>Площадь</span>
                 <input type="number" name="option-select-area-from" placeholder="от" id="area-from" min="0" data-input-visible value="<?php echo !empty($filter_area_ot) ? $filter_area_ot : ''  ?>">
@@ -118,7 +145,7 @@ $rooms_names = $search_params->rooms_names;
                 <input type="number" name="option-select-area-to" placeholder="до" id="area-to" min="1" data-input-visible value="<?php echo !empty($filter_area_do) ? $filter_area_do : ''  ?>">
                 <span>м²</span>
               </label>
-            </div>
+            </div> -->
             <div class="label-price-wrapper">
               <label>
                 <span>Цена</span>

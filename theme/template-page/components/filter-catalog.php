@@ -40,6 +40,8 @@ foreach ($categories_area as $area) {
   }
 }
 
+
+
 ?>
 
 <form action="/wp-content/themes/realty/inc/lib/filter-new-building.php?>" class="filter-catalog__form form-filter-catalog" method="get">
@@ -188,3 +190,20 @@ foreach ($categories_area as $area) {
     </button>
   </div>
 </form>
+<script>
+  const SELECTORS = {
+    AREA_FROM: '#area-from',
+    AREA_TO: '#area-to',
+    RANGE: '[data-range-progress]',
+  };
+
+  const areaFrom = document.querySelector(SELECTORS.AREA_FROM);
+  const areaTo = document.querySelector(SELECTORS.AREA_TO);
+  const range = document.querySelector(SELECTORS.RANGE);
+
+  const minVal = areaFrom.value;
+  const maxVal = areaTo.value;
+
+  range.style.left = (minVal / areaFrom.max) * 100 + '%';
+  range.style.right = 100 - (maxVal / areaTo.max) * 100 + '%';
+</script>

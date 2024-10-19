@@ -133,9 +133,11 @@ $template =  get_page_template_slug();
 		<div class="popup-success">
 			<?php get_template_part('template-page/popup/popup-success') ?>
 		</div>
-		<div class="popup-filter">
-			<?php get_template_part('template-page/popup/popup-filter') ?>
-		</div>
+	<?php } ?>
+	<div class="popup-filter">
+		<?php get_template_part('template-page/popup/popup-filter') ?>
+	</div>
+	<?php if ($template !== TEMPLATE_NAME::MAP) { ?>
 		<div class="popup-form-callback">
 			<?php get_template_part('template-page/popup/popup-callback') ?>
 		</div>

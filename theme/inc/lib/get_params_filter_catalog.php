@@ -1,5 +1,6 @@
 <?php
 require_once get_template_directory() . '/inc/lib/get_names_children_categories.php';
+require_once get_template_directory() . '/inc/lib/get_link_page_by_template.php';
 require_once get_template_directory() . '/inc/lib/search_id_category_by_name.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_name.php';
@@ -70,16 +71,7 @@ function get_params_filter_catalog()
         }
     }
 
-    $args_page_map = array(
-        'post_type'      => 'page', // Тип поста
-        'post_status'    => 'publish',
-        'meta_key'      => '_wp_page_template', // Мета-ключ для шаблона
-        'meta_value'    => TEMPLATE_NAME::MAP, // Имя шаблона
-        'fields'        => 'ids', // Получаем только ID
-    );
-
-    $id_page_map = get_posts($args_page_map);
-    $link_page_map = get_permalink(intval($id_page_map[0]));
+    $link_page_map = get_link_page_by_template(TEMPLATE_NAME::MAP);
 
     $type_filter =  get_page_template_slug() == TEMPLATE_NAME::MAP ? 'buildings_map' : 'novostrojki';
 

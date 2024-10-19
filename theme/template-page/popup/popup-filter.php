@@ -27,6 +27,8 @@ $rooms_names = $search_params->rooms_names;
 
 $max_area = $search_params->max_area;
 $max_price = $search_params->max_price;
+
+$type_filter = $search_params->type_filter;
 ?>
 
 <div class="popup" data-popup="popup-filter" data-close-overlay>
@@ -38,7 +40,7 @@ $max_price = $search_params->max_price;
           <h2 class="title--popup">Фильтры</h2>
         </div>
         <form action="/wp-content/themes/realty/inc/lib/filter-new-building.php?>" method="get" class="filert-mobile-form" data-filter-form>
-          <input hidden type="radio" name="type" value="novostrojki" data-name="Дома" id="" checked />
+          <input hidden type="radio" name="type" value="<?php echo $type_filter ?>" data-name="Дома" id="" checked />
           <input hidden type="text" name="select-price" value="<?php echo $filter_price ?>" id="" checked data-select-price />
           <input hidden type="text" name="select-area" value="<?php echo $filter_area ?>" id="" checked data-select-area />
           <div class="labels-wrapper">

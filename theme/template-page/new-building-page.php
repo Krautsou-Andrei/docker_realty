@@ -6,6 +6,7 @@ Template Name: Страница новостройки
 require_once get_template_directory() . '/inc/enums/default_enum.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 require_once get_template_directory() . '/inc/lib/get_query_filter_catalog.php';
+require_once get_template_directory() . '/inc/lib/get_link_page_by_template.php';
 require_once get_template_directory() . '/inc/lib/sort_gk.php';
 require_once get_template_directory() . '/inc/maps/map_cities.php';
 require_once get_template_directory() . '/inc/maps/map_title_by_cities.php';
@@ -27,6 +28,8 @@ get_header();
     $query = get_query_filter_catalog($paged);
 
     $total_posts = $query->found_posts;
+
+    $link_page_map = get_link_page_by_template(TEMPLATE_NAME::MAP);
 
     if (function_exists('yoast_breadcrumb')) {
       yoast_breadcrumb('<div class="main-favorites__breadcrumbs">
@@ -70,6 +73,9 @@ get_header();
               </h1>
               <p class="catalog-gk__subtitle">Найдено <?php echo num_word($total_posts, DEFAULT_ENUM::RESIDENTAL_COMPLEX) ?></p>
             </div>
+            <a href="<?php echo $link_page_map ?>">
+              <img src="<?php bloginfo('template_url'); ?>/assets/images/yamap/map.svg" width="16" height="16" alt="">
+            </a>
           </div>
           <ul id="content-container-new-gk-buildings" class="catalog-wrapper">
 

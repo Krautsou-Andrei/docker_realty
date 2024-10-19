@@ -205,6 +205,7 @@ if (!empty($filter_price_view[0])) {
       <span>Найти</span>
     </button>
     <a class="button" href="<?php echo $link_page_map ?>">
+      <img src="<?php bloginfo('template_url'); ?>/assets/images/yamap/map.svg" width="16" height="16" alt="">
       <span>Показать карту</span>
     </a>
   </div>

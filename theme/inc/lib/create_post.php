@@ -187,6 +187,8 @@ function update_min_max_value_gk($product_block_id, $product_price_meter, $produ
 
             $min_price_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_price');
             $min_price_gk_metr = carbon_get_post_meta($page->ID, 'crb_gk_min_price_meter');
+            $max_price_gk = carbon_get_post_meta($page->ID, 'crb_gk_max_price');
+            $max_price_gk_meter = carbon_get_post_meta($page->ID, 'crb_gk_max_price_meter');
 
             $min_area_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_area');
             $max_area_gk = carbon_get_post_meta($page->ID, 'crb_gk_max_area');
@@ -203,6 +205,13 @@ function update_min_max_value_gk($product_block_id, $product_price_meter, $produ
             }
             if (empty($min_price_gk_metr) || intval($min_price_gk_metr) > intval($product_price_meter)) {
                 carbon_set_post_meta($page->ID, 'crb_gk_min_price_meter', $product_price_meter);
+            }
+
+            if (empty($max_price_gk) || intval($max_price_gk) < intval($product_price)) {
+                carbon_set_post_meta($page->ID, 'crb_gk_max_price', $product_price);
+            }
+            if (empty($max_price_gk_meter) || intval($max_price_gk_meter) > intval($product_price_meter)) {
+                carbon_set_post_meta($page->ID, 'crb_gk_max_price_meter', $product_price_meter);
             }
 
             if (empty($min_area_gk) || intval($min_area_gk) > intval($product_area)) {

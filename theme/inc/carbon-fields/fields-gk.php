@@ -28,6 +28,8 @@ function page_new_building_fields_gk()
             Field::make('text', 'crb_gk_longitude', 'Долгота')->set_help_text('37.730149')->set_width(50),
             Field::make('text', 'crb_gk_min_price', 'Минимальная цена')->set_help_text('112 000')->set_width(50),
             Field::make('text', 'crb_gk_min_price_meter', 'Минимальная цена за квадратный метр')->set_help_text('112 000')->set_width(50),
+            Field::make('text', 'crb_gk_max_price', 'Максимальная цена')->set_help_text('112 000')->set_width(50),
+            Field::make('text', 'crb_gk_max_price_meter', 'Максимальная цена за квадратный метр')->set_help_text('112 000')->set_width(50),
             Field::make('text', 'crb_gk_min_area', 'Минимальная площадь')->set_help_text('20')->set_width(50),
             Field::make('text', 'crb_gk_max_area', 'Максимальная площадь')->set_help_text('50')->set_width(50),
             Field::make('text', 'crb_gk_rooms', 'Комнатность')->set_help_text('Присутвующая комнатность в ЖК')->set_width(100),

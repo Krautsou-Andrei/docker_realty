@@ -2,6 +2,7 @@
 require_once get_template_directory() . '/inc/enums/categories_name.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/lib/get_params_filter_catalog.php';
+require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 
 $search_params = get_params_filter_catalog();
 
@@ -26,22 +27,12 @@ $filter_area_do = $search_params->filter_area_do;
 
 $rooms_names = $search_params->rooms_names;
 
-$args_categories_area = array(
-  'hide_empty' => false,
-  'parent' => CATEGORIES_ID::AREA,
-);
+$max_area = $search_params->max_area;
+$max_price =  $search_params->max_price;
 
-$categories_area = get_categories($args_categories_area);
-$max_area = 0;
+$filter_price_view = explode('-', $filter_price);
 
-foreach ($categories_area as $area) {
-  if (intval($area->name) > $max_area) {
-    $max_area = intval($area->name);
-  }
-}
-
-
-
+$filter_price_view = number_format(round($filter_price_view[0]), 0, '.', ' ') . ' - ' . number_format(round($filter_price_view[1]), 0, '.', ' ')
 ?>
 
 <form action="/wp-content/themes/realty/inc/lib/filter-new-building.php?>" class="filter-catalog__form form-filter-catalog" method="get">
@@ -121,21 +112,32 @@ foreach ($categories_area as $area) {
         </div>
       </div>
     <?php } ?>
-    <div class="label-option-radio-wrapper label label-area" id="filter-area" data-checked>
+    <div class="label-option-radio-wrapper label label-area" id="filter-area" data-checked data-slider-box>
       <div class="option-checkbox">
         <span class="option-checkbox__label" data-checked-view data-default-value="Площадь"><?php echo !empty($filter_area) ? $filter_area : 'Площадь' ?></span>
         <span data-arrow></span>
       </div>
       <div class="option-checkbox__select select-area" data-select>
         <div class="select-area__top">
-          <span class="select-area__title">Общая, от <span class="view-slider-area" data-area-from-view><?php echo !empty($filter_area_ot) ? $filter_area_ot : 1  ?></span> до <span class="view-slider-area" data-area-to-view><?php echo !empty($filter_area_do) ? $filter_area_do : $max_area  ?></span> м²</span>
+          <div class="select-area__title">
+            <label>
+              <span>Площадь</span>
+              <input type="number" placeholder="от" value="<?php echo !empty($filter_area_ot) ? $filter_area_ot : 1  ?>" min="1" max="<?php echo $max_area ?>" data-input-visible data-area-from-view />
+            </label>
+            <span>—</span>
+            <label>
+              <input type="number" placeholder="до" value="<?php echo !empty($filter_area_do) ? $filter_area_do : $max_area  ?>" min="1" max="<?php echo $max_area ?>" data-input-visible data-area-to-view />
+              <span>м²</span>
+            </label>
+          </div>
+
           <div class="select-area__wrapper-label">
             <div class="slider">
-              <div class="progress" data-range-progress></div>
+              <div class="progress" data-range-progress-area></div>
             </div>
             <div class="range-input">
-              <input id="area-from" type="range" class="range-min" min="1" max="<?php echo $max_area ?>" value="<?php echo !empty($filter_area_ot) ? $filter_area_ot : 1  ?>" step="1" name="option-select-area-from" data-input-visible />
-              <input id="area-to" type="range" class="range-min" min="1" max="<?php echo $max_area ?>" value="<?php echo !empty($filter_area_do) ? $filter_area_do : $max_area  ?>" step="1" name="option-select-area-to" data-input-visible />
+              <input id="area-from" type="range" class="range-min" min="1" max="<?php echo $max_area ?>" value="<?php echo !empty($filter_area_ot) ? $filter_area_ot : 1  ?>" step="1" name="option-select-area-from" data-input-visible data-area-from />
+              <input id="area-to" type="range" class="range-min" min="1" max="<?php echo $max_area ?>" value="<?php echo !empty($filter_area_do) ? $filter_area_do : $max_area  ?>" step="1" name="option-select-area-to" data-input-visible data-area-to />
             </div>
           </div>
         </div>
@@ -147,9 +149,9 @@ foreach ($categories_area as $area) {
         </div>
       </div>
     </div>
-    <div class="label-option-checkbox-wrapper label label-price" id="filter-price" data-checked>
+    <div class="label-option-checkbox-wrapper label label-price" id="filter-price" data-checked data-slider-box>
       <div class="option-checkbox">
-        <span class="option-checkbox__label" data-checked-view data-default-value="Цена"><?php echo !empty($filter_price) ? $filter_price : 'Цена'  ?> </span>
+        <span class="option-checkbox__label" data-checked-view data-default-value="Цена"><?php echo !empty($filter_price) ? $filter_price_view : 'Цена'  ?> </span>
         <span data-arrow></span>
       </div>
       <div class="option-checkbox__select select-area" data-select>
@@ -162,15 +164,25 @@ foreach ($categories_area as $area) {
             <span id="all-area">За всю площадь</span>
             <span id="metr-area">За квадрат</span>
           </div>
-          <div class="select-price__wrapper-label">
+          <div class="select-price__title">
             <label>
-              <input type="number" name="option-select-price-from" placeholder="от" id="price-from" min="0" data-input-visible value="<?php echo !empty($filter_price_ot) ? $filter_price_ot : ''  ?>">
+              <span>Цена</span>
+              <input type="number" placeholder="от" value="<?php echo !empty($filter_price_ot) ? $filter_price_ot : 1 ?>" min="1" max="<?php echo !empty($max_price) ? $max_price : 1  ?>" data-input-visible data-price-from-view />
+            </label>
+            <span>—</span>
+            <label>
+              <input type="number" placeholder="до" value="<?php echo !empty($filter_price_do) ? $filter_price_do : $max_price ?>" min="1" max="<?php echo !empty($max_price) ? $max_price : 1  ?>" data-input-visible data-price-to-view />
               <span>₽</span>
             </label>
-            <label>
-              <input type="number" name="option-select-price-to" placeholder="до" id="price-to" min="1" data-input-visible value="<?php echo !empty($filter_price_do) ? $filter_price_do : ''  ?>">
-              <span>₽</span>
-            </label>
+          </div>
+          <div class="select-area__wrapper-label">
+            <div class="slider">
+              <div class="progress" data-range-progress-price></div>
+            </div>
+            <div class="range-input">
+              <input id="price-from" type="range" class="range-min" min="1" max="<?php echo !empty($max_price) ? $max_price : 1  ?>" value="<?php echo !empty($filter_price_ot) ? $filter_price_ot : 1 ?>" step="1" name="option-select-price-from" data-input-visible data-price-from />
+              <input id="price-to" type="range" class="range-min" min="1" max="<?php echo !empty($max_price) ? $max_price : 1  ?>" value="<?php echo !empty($filter_price_do) ? $filter_price_do : $max_price ?>" step="1" name="option-select-price-to" data-input-visible data-price-to />
+            </div>
           </div>
         </div>
         <div class="select-price__button">
@@ -190,20 +202,3 @@ foreach ($categories_area as $area) {
     </button>
   </div>
 </form>
-<script>
-  const SELECTORS = {
-    AREA_FROM: '#area-from',
-    AREA_TO: '#area-to',
-    RANGE: '[data-range-progress]',
-  };
-
-  const areaFrom = document.querySelector(SELECTORS.AREA_FROM);
-  const areaTo = document.querySelector(SELECTORS.AREA_TO);
-  const range = document.querySelector(SELECTORS.RANGE);
-
-  const minVal = areaFrom.value;
-  const maxVal = areaTo.value;
-
-  range.style.left = (minVal / areaFrom.max) * 100 + '%';
-  range.style.right = 100 - (maxVal / areaTo.max) * 100 + '%';
-</script>

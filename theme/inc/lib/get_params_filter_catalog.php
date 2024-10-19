@@ -3,6 +3,7 @@ require_once get_template_directory() . '/inc/lib/get_names_children_categories.
 require_once get_template_directory() . '/inc/lib/search_id_category_by_name.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_name.php';
+require_once get_template_directory() . '/inc/enums/template_name.php';
 require_once get_template_directory() . '/inc/maps/map_cities.php';
 
 function get_params_filter_catalog()
@@ -69,6 +70,19 @@ function get_params_filter_catalog()
         }
     }
 
+    $args_page_map = array(
+        'post_type'      => 'page', // Тип поста
+        'post_status'    => 'publish',
+        'meta_key'      => '_wp_page_template', // Мета-ключ для шаблона
+        'meta_value'    => TEMPLATE_NAME::MAP, // Имя шаблона
+        'fields'        => 'ids', // Получаем только ID
+    );
+
+    $id_page_map = get_posts($args_page_map);
+    $link_page_map = get_permalink(intval($id_page_map[0]));
+
+    $type_filter =  get_page_template_slug() == TEMPLATE_NAME::MAP ? 'buildings_map' : 'novostrojki';
+
     $params = new stdClass();
 
     $params->filter_city = $filter_city;
@@ -85,10 +99,12 @@ function get_params_filter_catalog()
     $params->filter_area = $filter_area;
     $params->filter_area_ot = $filter_area_ot;
     $params->filter_area_do = $filter_area_do;
+    $params->link_page_map = $link_page_map;
     $params->max_area = $max_area;
     $params->max_price = $max_price;
     $params->rooms_parent_category_id = $rooms_parent_category_id;
     $params->rooms_names = $rooms_names;
+    $params->type_filter = $type_filter;
 
     return $params;
 }

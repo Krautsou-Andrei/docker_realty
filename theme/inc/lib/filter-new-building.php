@@ -70,5 +70,6 @@ if (isset($_GET['option-select-price-from']) && isset($_GET['option-select-price
 }
 
 if ($where == '/novostrojki/?') $where = '/novostrojki/';
+if ($where == '/buildings_map/?') $where = '/buildings_map/';
 
 header('Location: ' . $where);

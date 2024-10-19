@@ -1,7 +1,9 @@
 jQuery(document).ready(function ($) {
   const formCallback = document.querySelector("[data-form-callback]");
 
-  const submitButton = formCallback.querySelector('[type="submit"]');
+  const submitButton = formCallback
+    ? formCallback.querySelector('[type="submit"]')
+    : undefined;
 
   if (submitButton) {
     submitButton.addEventListener("click", () => {

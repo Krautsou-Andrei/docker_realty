@@ -1,7 +1,15 @@
 <?php
+
+$default_coordinates = [];
+$latitude =  carbon_get_post_meta(5, 'crb_contact_location_width');
+$longitude = carbon_get_post_meta(5, 'crb_contact_location_longitude');
+if ($latitude && $longitude) {
+    $default_coordinates = [$latitude, $longitude];
+}
+
 $city = isset($args['city']) ? json_encode($args['city']) : json_encode('Новороссийск');
 $coordinates = isset($args['coordinates']) ? (json_encode($args['coordinates'])) : '[]';
-$coordinates_center = isset($args['coordinates_center']) ? (json_encode($args['coordinates_center'])) : '[]';
+$coordinates_center = !empty($args['coordinates_center']) ? (json_encode($args['coordinates_center'])) : json_encode($default_coordinates);
 $title = isset($args['title']) ? $args['title'] : '';
 $locations = isset($args['locations']) ? json_encode($args['locations']) : json_encode('[]');
 $is_padding = isset($args['is_padding']) ? $args['is_padding'] : false;
@@ -9,7 +17,7 @@ $zoom = isset($args['zoom']) ? $args['zoom'] : 16;
 
 ?>
 
-<div class="yandex-map ">
+<div class="yandex-map" <?php echo $is_padding ? 'style="max-width:100%; height: 100%"' : '' ?>>
     <div id="single-map" class="product__map <?php echo $is_padding ? 'active-padding' : '' ?>">
         <div class="single-page-map-title"><?php echo $title ?></div>
         <div class="container">
@@ -72,7 +80,7 @@ $zoom = isset($args['zoom']) ? $args['zoom'] : 16;
 
                     locations.forEach(function(location) {
                         var myPlacemarkCustom = new ymaps.Placemark(location.coordinates, {
-                            balloonContent: location.balloonContent
+                            balloonContent: `<a href="${location.link_gk}"> ${location.balloonContent}</a>`
                         }, {
                             iconLayout: "default#imageWithContent",
                             iconImageHref: "/wp-content/themes/realty/assets/images/yamap/ico_adres.svg",

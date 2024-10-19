@@ -27,33 +27,6 @@ get_header();
     $query = get_query_filter_catalog($paged);
 
     $total_posts = $query->found_posts;
-    $locations = [];
-
-
-    if ($query->have_posts()) {
-
-      while ($query->have_posts()) {
-        $query->the_post();
-        $id_post = get_the_ID();
-        $title = get_the_title();
-        $crb_gk_latitude = carbon_get_post_meta($id_post, 'crb_gk_latitude');
-        $crb_gk_longitude = carbon_get_post_meta($id_post, 'crb_gk_longitude');
-
-        $locations[] = ['coordinates' => [$crb_gk_longitude, $crb_gk_latitude], 'balloonContent' => $title];;
-      }
-
-
-      wp_reset_postdata();
-    }
-
-    $params_map = [
-      'city' => $search_param_city,
-      'coordinates_center' => isset($locations[0]) ? $locations[0]['coordinates'] : [],
-      'locations' => $locations,
-      'title' => 'Новостройки в Новороссийске',
-      'is_padding' => true,
-      'zoom' => 13,
-    ];
 
     if (function_exists('yoast_breadcrumb')) {
       yoast_breadcrumb('<div class="main-favorites__breadcrumbs">
@@ -170,11 +143,6 @@ get_header();
 
 
         </div>
-        <?php if ($total_posts !== 0) { ?>
-          <div class="single-page catalog-gk__map">
-            <?php get_template_part('template-page/blocks/yandex_map', null, $params_map); ?>
-          </div>
-        <?php } ?>
         <script>
           function redirectToURL(url) {
             window.location.href = url;

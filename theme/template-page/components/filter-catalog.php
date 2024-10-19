@@ -30,14 +30,18 @@ $rooms_names = $search_params->rooms_names;
 $max_area = $search_params->max_area;
 $max_price =  $search_params->max_price;
 
+$link_page_map = $search_params->link_page_map;
+$type_filter = $search_params->type_filter;
+
 $filter_price_view = explode('-', $filter_price);
 
-$filter_price_view = number_format(round($filter_price_view[0]), 0, '.', ' ') . ' - ' . number_format(round($filter_price_view[1]), 0, '.', ' ')
-?>
+if (!empty($filter_price_view[0])) {
+  $filter_price_view = number_format(round($filter_price_view[0]), 0, '.', ' ') . ' - ' . number_format(round($filter_price_view[1]), 0, '.', ' ');
+} ?>
 
 <form action="/wp-content/themes/realty/inc/lib/filter-new-building.php?>" class="filter-catalog__form form-filter-catalog" method="get">
   <div class="form-filter-catalog__list">
-    <input hidden type="radio" name="type" value="novostrojki" data-name="Дома" id="" checked />
+    <input hidden type="radio" name="type" value="<?php echo $type_filter ?>" data-name="Дома" id="" checked />
     <input hidden type="text" name="select-price" value="<?php echo $filter_price ?>" id="" checked data-select-price />
     <input hidden type="text" name="select-area" value="<?php echo $filter_area ?>" id="" checked data-select-area />
     <div class="label-option-radio-wrapper label label-city" id="filter-city" data-checked>
@@ -200,5 +204,8 @@ $filter_price_view = number_format(round($filter_price_view[0]), 0, '.', ' ') . 
       <img src="<?php bloginfo('template_url'); ?>/assets/images/search_outline.svg" width="16" height="16" alt="">
       <span>Найти</span>
     </button>
+    <a class="button" href="<?php echo $link_page_map ?>">
+      <span>Показать карту</span>
+    </a>
   </div>
 </form>

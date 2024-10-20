@@ -12,11 +12,9 @@ $video_src = carbon_get_post_meta(get_the_ID(), 'crb_gk_video');
                 </div>
                 <button class="popup__close button-close button--close" type="button" aria-label="Закрыть"></button>
                 <div class="popup__body">
-                    <iframe width="100%" height="100%" class="mfp-iframe" src="<?php echo $video_src ?>" frameborder="0" allowfullscreen=""></iframe>
+                    <iframe id="videoIframe" width="100%" height="100%" class="mfp-iframe" src="<?php echo $video_src ?>" frameborder="0" allowfullscreen=""></iframe>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
 </div>

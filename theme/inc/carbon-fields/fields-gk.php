@@ -35,7 +35,7 @@ function page_new_building_fields_gk()
             Field::make('text', 'crb_gk_rooms', 'Комнатность')->set_help_text('Присутвующая комнатность в ЖК')->set_width(100),
             Field::make('text', 'crb_gk_min_rooms', 'Минимальное количество комнат в ЖК')->set_help_text('1')->set_width(50),
             Field::make('text', 'crb_gk_max_rooms', 'Максимальное количество комнат в ЖК')->set_help_text('5')->set_width(50),
-            Field::make('text', 'crb_gk_video', 'Ссылка на видео')->set_help_text('//www.youtube.com/embed/srQacA7eoT0?autoplay=1')->set_width(100),
+            Field::make('text', 'crb_gk_video', 'Ссылка на видео')->set_help_text('Пример ссылки &nbsp&nbsp&nbsp&nbsp&nbsp     //www.youtube.com/embed/srQacA7eoT0?autoplay=0  &nbsp&nbsp&nbsp&nbsp&nbsp   ОБЯЗАТЕЛЬНО ДОЛЖЕН БЫТЬ autoplay=0')->set_width(100),
             Field::make('checkbox', 'crb_gk_is_studio', 'Есть студии')->set_option_value('yes')->set_help_text('установить галочку если есть студия')->set_width(33),
             Field::make('checkbox', 'crb_gk_is_house', 'Есть коттеджи')->set_option_value('yes')->set_help_text('установить галочку если есть коттеджи')->set_width(33),
             Field::make('checkbox', 'crb_gk_is_not_view', 'Не показывать ЖК')->set_option_value('yes')->set_help_text('установить галочку если нужно скрыть ЖК')->set_width(33),

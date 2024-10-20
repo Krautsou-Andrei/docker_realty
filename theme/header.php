@@ -69,31 +69,13 @@
 						$crb_header_location = carbon_get_theme_option('crb_header_location'); //Получить локацию в header
 						?>
 						<p class="header__text-description"><?php echo $crb_title_header ?></p>
-						<!--<p class="header__text-location" style="background:url(<?php bloginfo('template_url'); ?>/assets/images/location.svg) left center no-repeat; background-size: 8px; "><?php echo $crb_header_location ?></p>-->
 						<div class="label-option-radio-wrapper label label-city" id="filter-city" data-checked>
 							<div class="option-radio">
-								<span class="option-radio__label" data-checked-view data-default-value="Новороссийск1" data-selected-city>Новороссийск</span>
-								<span data-arrow></span>
-							</div>
-							<div class="option-radio__select" data-select>
-								<ul>
-									<li>
-										<label>
-											<input type="radio" name="option-radio-city" value="Новороссийск" id="" checked data-input-visible>
-											<span>Новороссийск</span>
-										</label>
-									</li>
-									<li>
-										<label>
-											<input type="radio" name="option-radio-city" value="Краснодар" id="" data-input-visible>
-											<span>Краснодар</span>
-										</label>
-									</li>
-								</ul>
+								<span class="option-radio__label" data-checked-view data-default-value="Новороссийск" style="cursor: default;">Новороссийск</span>
 							</div>
 						</div>
 					</div>
-					<div class="header__menu-burger menu-burger" data-menu-burger>
+					<div class=" header__menu-burger menu-burger" data-menu-burger>
 						<button class="menu-burger__button icon-menu" type="button" aria-expanded="false" aria-label="button burger" data-menu-burger-button>
 							<span></span>
 						</button>
@@ -260,9 +242,9 @@
 					<div class="header__contacts-burger">
 						<?php
 						$current_url = home_url($_SERVER['REQUEST_URI']);
-						$domain = parse_url($current_url, PHP_URL_HOST);						
+						$domain = parse_url($current_url, PHP_URL_HOST);
 						$port = $_SERVER['SERVER_PORT'] !== '80' ? ':' . $_SERVER['SERVER_PORT'] : '';
-						
+
 						$favorites_url = 'http://' . $domain . $port . '/favorites/';
 						?>
 						<a class="favorite" href="<?php echo esc_url($favorites_url); ?>">

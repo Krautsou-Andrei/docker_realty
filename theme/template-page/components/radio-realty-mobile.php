@@ -10,13 +10,7 @@
           <input type="radio" name="type-realty" value="doma" data-button-filter-posts-home-page />
           <span>Дома</span>
         </label>
-      </li>
-      <li class="swiper-slide">
-        <label class="radio">
-          <input type="radio" name="type-realty" value="novostrojki" data-button-filter-posts-home-page />
-          <span>Новостройки</span>
-        </label>
-      </li>
+      </li>     
       <li class="swiper-slide">
         <label class="radio">
           <input type="radio" name="type-realty" value="uchastki" data-button-filter-posts-home-page />

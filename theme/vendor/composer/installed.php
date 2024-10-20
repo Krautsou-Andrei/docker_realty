@@ -3,7 +3,7 @@
         'name' => 'automattic/underscores',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a4e4876fe29200da9ff94b8a70c84f296588b40f',
+        'reference' => '363119743b77a16b71801700c2cea56774a2ecb2',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'automattic/underscores' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a4e4876fe29200da9ff94b8a70c84f296588b40f',
+            'reference' => '363119743b77a16b71801700c2cea56774a2ecb2',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -165,6 +165,15 @@
             'install_path' => __DIR__ . '/../symfony/finder',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'telegram-bot/api' => array(
+            'pretty_version' => 'v2.5.0',
+            'version' => '2.5.0.0',
+            'reference' => 'eaae3526223db49a1bad76a2dfa501dc287979cf',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../telegram-bot/api',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'wp-cli/i18n-command' => array(
             'pretty_version' => 'v2.4.3',

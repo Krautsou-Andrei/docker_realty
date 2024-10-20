@@ -21,6 +21,10 @@ class ComposerStaticInitf816015a55a1fe359af939e72bc1b875
         array (
             'WP_CLI\\I18n\\' => 12,
         ),
+        'T' => 
+        array (
+            'TelegramBot\\Api\\' => 16,
+        ),
         'S' => 
         array (
             'Symfony\\Component\\Finder\\' => 25,
@@ -62,6 +66,10 @@ class ComposerStaticInitf816015a55a1fe359af939e72bc1b875
         'WP_CLI\\I18n\\' => 
         array (
             0 => __DIR__ . '/..' . '/wp-cli/i18n-command/src',
+        ),
+        'TelegramBot\\Api\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/telegram-bot/api/src',
         ),
         'Symfony\\Component\\Finder\\' => 
         array (

@@ -1,12 +1,13 @@
 <?php
 
+require_once get_template_directory() . '/vendor/autoload.php';
+
 function send_telegram_form()
 {
     $email = !empty($_POST['email']) ? $_POST['email'] : '';
     $phone = !empty($_POST['phone']) ? $_POST['phone'] : "";
     $name = !empty($_POST['name']) ? $_POST['name'] : "";
-    $link = !empty($_POST['link']) ? $_POST['link'] : '';
-
+    $link = !empty($_POST['link']) ? $_POST['link'] : '';  
 
     if (!isset($_SESSION['telegram_info_sent'])) {
 
@@ -22,8 +23,8 @@ function send_telegram_form()
         if (!empty($email)) {
             $message .= "<b>E-mail</b>: <code>$email\n</code>";
         }
-        if (!empty($link)) {
-            $message .= "<b>Ссылка</b>: <code>$link\n</code>";
+        if (!empty($link)) {            
+            $message .= "<b>Ссылка</b>: <a href=\"$link\">$link</a>\n";
         }
 
         $telegramToken = carbon_get_theme_option('crb_telegram_bot_order_token');

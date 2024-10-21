@@ -110,9 +110,7 @@ if (!empty($crb_gk_gallery[2])) {
                     </div>
                     <?php get_template_part('template-page/components/card_agent') ?>
                 </div>
-                <div data-loader class="loader">
-                    <img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" />
-                </div>
+
                 <div class="" data-container-table>
 
                 </div>

@@ -20,6 +20,19 @@ if (empty($floor_apartaments)) {
     $floor_apartaments = get_apartaments_on_floor($map_apartaments, $current_liter);
 }
 
+$count = 0;
+while (count($floor_apartaments) % 6 !== 0) {
+    $floor_apartaments[] = $floor_apartaments[$count];
+    $count++;
+}
+
+$max_floor = array_key_first($map_apartaments[$current_liter]['floors']);
+$max_floors = [];
+
+if (!empty($max_floor)) {
+    $max_floors =  array_reverse(array_fill(0, $max_floor, ''), true);
+}
+
 ?>
 <div class="product__gk-filter">
     <?php if (!$crb_gk_is_house) { ?>
@@ -110,54 +123,65 @@ if (empty($floor_apartaments)) {
                         <?php } ?>
                     </ul>
                 <?php
+
                 }
             } else { ?>
                 <div class="gk-schema">
                     <div class="gk-schema-floor">
+                        <div></div>
+                        <?php foreach ($max_floors as $key => $floor) { ?>
+                            <div><?php echo $key + 1 ?></div>
+                        <?php } ?>
                         <div>Этаж</div>
-                        <?php foreach ($map_apartaments[$current_liter]['floors'] as $key => $floor) {
-                            if (count($floor) !== 0) {
-                        ?>
-                                <div><?php echo $key ?></div>
-                        <?php }
-                        } ?>
                     </div>
                     <div class="gk-schema__wrapper">
                         <div class="gk-schema__line">
                             <div class="gk-schema-row">
                                 <div class="gk-schema__block">
-                                    <div class="gk-schema__service"></div>
-                                    <?php foreach ($map_apartaments[$current_liter]['floors'] as $floor) {
+                                    <div class="roof-wrapper">
+                                        <div class="gk-schema-apartaments-roof">
+                                            <?php foreach ($floor_apartaments as $apartment) { ?>
+                                                <div class="gk-schema-apartaments__roof-room">
+                                                    <div class=""></div>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+
+                                    <?php foreach ($max_floors as $floor_key => $sample) {
+                                        $floor = $map_apartaments[$current_liter]['floors'][$floor_key + 1];
+                                        $current_floor = [];
                                         if (!empty($floor)) {
                                             $current_floor = $floor;
-
+                                        } else {
+                                            $current_floor = array_fill(0, count($floor_apartaments), '0');
+                                        }
                                     ?>
-                                            <div class="gk-schema-apartaments">
-                                                <?php foreach ($floor_apartaments as $apartment) {
-                                                    $link = '';
-                                                    if (in_array($apartment['rooms'], array_column($current_floor, 'rooms'))) {
-                                                        foreach ($current_floor as $key => $item) {
-                                                            if ($item['rooms'] == $apartment['rooms']) {
-                                                                $link = get_permalink($item['id_post']);
-                                                                unset($current_floor[$key]);
-                                                                break;
-                                                            }
+                                        <div class="gk-schema-apartaments">
+                                            <?php foreach ($floor_apartaments as $apartment) {
+                                                $link = '';
+                                                if (in_array($apartment['rooms'], array_column($current_floor, 'rooms'))) {
+                                                    foreach ($current_floor as $key => $item) {
+                                                        if ($item['rooms'] == $apartment['rooms']) {
+                                                            $link = get_permalink($item['id_post']);
+                                                            unset($current_floor[$key]);
+                                                            break;
                                                         }
                                                     }
+                                                }
 
-                                                ?>
-                                                    <a href="<?php echo !empty($link) ? $link : '#'; ?>" <?php echo !empty($link) ? '' : 'style="pointer-events: none; cursor: default;"' ?>
-                                                        <?php echo !empty($link) ? 'data-info-apartament' : ''; ?>
-                                                        <?php echo !empty($link) ? 'data-info-apartament-id=' . $item['id_post'] : ''; ?>>
-                                                        <div class="gk-schema-apartaments__room <?php echo !empty($link) ? 'active' : ''  ?> ">
-                                                            <?php echo intval($apartment['rooms']) ? $apartment['rooms'] : mb_substr($apartment['rooms'], 0, 1); ?>
-                                                        </div>
-                                                    </a>
-
-                                                <?php } ?>
-                                            </div>
-                                    <?php }
-                                    } ?>
+                                            ?>
+                                                <a href="<?php echo !empty($link) ? $link : '#'; ?>" <?php echo !empty($link) ? '' : 'style="pointer-events: none; cursor: default;"' ?>
+                                                    <?php echo !empty($link) ? 'data-info-apartament' : ''; ?>
+                                                    <?php echo !empty($link) ? 'data-info-apartament-id=' . $item['id_post'] : ''; ?>>
+                                                    <div class="gk-schema-apartaments__room <?php echo !empty($link) ? 'active' : ''  ?> ">
+                                                        <?php echo intval($apartment['rooms']) ? $apartment['rooms'] : mb_substr($apartment['rooms'], 0, 1); ?>
+                                                    </div>
+                                                </a>
+                                            <?php } ?>
+                                        </div>
+                                    <?php } ?>
+                                    <div class="gk-schema__service"></div>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +191,6 @@ if (empty($floor_apartaments)) {
         } else { ?>
             <div class="empty-filter"> Ничего не найдено</div>
         <?php } ?>
-
     </section>
 </div>
 <?php if (!empty($map_apartaments) && !$crb_gk_is_house) { ?>

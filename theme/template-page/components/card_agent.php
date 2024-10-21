@@ -5,13 +5,8 @@ $agent_phone = preg_replace('/[^0-9]/', '', $product_agent_phone);
 $format_phone_agent = '+' . substr($agent_phone, 0, 1) . ' ' . substr($agent_phone, 1, 3) . ' ' . substr($agent_phone, 4, 3) . ' - ' . substr($agent_phone, 7, 2) . ' - ...';
 ?>
 <div class="single-gk-card__order">
-    <article class="agent-order" data-agent-order>
-        <div data-loader class="loader agent-loader">
-            <img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" />
-        </div>
-
+    <article class="agent-order" data-agent-order> 
         <div class="" data-container-card-agent-info></div>
-
         <div class="button-wrapper">
             <?php if (!empty($video_src)) { ?>
                 <div class="agent-order__favorites">

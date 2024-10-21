@@ -21,6 +21,12 @@ wp_enqueue_script('get_card_gk_single-js', get_template_directory_uri() . '/inc/
 wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
 ?>
 <main class="page">
+  <div data-loader class="loader">
+    <div class="loader-image-wrapper">
+      <img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" />
+      <span>Пожалуйста подождите..</span>
+    </div>
+  </div>
   <div class="main-favorites">
     <?php $crb_new_building_title = carbon_get_post_meta(get_the_ID(), 'crb_new_building_title');
 

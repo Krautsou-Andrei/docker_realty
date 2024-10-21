@@ -191,18 +191,22 @@ $type_filter = $search_params->type_filter;
     const priceTo = document.querySelector(SELECTORS.PRICE_TO);
     const rangesPrice = document.querySelectorAll(SELECTORS.RANGE_PRICE);
 
-    const minValArea = areaFrom.value;
-    const maxValArea = areaTo.value;
-    const minValPrice = priceFrom.value;
-    const maxValPrice = priceTo.value;
+    const minValArea = areaFrom?.value;
+    const maxValArea = areaTo?.value;
+    const minValPrice = priceFrom?.value;
+    const maxValPrice = priceTo?.value;
 
-    rangesArea.forEach(range => {
-      range.style.left = (minValArea / areaFrom.max) * 100 + '%';
-      range.style.right = 100 - (maxValArea / areaTo.max) * 100 + '%';
-    })
-    rangesPrice.forEach(range => {
-      range.style.left = (minValPrice / priceFrom.max) * 100 + '%';
-      range.style.right = 100 - (maxValPrice / priceTo.max) * 100 + '%';
-    })
+    if (minValArea && maxValArea) {
+      rangesArea.forEach(range => {
+        range.style.left = (minValArea / areaFrom.max) * 100 + '%';
+        range.style.right = 100 - (maxValArea / areaTo.max) * 100 + '%';
+      })
+    }
+    if (minValPrice && maxValPrice) {
+      rangesPrice.forEach(range => {
+        range.style.left = (minValPrice / priceFrom.max) * 100 + '%';
+        range.style.right = 100 - (maxValPrice / priceTo.max) * 100 + '%';
+      })
+    }
   </script>
 </div>

@@ -2,6 +2,7 @@ jQuery(document).ready(function ($) {
   const SELECTORS = {
     CONTAINER_CARD_AGENT: "[data-container-card-agent-info]",
     CONTAINER_TABLE: "[data-container-table]",
+    FILTER_SLIDER: "[data-filter-slider-area]",
     INPUT_TABLE_PARAMS: "[data-input-table-params]",
     LOADER: "[data-loader]",
   };
@@ -30,6 +31,12 @@ jQuery(document).ready(function ($) {
       }
       if (response.pageGk) {
         content.html(response.pageGk);
+        if (document.querySelector(SELECTORS.FILTER_SLIDER)) {
+          const filterSlider = new GlobalFilterSlider(
+            document.querySelector(SELECTORS.FILTER_SLIDER)
+          );
+          GlobalSetSliderByFilter();
+        }
       } else {
         content.html("Ничего не найдено");
       }

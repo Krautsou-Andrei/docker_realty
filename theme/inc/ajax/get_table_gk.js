@@ -4,6 +4,7 @@ jQuery(document).ready(function ($) {
   initializeFormFilter = function () {
     const SELECTORS = {
       CONTAINER_TABLE: "[data-container-table]",
+      FILTER_SLIDER: "[data-filter-slider-area]",
       FORM_APARTAMENTS: "[data-form-table-apartamens]",
       FORM_APARTAMENTS_INPUT: "[data-form-table-apartaments-input]",
       FORM_INPUT: "[data-form-table-input]",
@@ -21,6 +22,10 @@ jQuery(document).ready(function ($) {
           ? []
           : $(SELECTORS.FORM_APARTAMENTS).serializeArray();
 
+      const formArea = $(this).attr("name").includes("option-select-area")
+        ? $(SELECTORS.FILTER_SLIDER).serializeArray()
+        : [];
+
       const currentLiter = formTableLiter[0].value;
       const container_table = $(SELECTORS.CONTAINER_TABLE);
 
@@ -32,10 +37,18 @@ jQuery(document).ready(function ($) {
           params_table: inputTableParamsValue,
           current_liter: currentLiter,
           form_apartamens: formApartamens,
+          form_area: formArea,
         },
         success: function (response) {
           if (response.pageGkTable) {
             container_table.html(response.pageGkTable);
+
+            if (document.querySelector(SELECTORS.FILTER_SLIDER)) {
+              const filterSlider = new GlobalFilterSlider(
+                document.querySelector(SELECTORS.FILTER_SLIDER)
+              );
+              GlobalSetSliderByFilter();
+            }
           }
 
           if (response.inputTableParams) {

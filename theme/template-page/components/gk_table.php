@@ -13,6 +13,8 @@ $categories_rooms_checked = isset($args['categories_rooms_checked']) ? $args['ca
 $categories_area_checked = isset($args['categories_area_checked']) ? $args['categories_area_checked'] : [];
 $floor_apartaments = isset($args['floor_apartaments']) ? $args['floor_apartaments'] : [];
 $map_houses = isset($args['map_houses']) ? $args['map_houses'] : [];
+$product_plan = carbon_get_post_meta($id_page_gk, 'crb_gk_plan');
+$image_plan_url = wp_get_attachment_image_src($product_plan[0], 'full');
 
 $crb_gk_is_house = carbon_get_post_meta($id_page_gk, 'crb_gk_is_house');
 
@@ -49,53 +51,65 @@ if (!empty($max_floor)) {
                         <?php } ?>
                     </div>
                 <?php } ?>
-
-                <?php if (!empty($map_apartaments[$current_liter]['area'])) { ?>
-                    <div class="gk-filter-area">
-                        <div class="gk-filter-area__title">Общая площадь</div>
-                        <div class="gk-filter-area__wrapper">
-                            <?php foreach ($map_apartaments[$current_liter]['area'] as $area) { ?>
-                                <label>
-                                    <input type="checkbox" name="gk-apartament-area" value="<?php echo intval($area['name']) ?>" data-form-table-input <?php echo in_array($area['name'], $categories_area_checked) ? 'checked' : '' ?> />
-                                    <span><?php echo intval($area['name']) ?> м2</span>
-                                </label>
-                            <?php } ?>
-                        </div>
-                    </div>
-                <?php  } ?>
-
             </form>
         </section>
     <?php } ?>
 </div>
 <div class="product__more" data-container-table>
     <section class="gk-table">
-        <?php if (!empty($literal && !$crb_gk_is_house)) { ?>
-
-            <form class="gk-table__tab tab-gk" action="#" data-form-table-liter>
-                <?php
-                foreach ($literal as $index => $liter) {
-                ?>
-                    <label class="tab-gk__label">
-                        <input hidden type="radio" name="gk-liter" value="<?php echo $liter; ?>" <?php if ($liter == $current_liter) {
-                                                                                                        echo 'checked';
-                                                                                                    } ?> data-form-table-input />
-                        <span>Литера <?php echo $liter; ?></span>
-                    </label>
-                <?php
-                }
-                ?>
-            </form>
-
-        <?php } ?>
-
-
-        <?php if (!empty($crb_gk_plan)) { ?>
+        <div class="gk-table__filter">
             <div class="gk-plan">
-                <button type="button" data-type="popup-plan"><span data-type="popup-plan">Схема литеров</span></button>
+                <div class="gk-plan__image" data-type="popup-plan">
+                    <img src="<?php echo get_image_url($image_plan_url) ?>" alt="" width="258" height="159" data-type="popup-plan" />
+                </div>
             </div>
-        <?php } ?>
+            <div class="tab-gk__wrapper">
+                <?php if (!empty($literal && !$crb_gk_is_house)) { ?>
+                    <div class="tab-gk__liter">
+                        <div class="tab-gk__title">
+                            <span>Корпуса</span>
+                        </div>
+                        <form class="gk-table__tab tab-gk" action="#" data-form-table-liter>
+                            <?php
+                            foreach ($literal as $index => $liter) {
+                            ?>
+                                <label class="tab-gk__label">
+                                    <input hidden type="radio" name="gk-liter" value="<?php echo $liter; ?>" <?php if ($liter == $current_liter) {
+                                                                                                                    echo 'checked';
+                                                                                                                } ?> data-form-table-input />
+                                    <span><?php echo $liter; ?></span>
+                                </label>
+                            <?php
+                            }
+                            ?>
+                        </form>
 
+                    </div>
+                <?php } ?>
+                <?php if (!empty($map_apartaments[$current_liter]['area'])) {
+
+                    $first_value_area = intval(reset($map_apartaments[$current_liter]['area'])['name']);
+                    $last_value_area = intval(end($map_apartaments[$current_liter]['area'])['name']);
+                ?>
+                    <form action="#" class="tab-gk__area" data-filter-slider-area>
+                        <div class="tab-gk__title">
+                            <span>Площадь, м² <span> от <span data-filter-from-view><?php echo !empty($categories_area_checked[0]) ? $categories_area_checked[0] : $first_value_area ?></span> до <span data-filter-to-view><?php echo !empty($categories_area_checked[1]) ? $categories_area_checked[1] : $last_value_area ?></span></span>
+                            </span>
+                        </div>
+                        <div class="select-area__wrapper-label">
+                            <div class="slider">
+                                <div class="progress" data-range-progress-filter data-range-progress-area></div>
+                            </div>
+                            <div class="range-input">
+                                <input id='area-from' type="range" class="range-min" min="<?php echo $first_value_area ?>" max="<?php echo $last_value_area ?>" value="<?php echo !empty($categories_area_checked[0]) ? $categories_area_checked[0] : $first_value_area ?>" step="1" name="option-select-area-from" data-input-visible data-filter-from data-form-table-input />
+                                <input id='area-to' type="range" class="range-max" min="<?php echo $first_value_area ?>" max="<?php echo $last_value_area ?>" value="<?php echo !empty($categories_area_checked[1]) ? $categories_area_checked[1] : $last_value_area ?>" step="1" name="option-select-area-to" data-input-visible data-filter-to data-form-table-input />
+                            </div>
+                        </div>
+                    </form>
+                <?php } ?>
+            </div>
+
+        </div>
         <?php if (!empty($map_apartaments) && !empty($map_apartaments[$current_liter]['floors'])) {
             if ($crb_gk_is_house) {
                 if (!empty($map_houses)) { ?>

@@ -26,6 +26,7 @@ function realty_scripts()
 	wp_enqueue_script('custom-script-get-body-popup-apartament', get_template_directory_uri() . '/inc/ajax/get_body_popup_apartament.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('custom-send-subscribe-form', get_template_directory_uri() . '/inc/ajax/send_telegram_form.js', array('jquery'), 'null', true);
 	wp_enqueue_script('custom-send-offer-telegram', get_template_directory_uri() . '/inc/ajax/send_offer_telegram.js', array('jquery'), 'null', true);
+	wp_enqueue_script('custom-filter-slider', get_template_directory_uri() . '/js/filter-slider.js', array('jquery'), 'null', true);
 
 	wp_localize_script('custom-script-get-body-popup-apartament', 'ajax_object', array('ajaxurl' => admin_url('admin-ajax.php')));
 	wp_localize_script('custom-script-lazy-new-buildings', 'ajax_object', array('ajaxurl' => admin_url('admin-ajax.php')));

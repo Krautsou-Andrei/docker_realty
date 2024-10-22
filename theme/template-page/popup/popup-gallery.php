@@ -1,5 +1,11 @@
 <?php
-require_once get_template_directory() . '/inc/lib/get_image_url.php'; ?>
+require_once get_template_directory() . '/inc/lib/get_image_url.php';
+require_once get_template_directory() . '/inc/enums/template_name.php';
+
+$template =  get_page_template_slug();
+$is_single_page = $template !== '';
+
+?>
 
 <div class="popup" data-popup="popup-gallery" data-close-overlay>
   <script>
@@ -27,17 +33,19 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php'; ?>
     <div class="popup__content">
       <div class="popup__container">
         <div class="popup-gallery__header">
-          <div class="popup-gallery__tabs">
-            <label>
-              <input type="radio" name="popup-galery-type" id="" checked data-button-start-slide>
-              <span>Планировка</span>
-            </label>
+          <?php if ($is_single_page) { ?>
+            <div class="popup-gallery__tabs">
+              <label>
+                <input type="radio" name="popup-galery-type" id="" checked data-button-start-slide>
+                <span>Планировка</span>
+              </label>
 
-            <label>
-              <input type="radio" name="popup-galery-type" id="" data-button-current-slide>
-              <span>Галерея</span>
-            </label>
-          </div>
+              <label>
+                <input type="radio" name="popup-galery-type" id="" data-button-current-slide>
+                <span>Галерея</span>
+              </label>
+            </div>
+          <?php } ?>
           <div class="popup-gallery__info">
             <?php
             $product_id = carbon_get_post_meta(get_the_ID(), 'product-id');

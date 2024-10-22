@@ -36,31 +36,13 @@ if (!empty($max_floor)) {
 }
 
 ?>
-<div class="product__gk-filter">
-    <?php if (!$crb_gk_is_house) { ?>
-        <section class="page-gk-filter">
-            <form action="#" class="page-gk-filter__form" data-form-table-apartamens>
-                <?php if (!empty($map_apartaments[$current_liter]['rooms'])) { ?>
-                    <div class="gk-filter-rooms">
-                        <div class="gk-filter-rooms__title">Количество комнат</div>
-                        <?php foreach ($map_apartaments[$current_liter]['rooms'] as $room) { ?>
-                            <label>
-                                <input type="checkbox" name="gk-apartament-rooms" value="<?php echo $room['name'] ?>" data-form-table-input <?php echo in_array($room['name'], $categories_rooms_checked) ? 'checked' : '' ?> />
-                                <span><?php echo $room['name'] ?></span>
-                            </label>
-                        <?php } ?>
-                    </div>
-                <?php } ?>
-            </form>
-        </section>
-    <?php } ?>
-</div>
+
 <div class="product__more" data-container-table>
     <section class="gk-table">
         <div class="gk-table__filter">
             <div class="gk-plan">
                 <div class="gk-plan__image" data-type="popup-plan">
-                    <img src="<?php echo get_image_url($image_plan_url) ?>" alt="" width="258" height="159" data-type="popup-plan" />
+                    <img src="<?php echo get_image_url($image_plan_url) ?>" alt="" width="258" height="200" data-type="popup-plan" />
                 </div>
             </div>
             <div class="tab-gk__wrapper">
@@ -85,6 +67,22 @@ if (!empty($max_floor)) {
                         </form>
 
                     </div>
+                <?php } ?>
+                <?php if (!empty($map_apartaments[$current_liter]['rooms']) && !$crb_gk_is_house) { ?>
+                    <form action="#" class="tab-gk__rooms" data-form-table-apartamens>
+                        <div class="tab-gk__title">
+                            <span>Количество комнат</span>
+                        </div>
+                        <div class="gk-table__tab tab-gk">
+                            <?php foreach ($map_apartaments[$current_liter]['rooms'] as $room) { ?>
+                                <label class="tab-gk__label">
+                                    <input hidden type="checkbox" name="gk-apartament-rooms" value="<?php echo $room['name'] ?>" data-form-table-input <?php echo in_array($room['name'], $categories_rooms_checked) ? 'checked' : '' ?> />
+                                    <span><?php echo intval($room['name']) ? $room['name'] : mb_substr($room['name'], 0, 1);?></span>
+                                </label>
+                            <?php } ?>
+
+                        </div>
+                    </form>
                 <?php } ?>
                 <?php if (!empty($map_apartaments[$current_liter]['area'])) {
 

@@ -3,15 +3,11 @@ require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 require_once get_template_directory() . '/inc/lib/sort_gk.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
-require_once get_template_directory() . '/inc/maps/map_cities.php';
 
 function get_query_filter_catalog($paged)
 {
-    global $MAP_CITIES;
 
-    $filter_city = isset($_GET['city']) ? $_GET['city'] : '2306';
-
-    $search_param_city = isset($MAP_CITIES[$filter_city]) ? $MAP_CITIES[$filter_city] : 'Новороссийск';
+    $filter_city = isset($_GET['city']) ? $_GET['city'] : 'Новороссийск';
 
     $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : 'Квартиры';
 
@@ -39,9 +35,9 @@ function get_query_filter_catalog($paged)
         }
     }
 
-    $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $search_param_city) ?? 1;
+    $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $filter_city) ?? 1;
 
-    $page_ids = sort_gk($search_param_city);
+    $page_ids = sort_gk($filter_city);
 
     $args = array(
         'post_type'      => 'page', // Тип поста

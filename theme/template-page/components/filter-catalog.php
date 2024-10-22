@@ -6,9 +6,8 @@ require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 
 $search_params = get_params_filter_catalog();
 
+$cities_names = $search_params->cities_names;
 $filter_city = $search_params->filter_city;
-
-$search_param_city = $search_params->search_param_city;
 
 $filter_type_build = $search_params->filter_type_build;
 
@@ -41,33 +40,29 @@ if (!empty($filter_price_view[0])) {
 
 <form action="/wp-content/themes/realty/inc/lib/filter-new-building.php?>" class="filter-catalog__form form-filter-catalog" method="get">
   <div class="form-filter-catalog__list">
-    <input hidden type="radio" name="type" value="<?php echo $type_filter ?>" data-name="Дома" id="" checked />
+    <input hidden type="radio" name="type" value="<?php echo $type_filter ?>" data-name="Дома" id="" checked data-select-type />
     <input hidden type="text" name="select-price" value="<?php echo $filter_price ?>" id="" checked data-select-price />
     <input hidden type="text" name="select-area" value="<?php echo $filter_area ?>" id="" checked data-select-area />
     <div class="label-option-radio-wrapper label label-city" id="filter-city" data-checked>
       <div class="option-radio">
-        <span class="option-radio__label" data-checked-view data-default-value="Город"><?php echo !empty($search_param_city) ? $search_param_city : 'Город' ?></span>
+        <span class="option-radio__label" data-checked-view data-default-value="Город"><?php echo !empty($filter_city) ? $filter_city : 'Город' ?></span>
         <span data-arrow></span>
       </div>
-
-      <div class="option-radio__select" data-select>
-        <ul>
-          <li>
-            <label>
-              <span>Новороссийск</span>
-              <input type="radio" name="option-radio-city" value="Новороссийск" data-name="Новороссийск" id="" <?php echo $filter_city === '2306' ? 'checked' : '' ?> data-input-visible />
-              <span></span>
-            </label>
-          </li>
-          <li>
-            <label>
-              <span>Краснодар</span>
-              <input type="radio" name="option-radio-city" value="Краснодар" data-name="Краснодар" id="" <?php echo $filter_city === '2301' ? 'checked' : '' ?> data-input-visible />
-              <span></span>
-            </label>
-          </li>
-        </ul>
-      </div>
+      <?php if (!empty($cities_names)) { ?>
+        <div class="option-radio__select" data-select>
+          <ul>
+            <?php foreach ($cities_names as $city) { ?>
+              <li>
+                <label>
+                  <span><?php echo $city ?></span>
+                  <input type="radio" name="option-radio-city" value="<?php echo $city ?>" data-name="<?php echo $city ?>" id="" <?php echo $filter_city === $city ? 'checked' : '' ?> data-input-visible />
+                  <span></span>
+                </label>
+              </li>
+            <?php } ?>
+          </ul>
+        </div>
+      <?php } ?>
     </div>
     <div class="label-option-radio-wrapper label label-type" id="filter-flat" data-checked>
       <div class="option-radio">

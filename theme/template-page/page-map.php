@@ -8,9 +8,8 @@ Template Name: Страница карта
 require_once get_template_directory() . '/inc/enums/default_enum.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 require_once get_template_directory() . '/inc/lib/get_query_filter_catalog.php';
+require_once get_template_directory() . '/inc/lib/get_title_city.php';
 require_once get_template_directory() . '/inc/lib/sort_gk.php';
-require_once get_template_directory() . '/inc/maps/map_cities.php';
-require_once get_template_directory() . '/inc/maps/map_title_by_cities.php';
 
 get_header();
 
@@ -19,10 +18,9 @@ get_header();
     <div class="main-favorites">
         <?php $crb_new_building_title = carbon_get_post_meta(get_the_ID(), 'crb_new_building_title');
 
-        $filter_city = isset($_GET['city']) ? $_GET['city'] : '2306';
+        $filter_city = isset($_GET['city']) ? $_GET['city'] : 'Новороссийск';
 
-        $search_param_city = isset($MAP_CITIES[$filter_city]) ? $MAP_CITIES[$filter_city] : 'Новороссийск';
-        $title_city =  isset($MAP_TITLE_BY_CITIES[$filter_city]) ? $MAP_TITLE_BY_CITIES[$filter_city] : 'в Краснодаре';
+        $title_city =  get_title_city($filter_city);
 
         $paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
@@ -49,7 +47,7 @@ get_header();
         }
 
         $params_map = [
-            'city' => $search_param_city,
+            'city' => $filter_city,
             'coordinates_center' => isset($locations[0]) ? $locations[0]['coordinates'] : [],
             'locations' => $locations,
             'title' => 'Новостройки в Новороссийске',

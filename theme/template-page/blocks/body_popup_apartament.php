@@ -1,6 +1,7 @@
 <?php
 require_once get_template_directory() . '/inc/lib/get_image_url.php';
 
+$area = $args['area'];
 $image = $args['image'];
 $price = $args['price'];
 $price_meter = $args['price_meter'];
@@ -9,7 +10,7 @@ $image_url = wp_get_attachment_image_src($image, 'full');
 ?>
 
 
-<div class="popup-apartament__title">Квартира</div>
+<div class="popup-apartament__title">Квартира <?php echo $area ?> м²</div>
 <div class="popup-apartament__info-wrapper">
     <div class="popup-apartament__image">
         <img src="<?php echo get_image_url($image_url) ?>" alt="" width="100" height="100" />

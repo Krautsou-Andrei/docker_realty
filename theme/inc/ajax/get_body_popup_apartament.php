@@ -4,11 +4,13 @@ function get_body_popup_apartament()
 {
     $id_apartament = $_POST['id_apartament'];
 
+    $area =carbon_get_post_meta($id_apartament, 'product-area');
     $image = isset(carbon_get_post_meta($id_apartament, 'product-gallery')[0]) ? carbon_get_post_meta($id_apartament, 'product-gallery')[0] : '';
     $price = carbon_get_post_meta($id_apartament, 'product-price');
     $price_meter = carbon_get_post_meta($id_apartament, 'product-price-meter');
 
     $params = [
+        'area' => $area,
         'image' => $image,
         'price' => $price,
         'price_meter' => $price_meter

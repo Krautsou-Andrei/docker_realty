@@ -23,13 +23,13 @@ if (!empty($crb_gk_gallery[0])) {
 
 <div class="catalog-gk__card">
     <li class="gk-card">
-        <a href="<?php echo $crb_gk_permalink ?>">
+        <a class="gk-card__link" href="<?php echo $crb_gk_permalink ?>">
             <div class="gk-card__image">
                 <img loading="lazy" src="<?php echo get_image_url($image_url) ?>" alt="" width="380" height="195" />
             </div>
             <div class="gk-card__info info">
                 <h3 class="info__title title--lg title--promo-slide"><? echo $gk_name ?></h3>
-                <p class="info__description"><? echo preg_replace('/<p.*?>(.*?)<\/p>/', '$1', $gk_description)  ?></p>
+                <p class="info__description"><? echo  $gk_description  ?></p>
                 <p class="info__price">
                     <?php if (!empty($crb_gk_min_price_meter)) { ?>
                         от <span><?php echo  number_format(round($crb_gk_min_price_meter), 0, '.', ' ') ?></span> ₽ за м²

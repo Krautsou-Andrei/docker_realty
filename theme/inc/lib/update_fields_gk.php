@@ -16,11 +16,15 @@ function update_fields_gk($post_id, $block, $name_city)
         $ids_gallery[] = upload_image_from_url($render);
     }
 
+    $description = $block->description;
+    $description = preg_replace('/<a.*?>(.*?)<\/a>/', '', $description);
+    $description = preg_replace('/<p.*?>(.*?)<\/p>/', '$1<br>', $description);
+
     carbon_set_post_meta($post_id, 'crb_gk_id', $block->_id);
     carbon_set_post_meta($post_id, 'crb_gk_name', $block->name);
     carbon_set_post_meta($post_id, 'crb_gk_plan', $ids_gallery_plan);
     carbon_set_post_meta($post_id, 'crb_gk_gallery', $ids_gallery);
-    carbon_set_post_meta($post_id, 'crb_gk_description', preg_replace('/<p.*?>(.*?)<\/p>/', '$1</br>', $block->description));
+    carbon_set_post_meta($post_id, 'crb_gk_description', $description);
     carbon_set_post_meta($post_id, 'crb_gk_city', $name_city);
     carbon_set_post_meta($post_id, 'crb_gk_address', $block->address[0]);
     carbon_set_post_meta($post_id, 'crb_gk_latitude',  $block->geometry->coordinates[0]);

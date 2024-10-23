@@ -11,10 +11,6 @@ function create_page($parent_id, $page, $template, $city_name)
     $page_slug = get_transliterate($page_title);
     $page_enabled_id = page_exists($page_slug);
 
-    echo '</br></br>page_slug</br>';
-    var_dump($page_slug);
-    echo '</br></br>';
-
     create_category($page_title, $page_slug, CATEGORIES_ID::GK);
 
     $value_exists = false;
@@ -34,10 +30,6 @@ function create_page($parent_id, $page, $template, $city_name)
         );
         $crb_gk_city[] = $new_value;
         carbon_set_post_meta($parent_id, 'crb_gk', $crb_gk_city);
-
-        echo '</br></br>new_value</br>';
-        var_dump($new_value);
-        echo '</br></br>';
     }
 
     // Проверка, существует ли страница с таким же слагом
@@ -56,30 +48,30 @@ function create_page($parent_id, $page, $template, $city_name)
         'page_template' => $template, // Шаблон страницы
     );
 
-    echo '</br></br>page_data</br>';
-        var_dump($page_data);
-        echo '</br></br>';
-
     // Вставка страницы в БД
     $page_id = wp_insert_post($page_data);
 
-    echo '</br></br>page_id</br>';
-    var_dump($page_id);
-    echo '</br></br>';
-
     // Проверка на ошибки
     if (is_wp_error($page_id)) {
-        return $page_id;
+        $error_message = $page_id->get_error_message(); // Получаем сообщение об ошибке
+        $to = 'andreysv2006@yandex.by'; // Замените на нужный адрес электронной почты
+        $subject = 'Ошибка при вставке поста';
+        $body = 'Произошла ошибка при вставке поста: ' . $error_message;
+        $headers = 'From: no-reply@example.com' . "\r\n" . // Убедитесь, что у вас правильный адрес отправителя
+            'Reply-To: no-reply@example.com' . "\r\n"; // Убедитесь, что у вас правильный адрес для ответа
+
+
+        mail($to, $subject, $body, $headers);
+
+        error_log('Ошибка при вставке поста: ' . $error_message);
+
+        return $page_id; // Возвращаем объект ошибки
     }
 
     // Установка шаблона страницы
     if ($template) {
         update_post_meta($page_id, '_wp_page_template', $template);
         update_fields_gk($page_id, $page, $city_name);
-
-        echo '</br></br>template</br>';
-        var_dump($template);
-        echo '</br></br>';
     }
 
     return $page_id;

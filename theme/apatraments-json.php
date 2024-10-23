@@ -82,13 +82,14 @@ function start()
             $region_name = $region->name;
 
             $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
-            prettyVarDump($id_page);
+
 
             if (!empty($id_page)) {
                 create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
             }
         }
     }
+    mail_success('Страницы');
     prettyVarDump($categories_cities_name);
 
     $json_folder_path = get_template_directory() . '/json/apartaments.json';
@@ -125,8 +126,20 @@ function start()
             create_post($data);
         }
     }
+    mail_success('Посты');
 }
-start();
+
+function mail_success($message)
+{
+    $to = 'andreysv2006@yandex.by'; // Замените на нужный адрес электронной почты
+    $subject = 'Успех';
+    $body = 'Успешно загрузились: ' . $message;
+    $headers = 'From: no-reply@example.com' . "\r\n" .
+        'Reply-To: no-reply@example.com' . "\r\n";
+
+    mail($to, $subject, $body, $headers);
+}
+
 function search_region($regions, $search_id)
 {
     $searchRegion = array_filter($regions, function ($object) use ($search_id) {

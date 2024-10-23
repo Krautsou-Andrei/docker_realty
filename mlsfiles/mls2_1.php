@@ -466,7 +466,7 @@ class MLSReal
 
 
 <form method="post" id="realty_filter_form" class="hidden-xs">
-<div class="row realty_filter search_filter"><div class="col-xs-12">
+<div class="row realty_filter search_filter"><div class="col-xs-12 realty_filter__wrapper">
 
  	 <div class="op10 col-lg-3 col-md-4 col-sm-6 col-xs-12">
 

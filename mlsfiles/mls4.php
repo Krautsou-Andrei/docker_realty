@@ -374,7 +374,7 @@ class MLSReal
         </div>
 
 <form method="get" class="filert-mobile-form">
-<div class="realty_filter search_filter"><div class="col-xs-12">
+<div class="realty_filter search_filter"><div class="col-xs-12 realty_filter__wrapper">
 
  	 <div class="col-xs-12">
 

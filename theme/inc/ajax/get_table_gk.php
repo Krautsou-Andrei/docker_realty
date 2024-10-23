@@ -48,54 +48,76 @@ function get_table_gk()
 
     $map_apartaments_init = $decoded_params_table_array['map_apartaments'];
     $map_apartaments = $decoded_params_table_array['map_apartaments'];
+    $map_houses_init = $decoded_params_table_array['map_houses'];
+    $map_houses = $decoded_params_table_array['map_houses'];
 
     $current_area = [];
 
-    foreach ($map_apartaments[$current_liter]['floors'] as $key => $floor) {
+    if ($current_liter) {
+        foreach ($map_apartaments[$current_liter]['floors'] as $key => $floor) {
 
-        $filtered = array_filter($map_apartaments[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked, $categories_area_checked) {
-            if ((in_array($item['rooms'], $categories_rooms_checked) || empty($categories_rooms_checked)) && ((ceil($item['area']) >= $categories_area_checked[0] && ceil($item['area']) <= $categories_area_checked[1]) || empty($categories_area_checked))) {
+            $filtered = array_filter($map_apartaments[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked, $categories_area_checked) {
+                if ((in_array($item['rooms'], $categories_rooms_checked) || empty($categories_rooms_checked)) && ((ceil($item['area']) >= $categories_area_checked[0] && ceil($item['area']) <= $categories_area_checked[1]) || empty($categories_area_checked))) {
+                    return $item;
+                }
+            });
+
+            $map_apartaments[$current_liter]['floors'][$key] = array_values($filtered);
+
+            if (empty($map_apartaments[$current_liter]['floors'][$key])) {
+                unset($map_apartaments[$current_liter]['floors'][$key]);
+            }
+
+            foreach ($map_apartaments_init[$current_liter]['floors'][$key] as $apartament) {
+                if (in_array($apartament['rooms'], $categories_rooms_checked)) {
+                    $current_area[] = ceil($apartament['area']);
+                }
+            }
+        }
+    } else {
+
+
+        $filtered = array_filter($map_houses, function ($item) use ($categories_area_checked) {
+            if (((ceil($item['area']) >= $categories_area_checked[0] && ceil($item['area']) <= $categories_area_checked[1]) || empty($categories_area_checked))) {
                 return $item;
             }
         });
 
-        $map_apartaments[$current_liter]['floors'][$key] = array_values($filtered);
+        $map_houses = array_values($filtered);
+    }
 
-        if (empty($map_apartaments[$current_liter]['floors'][$key])) {
-            unset($map_apartaments[$current_liter]['floors'][$key]);
-        }
+    if ($current_liter) {
 
-        foreach ($map_apartaments_init[$current_liter]['floors'][$key] as $apartament) {
-            if (in_array($apartament['rooms'], $categories_rooms_checked)) {
-                $current_area[] = ceil($apartament['area']);
+        $minArea = $categories_area_checked[0];
+        $maxArea = $categories_area_checked[1];
+
+        $filteredArea = array_filter($current_area, function ($value) use ($minArea, $maxArea) {
+            return $value >= $minArea && $value <= $maxArea;
+        });
+
+
+        if (empty($filteredArea) && !empty($current_area) && !empty($categories_area_checked)) {
+            foreach ($map_apartaments_init[$current_liter]['floors'] as $key => $floor) {
+                $filtered = array_filter($map_apartaments_init[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked) {
+                    if ((in_array($item['rooms'], $categories_rooms_checked) || empty($categories_rooms_checked))) {
+                        return $item;
+                    }
+                });
+
+                $map_apartaments[$current_liter]['floors'][$key] = array_values($filtered);
             }
         }
+
+
+        $map_apartaments[$current_liter]['area'] = array_filter($map_apartaments[$current_liter]['area'], function ($item) use ($current_area) {
+            if (in_array($item['name'], $current_area) || empty($current_area)) {
+                return $item;
+            }
+        });
+
+
+        krsort($map_apartaments[$current_liter]['floors']);
     }
-
-    $minArea = $categories_area_checked[0];
-    $maxArea = $categories_area_checked[1];
-
-    $filteredArea = array_filter($current_area, function ($value) use ($minArea, $maxArea) {
-        return $value >= $minArea && $value <= $maxArea;
-    });
-
-    if (empty($filteredArea) && !empty($current_area) && !empty($categories_area_checked)) {
-        foreach ($map_apartaments_init[$current_liter]['floors'] as $key => $floor) {
-            $filtered = array_filter($map_apartaments_init[$current_liter]['floors'][$key], function ($item) use ($categories_rooms_checked) {
-                return (in_array($item['rooms'], $categories_rooms_checked) || empty($categories_rooms_checked));
-            });
-
-            $map_apartaments[$current_liter]['floors'][$key] = array_values($filtered);
-        }
-    }
-
-    $map_apartaments[$current_liter]['area'] = array_filter($map_apartaments[$current_liter]['area'], function ($item) use ($current_area) {
-        if (in_array($item['name'], $current_area) || empty($current_area)) {
-            return $item;
-        }
-    });
-
-    krsort($map_apartaments[$current_liter]['floors']);
 
     $floor_apartaments = get_apartaments_on_floor($map_apartaments_init, $current_liter);
 
@@ -105,6 +127,7 @@ function get_table_gk()
         'categories_area' => $decoded_params_table_array['categories_area'],
         'categories_rooms' => $decoded_params_table_array['categories_rooms'],
         'map_apartaments' => $map_apartaments,
+        'map_houses' => $map_houses,
         'crb_gk_plan' => $decoded_params_table_array['crb_gk_plan'],
         'current_liter' => $current_liter,
         'categories_rooms_checked' => $categories_rooms_checked,
@@ -118,6 +141,7 @@ function get_table_gk()
         'categories_area' => $decoded_params_table_array['categories_area'],
         'categories_rooms' => $decoded_params_table_array['categories_rooms'],
         'map_apartaments' => $map_apartaments_init,
+        'map_houses' => $map_houses_init,
         'crb_gk_plan' => $decoded_params_table_array['crb_gk_plan'],
         'current_liter' => $current_liter,
         'categories_rooms_checked' => $categories_rooms_checked,

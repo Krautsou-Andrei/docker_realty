@@ -28,6 +28,8 @@ function update_fields_gk($post_id, $block, $name_city)
 
     carbon_set_post_meta($post_id, 'crb_gk_min_price', '');
     carbon_set_post_meta($post_id, 'crb_gk_min_price_meter', '');
+    carbon_set_post_meta($post_id, 'crb_gk_max_price', '');
+    carbon_set_post_meta($post_id, 'crb_gk_max_price_meter', '');
     carbon_set_post_meta($post_id, 'crb_gk_min_area', '');
     carbon_set_post_meta($post_id, 'crb_gk_max_area', '');
     carbon_set_post_meta($post_id, 'crb_gk_min_rooms', '');

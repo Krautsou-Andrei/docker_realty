@@ -26,7 +26,7 @@ jQuery(document).ready(function ($) {
         ? $(SELECTORS.FILTER_SLIDER).serializeArray()
         : [];
 
-      const currentLiter = formTableLiter[0].value;
+      const currentLiter = formTableLiter[0]?.value;
       const container_table = $(SELECTORS.CONTAINER_TABLE);
 
       $.ajax({

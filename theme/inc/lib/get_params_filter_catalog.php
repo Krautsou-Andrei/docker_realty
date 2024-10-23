@@ -54,13 +54,15 @@ function get_params_filter_catalog()
         'post_type'   => 'page',
         'post_status' => 'publish',
         'parent' => $id_page_city,
+        'posts_per_page' => -1, 
+        'fields' => 'ids', 
     );
 
     $gk_city = get_posts($args_gk_city);
-    $max_price = 0;
+    $max_price = 2;
 
-    foreach ($gk_city as $gk) {
-        $gk_price = carbon_get_post_meta($gk->ID, 'crb_gk_max_price');
+    foreach ($gk_city as $gk_id) {
+        $gk_price = carbon_get_post_meta($gk_id, 'crb_gk_max_price');
 
         if (intval($max_price) < $gk_price) {
             $max_price = intval($gk_price);

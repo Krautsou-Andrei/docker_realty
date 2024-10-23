@@ -13,11 +13,8 @@ function page_new_building_fields_gk()
     Container::make('post_meta', 'Настройки страницы')
         ->where('post_type', '=', 'page')
         ->where('post_template', '=', 'template-page/new-building-page-gk.php')
-        ->add_tab('Главная', array(
-            Field::make('text', 'crb_new_building_title_gk', 'Заголовок')->set_help_text('Город указывать не нужно'),
+        ->add_tab('Основные', [
             Field::make('text', 'crb_gk_id', 'Индекс объявления')->set_help_text('12328600010')->set_width(50)->set_required(true),
-
-        ))->add_tab('Основные', [
             Field::make('text', 'crb_gk_name', 'Заголовок')->set_width(100),
             Field::make('media_gallery', 'crb_gk_plan', 'План зайстройки')->set_width(25),
             Field::make('media_gallery', 'crb_gk_gallery', 'Галерея')->set_width(75),

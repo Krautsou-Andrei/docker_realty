@@ -77,17 +77,36 @@ if (!empty($max_floor)) {
                             <?php foreach ($map_apartaments[$current_liter]['rooms'] as $room) { ?>
                                 <label class="tab-gk__label">
                                     <input hidden type="checkbox" name="gk-apartament-rooms" value="<?php echo $room['name'] ?>" data-form-table-input <?php echo in_array($room['name'], $categories_rooms_checked) ? 'checked' : '' ?> />
-                                    <span><?php echo intval($room['name']) ? $room['name'] : mb_substr($room['name'], 0, 1);?></span>
+                                    <span><?php echo intval($room['name']) ? $room['name'] : mb_substr($room['name'], 0, 1); ?></span>
                                 </label>
                             <?php } ?>
 
                         </div>
                     </form>
                 <?php } ?>
-                <?php if (!empty($map_apartaments[$current_liter]['area'])) {
+                <?php if (!empty($map_apartaments[$current_liter]['area']) || $crb_gk_is_house) {
+                    $first_value_area;
+                    $last_value_area;
+                    if ($crb_gk_is_house) {
+                        $all_area = [];
+                        foreach ($map_apartaments as $key => $liter) {
 
-                    $first_value_area = intval(reset($map_apartaments[$current_liter]['area'])['name']);
-                    $last_value_area = intval(end($map_apartaments[$current_liter]['area'])['name']);
+                            if (!in_array(intval($liter['area'][0]['name']), $all_area)) {
+                                $all_area[] = intval($liter['area'][0]['name']);
+                            }
+                        }
+                        usort($all_area, function ($a, $b) {
+                            return intval($a) - intval($b);;
+                        });
+
+                        $first_value_area = intval(reset($all_area));
+                        $last_value_area = intval(end($all_area));
+                    } else {
+                        $first_value_area = intval(reset($map_apartaments[$current_liter]['area'])['name']);
+                        $last_value_area = intval(end($map_apartaments[$current_liter]['area'])['name']);
+                    }
+
+
                 ?>
                     <form action="#" class="tab-gk__area" data-filter-slider-area>
                         <div class="tab-gk__title">
@@ -108,7 +127,7 @@ if (!empty($max_floor)) {
             </div>
 
         </div>
-        <?php if (!empty($map_apartaments) && !empty($map_apartaments[$current_liter]['floors'])) {
+        <?php if (!empty($map_apartaments) && !empty($map_apartaments[$current_liter]['floors']) || $crb_gk_is_house) {
             if ($crb_gk_is_house) {
                 if (!empty($map_houses)) { ?>
                     <ul class="gk-schema-house__wrapper">

@@ -50,7 +50,7 @@ if (!empty($crb_gk_gallery[2])) {
                         <div class="product__image-wrapper">
                             <div class="product__image" data-type="popup-gallery">
                                 <div class="product-image-wrapper" data-type="popup-gallery">
-                                    <img class="product-image-wrapper__preview" src="<?php echo $image_preview_url[0] ?>" alt="" data-type="popup-gallery" />
+                                    <img class="product-image-wrapper__preview" src="<?php echo get_image_url($image_preview_url) ?>" alt="" data-type="popup-gallery" />
                                 </div>
                             </div>
                             <div class="product-single-slider swiper">

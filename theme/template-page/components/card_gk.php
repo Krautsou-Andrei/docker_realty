@@ -1,4 +1,5 @@
 <?php
+require_once get_template_directory() . '/inc/lib/get_image_url.php';
 
 $gk = $args;
 
@@ -24,7 +25,7 @@ if (!empty($crb_gk_gallery[0])) {
     <li class="gk-card">
         <a href="<?php echo $crb_gk_permalink ?>">
             <div class="gk-card__image">
-                <img loading="lazy" src="<?php echo $image_url[0] ?>" alt="" width="380" height="195" />
+                <img loading="lazy" src="<?php echo get_image_url($image_url) ?>" alt="" width="380" height="195" />
             </div>
             <div class="gk-card__info info">
                 <h3 class="info__title title--lg title--promo-slide"><? echo $gk_name ?></h3>

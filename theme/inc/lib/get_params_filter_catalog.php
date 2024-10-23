@@ -40,7 +40,7 @@ function get_params_filter_catalog()
     );
 
     $categories_area = get_categories($args_categories_area);
-    $max_area = 0;
+    $max_area = 2;
 
     foreach ($categories_area as $area) {
         if (intval($area->name) > $max_area) {

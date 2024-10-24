@@ -7,13 +7,17 @@ function update_fields_gk($post_id, $block, $name_city)
     $ids_gallery_plan = [];
 
     foreach ($block->plan as $render) {
-        $ids_gallery_plan[] = upload_image_from_url($render);
+        if (!empty($render)) {
+            $ids_gallery_plan[] = upload_image_from_url($render);
+        }
     }
 
     $ids_gallery = [];
 
     foreach ($block->renderer as $render) {
-        $ids_gallery[] = upload_image_from_url($render);
+        if (!empty($render)) {
+            $ids_gallery[] = upload_image_from_url($render);
+        }
     }
 
     $description = $block->description;
@@ -46,6 +50,10 @@ function update_fields_gk($post_id, $block, $name_city)
     $crb_gk_is_not_view = carbon_get_post_meta($post_id, 'crb_gk_is_not_view', true);
     if (empty($crb_gk_is_not_view)) {
         carbon_set_post_meta($post_id, 'crb_gk_is_not_view', '');
+    }
+
+    if (strpos(strtolower($block->name), 'коттедж')) {
+        carbon_set_post_meta($post_id, 'crb_gk_is_house', 'yes');
     }
 
     $updated_page = array(

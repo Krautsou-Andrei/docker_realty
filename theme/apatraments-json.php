@@ -11,12 +11,13 @@ require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 
-set_time_limit(0);
+
 
 use JsonMachine\Items;
 
 function start()
 {
+    set_time_limit(0);
 
     $args_cities = array(
         'hide_empty' => false,
@@ -68,9 +69,6 @@ function start()
         $rooms_ids[$room->crm_id] = $room->name_one;
     }
 
-
-
-
     $json_blocks_path = get_template_directory() . '/json/blocks.json';
     $json_blocks = file_get_contents($json_blocks_path);
     $blocks = json_decode($json_blocks);
@@ -83,13 +81,13 @@ function start()
 
             $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
 
-
             if (!empty($id_page)) {
                 create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
+                sleep(10);
             }
         }
     }
-    mail_success('Страницы');
+    // mail_success('Страницы');
     prettyVarDump($categories_cities_name);
 
     $json_folder_path = get_template_directory() . '/json/apartaments.json';
@@ -126,7 +124,7 @@ function start()
             create_post($data);
         }
     }
-    mail_success('Посты');
+    // mail_success('Посты');
 }
 
 function mail_success($message)

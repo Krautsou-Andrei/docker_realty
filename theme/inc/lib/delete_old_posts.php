@@ -1,6 +1,9 @@
 <?php
 function delete_old_posts()
 {
+
+    set_time_limit(0);
+
     $date_query = new DateTime();
     $date_query->modify('-5 day');
     $timestamp = $date_query->getTimestamp();

@@ -57,15 +57,6 @@ require( dirname( __FILE__ ) . '/direct_call.php' );
 
 require_once( dirname( __FILE__ ) . '/admin/admin-notices.php' );
 
-if(get_option('xyz_credit_link')=="ips"){
-
-	add_action('wp_footer', 'xyz_ips_credit');
-
-}
-function xyz_ips_credit() {	
-	$content = '<div style="width:100%;text-align:center; font-size:11px; clear:both"><a target="_blank" title="Insert PHP Snippet Wordpress Plugin" href="http://xyzscripts.com/wordpress-plugins/insert-php-code-snippet/">PHP Code Snippets</a> Powered By : <a target="_blank" title="PHP Scripts & Wordpress Plugins" href="http://www.xyzscripts.com" >XYZScripts.com</a></div>';
-	echo $content;
-}
 
 
 ?>

@@ -123,7 +123,7 @@ $template =  get_page_template_slug();
 		</div>
 	</footer>
 	</div>
-	<div class="gloabl-popup">
+	<div class="gloabl-popup visually-hidden">
 		<div class="personal-popup">
 			<?php get_template_part('template-page/popup/popup-personal-info') ?>
 		</div>
@@ -207,9 +207,9 @@ if (!empty($crb_button_up)) {
 		webvisor: true
 	});
 </script>
-<noscript>
+<!-- <noscript>
 	<div><img src="https://mc.yandex.ru/watch/96676382" style="position:absolute; left:-9999px;" alt="" /></div>
-</noscript>
+</noscript> -->
 <!-- /Yandex.Metrika counter -->
 
 <?php wp_footer(); ?>

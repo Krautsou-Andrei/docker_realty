@@ -1,4 +1,5 @@
 <?php
+require_once get_template_directory() . '/inc/lib/get_message_server.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 
 function update_fields_gk($post_id, $block, $name_city)
@@ -9,7 +10,10 @@ function update_fields_gk($post_id, $block, $name_city)
     if (!empty($block->plan)) {
         foreach ($block->plan as $render) {
             if (!empty($render)) {
-                $ids_gallery_plan[] = upload_image_from_url($render);
+                $attachment_id = upload_image_from_url($render);
+                if (!is_wp_error($attachment_id)) {
+                    $ids_gallery_plan[] = $attachment_id;
+                }
             }
         }
     }
@@ -18,9 +22,12 @@ function update_fields_gk($post_id, $block, $name_city)
     if (!empty($block->renderer)) {
         foreach ($block->renderer as $render) {
             if (!empty($render)) {
-                $ids_gallery[] = upload_image_from_url($render);
-                sleep(1);
+                $attachment_id = upload_image_from_url($render);
+                if (!is_wp_error($attachment_id)) {
+                    $ids_gallery[] = $attachment_id;
+                }
             }
+            sleep(1);
         }
     }
 
@@ -34,10 +41,11 @@ function update_fields_gk($post_id, $block, $name_city)
     carbon_set_post_meta($post_id, 'crb_gk_gallery', $ids_gallery);
     carbon_set_post_meta($post_id, 'crb_gk_description', $description);
     carbon_set_post_meta($post_id, 'crb_gk_city', $name_city);
-    carbon_set_post_meta($post_id, 'crb_gk_address', $block->address[0]);
-    carbon_set_post_meta($post_id, 'crb_gk_latitude',  $block->geometry->coordinates[0]);
-    carbon_set_post_meta($post_id, 'crb_gk_longitude', $block->geometry->coordinates[1]);
-
+    carbon_set_post_meta($post_id, 'crb_gk_address', !empty($block->address[0]) ? $block->address[0] : '');
+    if (!empty($block->geometry->coordinates[0]) && !empty($block->geometry->coordinates[1])) {
+        carbon_set_post_meta($post_id, 'crb_gk_latitude', $block->geometry->coordinates[0]);
+        carbon_set_post_meta($post_id, 'crb_gk_longitude',  $block->geometry->coordinates[1]);
+    }
     carbon_set_post_meta($post_id, 'crb_gk_min_price', '');
     carbon_set_post_meta($post_id, 'crb_gk_min_price_meter', '');
     carbon_set_post_meta($post_id, 'crb_gk_max_price', '');

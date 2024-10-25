@@ -50,13 +50,15 @@ function create_post($data)
 
     foreach ($product_gallery as $image) {
         $attachment_id = upload_image_from_url($image);
-
         if (!is_wp_error($attachment_id)) {
             $ids_product_gallery[] = $attachment_id;
         }
     }
 
     $id_image_agent = upload_image_from_url($product_agent_url);
+    if (is_wp_error($id_image_agent)) {
+        $id_image_agent = '';
+    }
 
 
     $id_city_category = create_category($product_city, get_transliterate($product_city), CATEGORIES_ID::CITIES);

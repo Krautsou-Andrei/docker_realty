@@ -95,7 +95,7 @@ function start()
         unset($chunk);
 
         gc_collect_cycles();
-        sleep(1); // Пауза между пакетами
+        sleep(3); // Пауза между пакетами
     }
     get_message_server('Страницы');
     prettyVarDump($categories_cities_name);

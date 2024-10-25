@@ -73,11 +73,11 @@ if (!empty($crb_gk_gallery[2])) {
                             <?php if (!empty($image_preview_url_two)) { ?>
                                 <div class="product__gallery">
                                     <div data-type="popup-gallery">
-                                        <img src="<?php echo get_image_url($image_preview_url_two)  ?>" alt="" width="226" height="166" />
+                                        <img loading="lazy" src="<?php echo get_image_url($image_preview_url_two)  ?>" alt="" width="226" height="166" />
                                     </div>
                                     <?php if (!empty($image_preview_url_three)) { ?>
                                         <div data-type="popup-gallery">
-                                            <img src="<?php echo get_image_url($image_preview_url_three) ?>" alt="" width="226" height="166" />
+                                            <img loading="lazy" src="<?php echo get_image_url($image_preview_url_three) ?>" alt="" width="226" height="166" />
                                             <span data-type="popup-gallery"><?php echo count($crb_gk_gallery) ?></span>
                                         </div>
                                     <?php } ?>

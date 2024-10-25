@@ -1,6 +1,7 @@
 <?php
 
 require_once get_template_directory() . '/inc/lib/create_category.php';
+require_once get_template_directory() . '/inc/lib/get_message_server.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 require_once get_template_directory() . '/inc/lib/update_fields_gk.php';
 
@@ -52,19 +53,10 @@ function create_page($parent_id, $page, $template, $city_name)
     $page_id = wp_insert_post($page_data);
 
     // Проверка на ошибки
-    if (is_wp_error($page_id)) {
-        $error_message = $page_id->get_error_message(); // Получаем сообщение об ошибке
-        $to = 'andreysv2006@yandex.by'; // Замените на нужный адрес электронной почты
-        $subject = 'Ошибка при вставке поста';
-        $body = 'Произошла ошибка при вставке поста: ' . $error_message;
-        $headers = 'From: no-reply@example.com' . "\r\n" . // Убедитесь, что у вас правильный адрес отправителя
-            'Reply-To: no-reply@example.com' . "\r\n"; // Убедитесь, что у вас правильный адрес для ответа
-
-
-        mail($to, $subject, $body, $headers);
-
-        error_log('Ошибка при вставке поста: ' . $error_message);
-
+    if (is_wp_error($page_id)) {       
+        $message = 'Ошибка ' . $page_id;    
+        
+        get_message_server($message, true);
         return $page_id; // Возвращаем объект ошибки
     }
 

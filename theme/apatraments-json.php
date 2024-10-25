@@ -7,11 +7,12 @@ declare(strict_types=1);
 require_once get_template_directory() . '/vendor/autoload.php';
 require_once get_template_directory() . '/inc/lib/create_page.php';
 require_once get_template_directory() . '/inc/lib/create_post.php';
+require_once get_template_directory() . '/inc/lib/get_message_server.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 
-
+set_time_limit(0);
 
 use JsonMachine\Items;
 
@@ -73,21 +74,30 @@ function start()
     $json_blocks = file_get_contents($json_blocks_path);
     $blocks = json_decode($json_blocks);
 
+    get_message_server('Start');
+    $chunk_size = 10; // Количество блоков для обработки за раз
+    $blocks_chunks = array_chunk($blocks, $chunk_size);
 
-    foreach ($blocks as $block) {
-        if (in_array($block->district, $regions_ids)) {
-            $region = search_region($regions, $block->district);
-            $region_name = $region->name;
+    foreach ($blocks_chunks as $chunk) {
+        foreach ($chunk as $block) {
+            if (in_array($block->district, $regions_ids)) {
+                $region = search_region($regions, $block->district);
+                $region_name = $region->name;
 
-            $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
+                $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
 
-            if (!empty($id_page)) {
-                create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
-                sleep(10);
+                if (!empty($id_page)) {
+                    create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
+                }
             }
+            unset($block);
         }
+        unset($chunk);
+
+        gc_collect_cycles();
+        sleep(1); // Пауза между пакетами
     }
-    // mail_success('Страницы');
+    get_message_server('Страницы');
     prettyVarDump($categories_cities_name);
 
     $json_folder_path = get_template_directory() . '/json/apartaments.json';
@@ -123,20 +133,14 @@ function start()
 
             create_post($data);
         }
+        unset($item);
+
+        gc_collect_cycles();
+        sleep(1);
     }
-    // mail_success('Посты');
+    get_message_server('Посты');
 }
-
-function mail_success($message)
-{
-    $to = 'andreysv2006@yandex.by'; // Замените на нужный адрес электронной почты
-    $subject = 'Успех';
-    $body = 'Успешно загрузились: ' . $message;
-    $headers = 'From: no-reply@example.com' . "\r\n" .
-        'Reply-To: no-reply@example.com' . "\r\n";
-
-    mail($to, $subject, $body, $headers);
-}
+start();
 
 function search_region($regions, $search_id)
 {
@@ -146,7 +150,6 @@ function search_region($regions, $search_id)
 
     return  reset($searchRegion);
 }
-
 
 function prettyVarDump($data)
 {

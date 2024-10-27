@@ -122,8 +122,10 @@ $template =  get_page_template_slug();
 
 		</div>
 	</footer>
-	</div>
-	<div class="gloabl-popup visually-hidden">
+<?php  } ?>
+</div>
+<div class="gloabl-popup" style="font-size: 0;">
+	<?php if ($template !== TEMPLATE_NAME::MAP) { ?>
 		<div class="personal-popup">
 			<?php get_template_part('template-page/popup/popup-personal-info') ?>
 		</div>
@@ -148,8 +150,9 @@ $template =  get_page_template_slug();
 			<?php get_template_part('template-page/popup/popup-employee-documents') ?>
 		</div>
 		<button id='success' type="button" aria-hidden="true"></button>
-	</div>
-<?php } ?>
+	<?php } ?>
+</div>
+
 <script>
 	function showFullNumber(event) {
 

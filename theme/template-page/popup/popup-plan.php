@@ -20,7 +20,7 @@ $product_plan = carbon_get_post_meta(get_the_ID(), 'crb_gk_plan');
                                     $image_url = wp_get_attachment_image_src($plan_id, 'full');
                                 ?>
                                     <li class="slider-preview-plan__slide swiper-slide">
-                                        <div class="slide-wrapper">
+                                        <div class="slide-wrapper swiper-zoom-container">
                                             <img src="<?php echo $image_url[0] ?>" alt="" />
                                         </div>
                                     </li>

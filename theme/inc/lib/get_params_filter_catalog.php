@@ -35,7 +35,7 @@ function get_params_filter_catalog()
     $rooms_names = !empty($rooms_parent_category_id) ? get_names_children_categories($rooms_parent_category_id) : [];
 
     $args_categories_area = array(
-        'hide_empty' => false,
+        'hide_empty' => true,
         'parent' => CATEGORIES_ID::AREA,
     );
 
@@ -54,8 +54,8 @@ function get_params_filter_catalog()
         'post_type'   => 'page',
         'post_status' => 'publish',
         'parent' => $id_page_city,
-        'posts_per_page' => -1, 
-        'fields' => 'ids', 
+        'posts_per_page' => -1,
+        'fields' => 'ids',
     );
 
     $gk_city = get_posts($args_gk_city);

@@ -2,9 +2,9 @@
 
 class CATEGORIES_ID
 {
-    const AREA = 35;
-    const CITIES = 33;
-    const GK = 37;
+    const AREA = 34;
+    const CITIES = 32;
+    const GK = 35;
     const PAGE_NEW_BUILDINGS = 4044;
-    const ROOMS = 36;
+    const ROOMS = 33;
 }

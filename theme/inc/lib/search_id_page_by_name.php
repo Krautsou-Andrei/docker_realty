@@ -1,12 +1,12 @@
 <?php
 
-
 function search_id_page_by_name($paren_page, $post_title)
 {
 
     $args_search_page = array(
         'post_type'   => 'page',
         'post_status' => 'publish',
+        'posts_per_page' => -1,
         'post_parent'    => $paren_page, // ID родительской страницы
 
     );

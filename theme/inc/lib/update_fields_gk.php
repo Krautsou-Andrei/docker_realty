@@ -1,18 +1,23 @@
 <?php
 require_once get_template_directory() . '/inc/lib/get_message_server.php';
+require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 
 function update_fields_gk($post_id, $block, $name_city)
 {
 
     $ids_gallery_plan = [];
+    $upload_errors = [];
 
     if (!empty($block->plan)) {
         foreach ($block->plan as $render) {
             if (!empty($render)) {
                 $attachment_id = upload_image_from_url($render);
+                sleep(1);
                 if (!is_wp_error($attachment_id)) {
                     $ids_gallery_plan[] = $attachment_id;
+                } else {
+                    $upload_errors[] = $render;
                 }
             }
         }
@@ -22,12 +27,14 @@ function update_fields_gk($post_id, $block, $name_city)
     if (!empty($block->renderer)) {
         foreach ($block->renderer as $render) {
             if (!empty($render)) {
+                sleep(1);
                 $attachment_id = upload_image_from_url($render);
                 if (!is_wp_error($attachment_id)) {
                     $ids_gallery[] = $attachment_id;
+                } else {
+                    $upload_errors[] = $render;
                 }
             }
-            sleep(1);
         }
     }
 
@@ -73,4 +80,9 @@ function update_fields_gk($post_id, $block, $name_city)
         'post_title' => $block->name,
     );
     wp_update_post($updated_page);
+
+    if (!empty($upload_errors)) {
+        var_dump($upload_errors);
+        get_message_server_telegram('Ошибка загрузки картинки ' . $block->name, implode(', ', $upload_errors));
+    }
 }

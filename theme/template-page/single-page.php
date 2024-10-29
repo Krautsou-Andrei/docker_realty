@@ -97,6 +97,8 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                       if (!empty($product_gallery[0])) {
                         $image_url = wp_get_attachment_image_src($product_gallery[0], 'full');
                         echo ' <img class="product-image-wrapper__preview"  data-type="popup-gallery"  src="' . get_image_url($image_url) . '" alt="" data-post-id="' . get_the_ID() . '"  >';
+                      } else {
+                        echo ' <img class="product-image-wrapper__preview"  src="' . get_image_url('') . '" alt="" data-post-id="' . get_the_ID() . '"  >';
                       }
                       ?>
                     </div>
@@ -111,6 +113,10 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                           <img src="' . get_image_url($image_url) . '" alt="" data-type="popup-gallery">
                         </div>';
                         }
+                      } else {
+                        echo '<div class="product-single-slider__slide ">
+                        <img src="' . get_image_url('') . '" alt="" >
+                      </div>';
                       }
                       ?>
                     </div>
@@ -148,9 +154,12 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
                         <div class="product-single-slide-gallery__slide swiper-slide">
                           <img src="<?php echo get_image_url($image_url) ?>" alt="" />
                         </div>
-                    <? }
-                    } ?>
-
+                      <? }
+                    } else { ?>
+                      <div class="product-single-slide-gallery__slide ">
+                        <img src="<?php echo get_image_url('') ?>" alt="" />
+                      </div>
+                    <?php } ?>
                   </div>
                 </div>
                 <div class="product__info">
@@ -400,7 +409,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
 
                         if (formSeven) {
                           const input = formSeven.querySelector(`input[name=your-link]`);
-                          input.value = `${link}`;                          
+                          input.value = `${link}`;
                         }
                       }
                     }

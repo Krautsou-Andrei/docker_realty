@@ -48,9 +48,9 @@ if (!empty($crb_gk_gallery[2])) {
                 <div class="product-wrapper">
                     <div class="single-gk-card__product product">
                         <div class="product__image-wrapper">
-                            <div class="product__image" data-type="popup-gallery">
-                                <div class="product-image-wrapper" data-type="popup-gallery">
-                                    <img class="product-image-wrapper__preview" src="<?php echo get_image_url($image_preview_url) ?>" alt="" data-type="popup-gallery" />
+                            <div class="product__image" <?php echo $image_preview_url ? 'data-type="popup-gallery"' : ''; ?>>
+                                <div class="product-image-wrapper" <?php echo $image_preview_url ? 'data-type="popup-gallery"' : ''; ?>>
+                                    <img class="product-image-wrapper__preview" src="<?php echo get_image_url($image_preview_url) ?>" alt="" <?php echo $image_preview_url ? 'data-type="popup-gallery"' : ''; ?> />
                                 </div>
                             </div>
                             <div class="product-single-slider swiper">
@@ -65,8 +65,13 @@ if (!empty($crb_gk_gallery[2])) {
                                                 <div class="swiper-lazy-preloader"></div>
                                             </div>
 
-                                    <? }
-                                    } ?>
+                                        <? }
+                                    } else { ?>
+                                        <div class="product-single-slider__slide">
+                                            <img src="<?php echo get_image_url('') ?>" alt="" />
+
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                             <div class="custom-scrollbar"></div>
@@ -86,7 +91,8 @@ if (!empty($crb_gk_gallery[2])) {
                         </div>
                         <div class="product-single-slide-gallery swiper">
                             <div class="product-single-slide-gallery__wrapper swiper-wrapper">
-                                <?php if (!empty($crb_gk_gallery)) {
+                                <?php
+                                if (!empty($crb_gk_gallery)) {
                                     foreach ($crb_gk_gallery as $image) {
                                         $image_url = wp_get_attachment_image_src($image, 'full');
 
@@ -94,8 +100,13 @@ if (!empty($crb_gk_gallery[2])) {
                                         <div class="product-single-slide-gallery__slide swiper-slide">
                                             <img src="<?php echo get_image_url($image_url) ?>" alt="" />
                                         </div>
-                                <? }
-                                } ?>
+                                    <? }
+                                } else { ?>
+                                    <div class="product-single-slide-gallery__slide ">
+                                        <img src="<?php echo get_image_url('') ?>" alt="" />
+                                    </div>
+
+                                <?php } ?>
 
                             </div>
                         </div>

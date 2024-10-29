@@ -1,5 +1,6 @@
 <?php
 require_once get_template_directory() . '/inc/lib/get_message_server.php';
+require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 
 function upload_image_from_url($image_url, $count = 0)
 {
@@ -103,6 +104,7 @@ function upload_image($image_url)
     if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
         $error_message = 'Ошибка при получении изображения ';
         // get_message_server($error_message);
+        get_message_server_telegram('Ошибка ', $error_message);
         return new WP_Error($error_message);
     }
 
@@ -112,6 +114,7 @@ function upload_image($image_url)
     if (empty($image_data)) {
         $error_message = 'Пустое тело ответа ';
         // get_message_server($error_message);
+        get_message_server_telegram('Ошибка ', $error_message);
         return new WP_Error($error_message);
     }
 
@@ -120,6 +123,7 @@ function upload_image($image_url)
 
     if (is_wp_error($webp_attachment_id)) {
         $error_message = 'Ошибка при конвертации ';
+        get_message_server_telegram('Ошибка ', $error_message);
         return new WP_Error($error_message);
     }
 

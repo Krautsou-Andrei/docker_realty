@@ -71,7 +71,7 @@ get_header();
               </h1>
               <p class="catalog-gk__subtitle">Найдено <?php echo num_word($total_posts, DEFAULT_ENUM::RESIDENTAL_COMPLEX) ?></p>
             </div>
-            <a href="<?php echo $link_page_map ?>">
+            <a class="button--map" href="<?php echo $link_page_map ?>">
               <img src="<?php bloginfo('template_url'); ?>/assets/images/yamap/map.svg" width="16" height="16" alt="">
             </a>
           </div>

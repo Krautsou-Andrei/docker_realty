@@ -96,7 +96,7 @@ $is_single_page = $template !== '';
 
                   echo '
                         <li class="slider-preview__slide swiper-slide">
-                        <div class="slide-wrapper">
+                        <div class="slide-wrapper swiper-zoom-container">
                         <img src="' . get_image_url($image_url) . '" alt="">
                         </div>
                         </li>';

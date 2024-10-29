@@ -1,15 +1,9 @@
 jQuery(document).ready(function ($) {
   let container = $("#content-container-new-gk-buildings");
-  let isLoading = false;
+
   let paged = 2; // Начинаем с загрузки со второй страницы
 
   function loadMorePosts() {
-    if (isLoading) {
-      return;
-    }
-
-    isLoading = true;
-
     $.ajax({
       url: ajax_object.ajaxurl,
       type: "POST",
@@ -23,7 +17,6 @@ jQuery(document).ready(function ($) {
           favorites();
 
           paged++;
-          isLoading = false;
         }
       },
     });

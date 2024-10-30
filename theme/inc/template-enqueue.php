@@ -15,7 +15,6 @@ function realty_scripts()
 
 	wp_enqueue_script('realty-swiper-script', get_template_directory_uri() . '/assets/js/swiper-bundle.min.js', array('jquery'), 'null', true);
 	wp_enqueue_script('realty-script', get_template_directory_uri() . '/assets/js/app.min.js', array('jquery'), 'null', true);
-	wp_enqueue_script('custom-script-lazy-new-buildings', get_template_directory_uri() . '/js/lazy-script-new-buildings.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('custom-script-lazy-new-gk-buildings', get_template_directory_uri() . '/inc/ajax/load_gk_new_buildings.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('custom-script-load-documents', get_template_directory_uri() . '/js/load-popup-documents.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('custom-script-filter-documents', get_template_directory_uri() . '/js/filter-documents.js', array('jquery'), '1.0', true);

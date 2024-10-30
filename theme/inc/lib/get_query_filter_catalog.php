@@ -4,10 +4,14 @@ require_once get_template_directory() . '/inc/enums/template_name.php';
 require_once get_template_directory() . '/inc/lib/sort_gk.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 
-function get_query_filter_catalog($paged)
+function get_query_filter_catalog($paged, $city = '')
 {
 
     $filter_city = isset($_GET['city']) ? $_GET['city'] : 'Новороссийск';
+
+    if (!empty($city)) {
+        $filter_city = $city;
+    }
 
     $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : 'Квартиры';
 

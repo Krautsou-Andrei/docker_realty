@@ -1,30 +1,39 @@
 <?php
-require_once get_template_directory() . '/inc/lib/get_message_server.php';
-require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 
 function upload_image_from_url($image_url, $count = 0)
 {
     $max_attempts = 5;
     $delay = 2;
 
+    // Пытаемся загрузить изображение
     $attachment_id = upload_image($image_url);
 
+    // Проверяем, произошла ли ошибка при загрузке изображения
     if (is_wp_error($attachment_id)) {
-
+        // Проверяем, достигнут ли лимит попыток
         if ($count < $max_attempts) {
-            sleep($delay);
+            sleep($delay); // Ждем перед следующей попыткой
             return upload_image_from_url($image_url, $count + 1); // Увеличиваем счетчик
         } else {
-            return $attachment_id;
+            return $attachment_id; // Возвращаем ошибку, если достигнут лимит попыток
         }
     }
 
-    return $attachment_id;
+    // Конвертация изображения в WebP
+    $webp_attachment_id = convert_image_to_webp($attachment_id, $image_url);
+
+    // Проверяем, произошла ли ошибка при конвертации
+    if (is_wp_error($webp_attachment_id)) {
+        // Возвращаем ошибку, если конвертация не удалась
+        return $webp_attachment_id;
+    }
+
+    return $webp_attachment_id; // Возвращаем ID вложения WebP, если конвертация успешна
 }
 
 function convert_image_to_webp($image_data, $image_url)
 {
-    // Максимально допустимый размер изображения (например, 5MB)
+    // Максимально допустимый размер изображения (например, 10MB)
     $max_size = 10 * 1024 * 1024; // 10 мегабайт
 
     // Проверяем размер изображения
@@ -57,11 +66,11 @@ function convert_image_to_webp($image_data, $image_url)
 
         // Создание вложения для WebP
         $webp_attachment = array(
-            'guid'           => $uploads['url'] . '/' . $webp_filename,
+            'guid' => $uploads['url'] . '/' . $webp_filename,
             'post_mime_type' => 'image/webp',
-            'post_title'     => sanitize_file_name($webp_filename),
-            'post_content'   => '',
-            'post_status'    => 'inherit'
+            'post_title' => sanitize_file_name($webp_filename),
+            'post_content' => '',
+            'post_status' => 'inherit'
         );
 
         // Вставка вложения в БД и получение ID
@@ -89,9 +98,9 @@ function convert_image_to_webp($image_data, $image_url)
 function upload_image($image_url)
 {
     $existing_attachment = get_posts(array(
-        'post_type'   => 'attachment',
-        'meta_key'    => 'external_image_url',
-        'meta_value'  => $image_url,
+        'post_type' => 'attachment',
+        'meta_key' => 'external_image_url',
+        'meta_value' => $image_url,
         'posts_per_page' => 1,
     ));
 
@@ -103,8 +112,6 @@ function upload_image($image_url)
 
     if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
         $error_message = 'Ошибка при получении изображения ';
-        // get_message_server($error_message);
-        get_message_server_telegram('Ошибка ', $error_message);
         return new WP_Error($error_message);
     }
 
@@ -113,19 +120,9 @@ function upload_image($image_url)
 
     if (empty($image_data)) {
         $error_message = 'Пустое тело ответа ';
-        // get_message_server($error_message);
-        get_message_server_telegram('Ошибка ', $error_message);
         return new WP_Error($error_message);
     }
 
-    // Конвертация изображения в WebP
-    $webp_attachment_id = convert_image_to_webp($image_data, $image_url);
-
-    if (is_wp_error($webp_attachment_id)) {
-        $error_message = 'Ошибка при конвертации ';
-        get_message_server_telegram('Ошибка ', $error_message);
-        return new WP_Error($error_message);
-    }
-
-    return $webp_attachment_id;
+    // Возвращаем данные изображения для конвертации
+    return $image_data; // Возвращаем данные изображения, чтобы конвертировать их в WebP
 }

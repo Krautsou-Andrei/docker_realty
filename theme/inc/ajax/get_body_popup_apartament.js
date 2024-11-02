@@ -53,11 +53,18 @@ jQuery(document).ready(function ($) {
     init() {
       if (this.apartaments) {
         this.apartaments.forEach((apartament) => {
-          apartament.addEventListener(
-            "mouseenter",
-            this.handlerOver.bind(this)
-          );
-          apartament.addEventListener("mouseleave", this.handlerOut.bind(this));
+          const isMobile = window.matchMedia("(pointer: coarse)").matches;
+
+          if (!isMobile) {
+            apartament.addEventListener(
+              "mouseenter",
+              this.handlerOver.bind(this)
+            );
+            apartament.addEventListener(
+              "mouseleave",
+              this.handlerOut.bind(this)
+            );
+          }
         });
       }
     }

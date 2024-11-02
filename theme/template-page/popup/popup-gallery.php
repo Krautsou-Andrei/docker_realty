@@ -92,12 +92,19 @@ $is_single_page = $template !== '';
 
                 <?php
                 foreach ($product_gallery as $image_id) {
-                  $image_url = wp_get_attachment_image_src($image_id, 'full');
+                  $is_url = filter_var($image_id, FILTER_VALIDATE_URL);
+                  $image_url;
+                  if ($is_url) {
+                    $image_url = $image_id;
+                  } else {
+                    $image_url = wp_get_attachment_image_src($image_id, 'full');
+                  }
+
 
                   echo '
                         <li class="slider-preview__slide swiper-slide">
                         <div class="slide-wrapper swiper-zoom-container">
-                        <img src="' . get_image_url($image_url) . '" alt="">
+                        <img src="' . get_image_url($image_url, $is_url) . '" alt="">
                         </div>
                         </li>';
                 }
@@ -121,10 +128,16 @@ $is_single_page = $template !== '';
 
                 <?php
                 foreach ($product_gallery as $image_id) {
-                  $image_url = wp_get_attachment_image_src($image_id, 'full');
+                  $is_url = filter_var($image_id, FILTER_VALIDATE_URL);
+                  $image_url;
+                  if ($is_url) {
+                    $image_url = $image_id;
+                  } else {
+                    $image_url = wp_get_attachment_image_src($image_id, 'full');
+                  }
 
                   echo '<li class="slider-popup-gallery__slide swiper-slide">
-                        <img src="' . get_image_url($image_url) . '" alt="" width="82" height="64">
+                        <img src="' . get_image_url($image_url, $is_url) . '" alt="" width="82" height="64">
                       </li>';
                 }
                 ?>

@@ -93,7 +93,7 @@ function get_card_gk_single()
 
     foreach ($map_apartaments as $liter => $data) {
         usort($map_apartaments[$liter]['area'], function ($a, $b) {
-            return strcmp(intval($a['name']), intval($b['name']));
+            return intval($a['name']) - intval($b['name']);
         });
     }
 

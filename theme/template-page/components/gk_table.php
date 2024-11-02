@@ -102,6 +102,7 @@ if (!empty($max_floor)) {
                         $first_value_area = intval(reset($all_area));
                         $last_value_area = intval(end($all_area));
                     } else {
+
                         $first_value_area = intval(reset($map_apartaments[$current_liter]['area'])['name']);
                         $last_value_area = intval(end($map_apartaments[$current_liter]['area'])['name']);
                     }

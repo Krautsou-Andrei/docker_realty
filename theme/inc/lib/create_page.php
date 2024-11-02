@@ -35,7 +35,7 @@ function create_page($parent_id, $page, $template, $city_name)
 
     // Проверка, существует ли страница с таким же слагом
     if ($page_enabled_id) {
-        update_fields_gk($page_enabled_id, $page, $city_name);
+        update_fields_gk($page_enabled_id, $page, $city_name, true);
         return;
     }
 
@@ -53,9 +53,9 @@ function create_page($parent_id, $page, $template, $city_name)
     $page_id = wp_insert_post($page_data);
 
     // Проверка на ошибки
-    if (is_wp_error($page_id)) {       
-        $message = 'Ошибка ' . $page_id;    
-        
+    if (is_wp_error($page_id)) {
+        $message = 'Ошибка ' . $page_id;
+
         get_message_server($message, true);
         return $page_id; // Возвращаем объект ошибки
     }

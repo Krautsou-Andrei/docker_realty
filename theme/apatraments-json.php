@@ -7,7 +7,6 @@ declare(strict_types=1);
 require_once get_template_directory() . '/vendor/autoload.php';
 require_once get_template_directory() . '/inc/lib/create_page.php';
 require_once get_template_directory() . '/inc/lib/create_post.php';
-require_once get_template_directory() . '/inc/lib/get_message_server.php';
 require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
@@ -64,8 +63,7 @@ function start()
 
     $blocks = convert_json_to_array('/json/blocks.json');
 
-    // get_message_server('Start');
-    get_message_server_telegram('Успех', 'Начало');
+    get_message_server_telegram('Успех', 'Начало загрузки жилых комплексов');
 
     foreach ($blocks as $block) {
         if (in_array($block->district, $regions_ids)) {
@@ -82,14 +80,14 @@ function start()
         wp_cache_flush();
     }
 
-    // get_message_server('Страницы');
-    get_message_server_telegram('Успех', 'Загрузились страницы категории городов: ' .  implode(', ', $categories_cities_name));
+    get_message_server_telegram('Успех', 'Загрузились жилые комплексы городов: ' .  implode(', ', $categories_cities_name));
 
 
     prettyVarDump($regions_ids);
 
     $json_folder_path = get_template_directory() . '/json/apartaments.json';
     $items = Items::fromFile($json_folder_path);
+    get_message_server_telegram('Успех', 'Начало загрузки объявлений');
 
     foreach ($items as $name => $item) {
         if (in_array($item->block_district, $regions_ids)) {
@@ -124,8 +122,8 @@ function start()
         sleep(3);
         wp_cache_flush();
     }
-    // get_message_server('Посты');
-    get_message_server_telegram('Успех', 'загрузились посты');
+
+    get_message_server_telegram('Успех', 'Загрузились объявления');
 }
 start();
 

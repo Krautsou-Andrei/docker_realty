@@ -3,28 +3,30 @@ require_once get_template_directory() . '/inc/lib/get_message_server.php';
 require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 
-function update_fields_gk($post_id, $block, $name_city)
+function update_fields_gk($post_id, $block, $name_city, $is_old = false)
 {
     try {
         $ids_gallery_plan = [];
         $upload_errors = [];
 
-        if (!empty($block->plan)) {
+        if (!empty($block->plan) && !$is_old) {
             foreach ($block->plan as $render) {
                 if (!empty($render)) {
+                    sleep(6);
                     $attachment_id = upload_image_from_url($render);
-                    sleep(3);
                     if (!is_wp_error($attachment_id)) {
                         $ids_gallery_plan[] = $attachment_id;
                     } else {
                         $upload_errors[] = $render;
+                        $error_message = $attachment_id->get_error_message();
+                        get_message_server_telegram('Ошибка загрузки картинки план' . $block->name, $error_message);
                     }
                 }
             }
         }
         $ids_gallery = [];
 
-        if (!empty($block->renderer)) {
+        if (!empty($block->renderer)  && !$is_old) {
             foreach ($block->renderer as $render) {
                 if (!empty($render)) {
                     sleep(3);
@@ -36,26 +38,28 @@ function update_fields_gk($post_id, $block, $name_city)
                         $error_message = $attachment_id->get_error_message();
                         get_message_server_telegram('Ошибка загрузки картинки ' . $block->name, $error_message);
                     }
-                   
                 }
             }
         }
 
-        $description = $block->description;
-        $description = preg_replace('/<a.*?>(.*?)<\/a>/', '', $description);
-        $description = preg_replace('/<p.*?>(.*?)<\/p>/', '$1<br>', $description);
+        if (!$is_old) {
+            $description = $block->description;
+            $description = preg_replace('/<a.*?>(.*?)<\/a>/', '', $description);
+            $description = preg_replace('/<p.*?>(.*?)<\/p>/', '$1<br>', $description);
 
-        carbon_set_post_meta($post_id, 'crb_gk_id', $block->_id);
-        carbon_set_post_meta($post_id, 'crb_gk_name', $block->name);
-        carbon_set_post_meta($post_id, 'crb_gk_plan', $ids_gallery_plan);
-        carbon_set_post_meta($post_id, 'crb_gk_gallery', $ids_gallery);
-        carbon_set_post_meta($post_id, 'crb_gk_description', $description);
-        carbon_set_post_meta($post_id, 'crb_gk_city', $name_city);
-        carbon_set_post_meta($post_id, 'crb_gk_address', !empty($block->address[0]) ? $block->address[0] : '');
-        if (!empty($block->geometry->coordinates[0]) && !empty($block->geometry->coordinates[1])) {
-            carbon_set_post_meta($post_id, 'crb_gk_latitude', $block->geometry->coordinates[0]);
-            carbon_set_post_meta($post_id, 'crb_gk_longitude',  $block->geometry->coordinates[1]);
+            carbon_set_post_meta($post_id, 'crb_gk_id', $block->_id);
+            carbon_set_post_meta($post_id, 'crb_gk_name', $block->name);
+            carbon_set_post_meta($post_id, 'crb_gk_plan', $ids_gallery_plan);
+            carbon_set_post_meta($post_id, 'crb_gk_gallery', $ids_gallery);
+            carbon_set_post_meta($post_id, 'crb_gk_description', $description);
+            carbon_set_post_meta($post_id, 'crb_gk_city', $name_city);
+            carbon_set_post_meta($post_id, 'crb_gk_address', !empty($block->address[0]) ? $block->address[0] : '');
+            if (!empty($block->geometry->coordinates[0]) && !empty($block->geometry->coordinates[1])) {
+                carbon_set_post_meta($post_id, 'crb_gk_latitude', $block->geometry->coordinates[0]);
+                carbon_set_post_meta($post_id, 'crb_gk_longitude',  $block->geometry->coordinates[1]);
+            }
         }
+
         carbon_set_post_meta($post_id, 'crb_gk_min_price', '');
         carbon_set_post_meta($post_id, 'crb_gk_min_price_meter', '');
         carbon_set_post_meta($post_id, 'crb_gk_max_price', '');

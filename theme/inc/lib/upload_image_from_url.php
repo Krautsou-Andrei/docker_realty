@@ -1,4 +1,5 @@
 <?php
+require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 
 function upload_image_from_url($image_url, $count = 0)
 {
@@ -33,17 +34,36 @@ function upload_image_from_url($image_url, $count = 0)
 
 function convert_image_to_webp($image_data, $image_url)
 {
-    // Максимально допустимый размер изображения (например, 10MB)
-    $max_size = 10 * 1024 * 1024; // 10 мегабайт
-
-    // Проверяем размер изображения
-    if (strlen($image_data) > $max_size) {
-        return new WP_Error('size_error', 'Изображение слишком большое для обработки.');
-    }
-
     try {
         $imagick = new Imagick();
         $imagick->readImageBlob($image_data);
+
+
+        if ($imagick->getImageWidth() > 2560 || $imagick->getImageHeight() > 1440) {
+            $width = $imagick->getImageWidth();
+            $height = $imagick->getImageHeight();
+
+            $coefficient = 1;
+
+            if ($width >= 2560) {
+                $coefficient = ceil($width / 2560);
+            }
+
+            if ($height > 1440 && $width < 2560) {
+                $coefficient = ceil($height / 1440);
+            }
+
+            if ($width >= 3000) {
+                get_message_server_telegram("Фатальная ошибка выполнение скрипта остановлено ", $image_url);
+            }
+
+            $imagick->resizeImage(
+                $width / $coefficient,
+                $height / $coefficient,
+                Imagick::FILTER_LANCZOS,
+                1
+            );
+        }
 
         // Получаем расширение файла
         $file_extension = pathinfo($image_url, PATHINFO_EXTENSION);
@@ -58,6 +78,7 @@ function convert_image_to_webp($image_data, $image_url)
         $imagick->setImageCompressionQuality(80); // 80 - качество
 
         // Сохраняем изображение в формате WebP
+
         $imagick->writeImage($webp_path);
 
         // Освобождаем память
@@ -97,10 +118,12 @@ function convert_image_to_webp($image_data, $image_url)
 
 function upload_image($image_url)
 {
+    $webp_image_url = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $image_url);
+
     $existing_attachment = get_posts(array(
         'post_type' => 'attachment',
         'meta_key' => 'external_image_url',
-        'meta_value' => $image_url,
+        'meta_value' => $webp_image_url,
         'posts_per_page' => 1,
     ));
 

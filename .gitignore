@@ -1,5 +1,4 @@
 /.srv/*
 !/.srv/custom.ini
-/uploads
 /theme/json
 /mlsfiles/cache

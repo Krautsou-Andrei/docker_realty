@@ -125,7 +125,7 @@ function start()
 
     get_message_server_telegram('Успех', 'Загрузились объявления');
 }
-start();
+
 
 function search_region($regions, $search_id)
 {

@@ -36,7 +36,7 @@ function my_custom_task()
         'regions',
         'builders',
         'blocks',
-        'apartaments'
+        'apartments'
     ];
 
     foreach ($names_files as $name) {

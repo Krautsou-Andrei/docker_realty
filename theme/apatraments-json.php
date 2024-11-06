@@ -85,7 +85,7 @@ function start()
 
     prettyVarDump($regions_ids);
 
-    $json_folder_path = get_template_directory() . '/json/apartaments.json';
+    $json_folder_path = get_template_directory() . '/json/apartments.json';
     $items = Items::fromFile($json_folder_path);
     get_message_server_telegram('Успех', 'Начало загрузки объявлений');
 

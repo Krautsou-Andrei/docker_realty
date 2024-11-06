@@ -37,6 +37,8 @@ services:
       - "./mlsfiles/:/var/www/html/wp-content/mlsfiles"
       - "./map/:/var/www/html/map"
       - "./assets/:/var/www/html/assets"
+      - "./config/wp-config.php:/var/www/html/wp-config.php"
+      - "./config/get_json.php:/var/www/html/get_json.php"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

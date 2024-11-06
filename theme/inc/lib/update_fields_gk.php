@@ -12,7 +12,7 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
         if (!empty($block->plan) && !$is_old) {
             foreach ($block->plan as $render) {
                 if (!empty($render)) {
-                    sleep(6);
+                    // sleep(6);
                     $attachment_id = upload_image_from_url($render);
                     if (!is_wp_error($attachment_id)) {
                         $ids_gallery_plan[] = $attachment_id;
@@ -29,7 +29,7 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
         if (!empty($block->renderer)  && !$is_old) {
             foreach ($block->renderer as $render) {
                 if (!empty($render)) {
-                    sleep(3);
+                    // sleep(3);
                     $attachment_id = upload_image_from_url($render);
                     if (!is_wp_error($attachment_id)) {
                         $ids_gallery[] = $attachment_id;

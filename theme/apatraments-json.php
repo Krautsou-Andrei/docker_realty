@@ -76,7 +76,7 @@ function start()
                 create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
             }
         }
-        sleep(3);
+        // sleep(3);
         wp_cache_flush();
     }
 
@@ -119,7 +119,7 @@ function start()
 
             create_post($data);
         }
-        sleep(3);
+        // sleep(3);
         wp_cache_flush();
     }
 

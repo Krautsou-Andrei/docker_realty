@@ -39,6 +39,12 @@ services:
       - "./assets/:/var/www/html/assets"
       - "./config/wp-config.php:/var/www/html/wp-config.php"
       - "./config/get_json.php:/var/www/html/get_json.php"
+      - "./config/my_cron_file:/etc/cron.d/my_cron_file"  # Добавляем файл cron
+    command: >
+      bash -c "apt-get update && apt-get install -y cron &&
+      chmod 0644 /etc/cron.d/my_cron_file &&
+      crontab /etc/cron.d/my_cron_file &&
+      cron && tail -f /var/log/get_json.log"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

@@ -1,0 +1,1 @@
+20 17 * * 4 /usr/local/bin/php /var/www/html/get_json.php >> /var/log/get_json.log 2>&1

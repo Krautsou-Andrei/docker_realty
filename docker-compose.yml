@@ -38,7 +38,7 @@ services:
       - "./assets/:/var/www/html/assets"     
       - "./config/get_json.php:/var/www/html/get_json.php"    
       - "./config/my_cron_file:/etc/cron.d/my_cron_file"
-      - "./config/cron_log:/var/log/cron.log" 
+      - "./config/cron.log:/var/log/cron.log" 
     command: >
       bash -c "apt-get update && apt-get install -y cron &&
       chmod 0644 /etc/cron.d/my_cron_file &&

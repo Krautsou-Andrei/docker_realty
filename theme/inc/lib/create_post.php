@@ -86,7 +86,7 @@ function create_post($data)
     if ($existing_posts) {
         $post_id = $existing_posts[0]; // Получаем ID существующего поста   
 
-        carbon_set_post_meta($post_id, 'product-gallery', [$attachment_id]);
+        carbon_set_post_meta($post_id, 'product-gallery', $ids_product_gallery);
         carbon_set_post_meta($post_id, 'product-price', $product_price);
         carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);       
         carbon_set_post_meta($post_id, 'product-year-build', $date_build);      
@@ -122,7 +122,7 @@ function create_post($data)
         if (!is_wp_error($post_id)) {
             carbon_set_post_meta($post_id, 'product-id', $product_id);
             carbon_set_post_meta($post_id, 'product-title', $title);
-            carbon_set_post_meta($post_id, 'product-gallery', [$attachment_id]);
+            carbon_set_post_meta($post_id, 'product-gallery', $ids_product_gallery);
             carbon_set_post_meta($post_id, 'product-price', $product_price);
             carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);
             carbon_set_post_meta($post_id, 'product-rooms', intval($product_rooms) ? intval($product_rooms) : $product_rooms);

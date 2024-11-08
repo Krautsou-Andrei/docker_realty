@@ -20,16 +20,18 @@ function upload_image_from_url($image_url, $count = 0)
         }
     }
 
-    // Конвертация изображения в WebP
-    $webp_attachment_id = convert_image_to_webp($attachment_id, $image_url);
+    // Проверяем, является ли $attachment_id идентификатором вложения
+    if (is_numeric($attachment_id) && $attachment_id > 0) {
+        return $attachment_id;
+    } else {
+        $webp_attachment_id = convert_image_to_webp($attachment_id, $image_url);
 
-    // Проверяем, произошла ли ошибка при конвертации
-    if (is_wp_error($webp_attachment_id)) {
-        // Возвращаем ошибку, если конвертация не удалась
+        if (is_wp_error($webp_attachment_id)) {
+            return $webp_attachment_id;
+        }
+
         return $webp_attachment_id;
     }
-
-    return $webp_attachment_id; // Возвращаем ID вложения WebP, если конвертация успешна
 }
 
 function convert_image_to_webp($image_data, $image_url)
@@ -51,10 +53,6 @@ function convert_image_to_webp($image_data, $image_url)
 
             if ($height > 1440 && $width < 2560) {
                 $coefficient = ceil($height / 1440);
-            }
-
-            if ($width >= 4000) {
-                get_message_server_telegram("Фатальная ошибка выполнение скрипта остановлено ", $image_url);
             }
 
             $new_width = (int)($width / $coefficient);
@@ -111,7 +109,8 @@ function convert_image_to_webp($image_data, $image_url)
         wp_update_attachment_metadata($webp_attachment_id, $attach_data);
 
         // Сохраняем URL изображения в метаданных
-        update_post_meta($webp_attachment_id, 'external_image_url', $image_url);
+        $webp_image_url = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $image_url);
+        update_post_meta($webp_attachment_id, 'external_image_url', $webp_image_url);
 
         return $webp_attachment_id; // Возвращаем ID вложения WebP
     } catch (Exception $e) {

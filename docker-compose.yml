@@ -36,9 +36,11 @@ services:
       - "./mlsfiles/:/var/www/html/wp-content/mlsfiles"
       - "./map/:/var/www/html/map"
       - "./assets/:/var/www/html/assets"     
-      - "./config/get_json.php:/var/www/html/get_json.php"    
+      - "./config/get_json.php:/var/www/html/get_json.php"  
       - "./config/my_cron_file:/etc/cron.d/my_cron_file"
       - "./config/cron.log:/var/log/cron.log" 
+      - "./config/entrypoint.sh:/usr/local/bin/entrypoint.sh"
+    entrypoint: ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
     command: >
       bash -c "apt-get update && apt-get install -y cron &&
       chmod 0644 /etc/cron.d/my_cron_file &&

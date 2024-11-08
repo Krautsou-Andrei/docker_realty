@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   mysql:
     image: mysql:8.0
@@ -17,15 +18,13 @@ services:
     image: wordpress:php8.1-apache
     depends_on:
       - mysql
-    links:
-      - mysql
     ports:
       - "80:80"  
     restart: always
     environment:
       WORDPRESS_DB_HOST: mysql:3306
-      WORDPRESS_DB_USER: Andrei
-      WORDPRESS_DB_PASSWORD: KR7nDso$X8RWi6%%Yz
+      WORDPRESS_DB_USER: Andrei                 
+      WORDPRESS_DB_PASSWORD: KR7nDso$X8RWi6%%Yz         
       WORDPRESS_DB_NAME: realty
       WORDPRESS_DEBUG: 0
     volumes:
@@ -36,26 +35,24 @@ services:
       - "./.srv/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
       - "./mlsfiles/:/var/www/html/wp-content/mlsfiles"
       - "./map/:/var/www/html/map"
-      - "./assets/:/var/www/html/assets"
-      - "./config/wp-config.php:/var/www/html/wp-config.php"
-      - "./config/get_json.php:/var/www/html/get_json.php"
-      - "./config/my_cron_file:/etc/cron.d/my_cron_file"  # Добавляем файл cron
+      - "./assets/:/var/www/html/assets"     
+      - "./config/get_json.php:/var/www/html/get_json.php"    
+      - "./config/my_cron_file:/etc/cron.d/my_cron_file"
+      - "./config/cron_log:/var/log/cron.log" 
     command: >
       bash -c "apt-get update && apt-get install -y cron &&
       chmod 0644 /etc/cron.d/my_cron_file &&
       crontab /etc/cron.d/my_cron_file &&
-      cron && tail -f /var/log/get_json.log"
+      service cron start && apache2-foreground"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     depends_on:
       - mysql
-    links:
-      - mysql
     ports:
       - "8081:80" 
     environment:
       MYSQL_ROOT_PASSWORD: wordpress
-      MYSQL_USERNAME: Andrei
+      MYSQL_USERNAME: Andrei                 # Это можно оставить, если нужно
       PMA_HOST: mysql
-      UPLOAD_LIMIT: 1024M
+      UPLOAD_LIMIT: 1512M

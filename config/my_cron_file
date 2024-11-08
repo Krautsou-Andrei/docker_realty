@@ -1,1 +1,9 @@
-20 17 * * 4 /usr/local/bin/php /var/www/html/get_json.php >> /var/log/get_json.log 2>&1
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+WORDPRESS_DB_HOST=mysql:3306
+WORDPRESS_DB_USER=root                 
+WORDPRESS_DB_PASSWORD=wordpress         
+WORDPRESS_DB_NAME=realty
+
+03 05 * * * /usr/local/bin/php /var/www/html/get_json.php >> /var/log/cron.log 2>&1
+

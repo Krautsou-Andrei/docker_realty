@@ -4,6 +4,5 @@ WORDPRESS_DB_HOST=mysql:3306
 WORDPRESS_DB_USER=root                 
 WORDPRESS_DB_PASSWORD=wordpress         
 WORDPRESS_DB_NAME=realty
-
-03 05 * * * /usr/local/bin/php /var/www/html/get_json.php >> /var/log/cron.log 2>&1
+42 05 * * * /usr/local/bin/php /var/www/html/get_json.php >> /var/log/cron.log 2>&1
 

@@ -1,8 +1,4 @@
 <?php
-if (!defined("ABSPATH")) {
-    exit;
-}
-
 require_once('/var/www/html/wp-load.php');
 // require_once get_template_directory() . '/get_json.php';
 require_once get_template_directory() . '/apatraments-json.php';

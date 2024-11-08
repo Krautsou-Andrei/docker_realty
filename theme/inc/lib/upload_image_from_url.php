@@ -53,13 +53,16 @@ function convert_image_to_webp($image_data, $image_url)
                 $coefficient = ceil($height / 1440);
             }
 
-            if ($width >= 3000) {
+            if ($width >= 4000) {
                 get_message_server_telegram("Фатальная ошибка выполнение скрипта остановлено ", $image_url);
             }
 
+            $new_width = (int)($width / $coefficient);
+            $new_height = (int)($height / $coefficient);
+
             $imagick->resizeImage(
-                $width / $coefficient,
-                $height / $coefficient,
+                $new_width,
+                $new_height,
                 Imagick::FILTER_LANCZOS,
                 1
             );

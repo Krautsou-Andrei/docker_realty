@@ -47,5 +47,7 @@ function realty_attach_theme_options()
     ->add_tab('Телеграм боты', array(     
       Field::make('text', 'crb_telegram_bot_order_token', 'Токен')->set_help_text('Токен телеграм бота для заказов @BotFather')->set_width(50),
       Field::make('text', 'crb_telegram_bot_order_chat_id', 'ID чата в который нужно отправить заказ.')->set_width(50),
+      Field::make('text', 'crb_telegram_bot_server_token', 'Токен')->set_help_text('Токен телеграм бота для ошибок @BotFather')->set_width(50),
+      Field::make('text', 'crb_telegram_bot_server_chat_id', 'ID чата в который нужно отправить ошибку.')->set_width(50),
     ));
 }

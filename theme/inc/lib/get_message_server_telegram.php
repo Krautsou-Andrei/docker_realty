@@ -16,14 +16,10 @@ function get_message_server_telegram($type, $message_invite = '', $region = '', 
     }
     if (!empty($gk)) {
         $message .= "<b>Жилой комплекс</b>: <code>$gk\n</code>";
-    }
+    }   
 
-    // if (!empty($link)) {
-    //     $message .= "<b>Ссылка</b>: <a href=\"$link\">$link</a>\n";
-    // }
-
-    $telegramToken = '8195375751:AAGMgbTLGX0Kicj1VQlNgHq5kmCWXD4IHx4';
-    $chatId = '-1002324374984';
+    $telegramToken = carbon_get_theme_option('crb_telegram_bot_server_token');
+    $chatId = carbon_get_theme_option('crb_telegram_bot_server_chat_id'); 
 
     if (!empty($telegramToken) && !empty($chatId)) {
         $telegram = new \TelegramBot\Api\BotApi($telegramToken);

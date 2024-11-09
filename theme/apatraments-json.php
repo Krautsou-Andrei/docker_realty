@@ -9,6 +9,7 @@ require_once get_template_directory() . '/inc/lib/create_page.php';
 require_once get_template_directory() . '/inc/lib/create_post.php';
 require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
+require_once get_template_directory() . '/inc/lib/update_post.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 
@@ -75,8 +76,7 @@ function start()
             if (!empty($id_page)) {
                 create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
             }
-        }
-        // sleep(3);
+        }        
         wp_cache_flush();
     }
 
@@ -117,9 +117,23 @@ function start()
             $data->product_apartamens_wc = $item->wc_count ?? '';
             $data->product_height = $item->height ?? '';
 
-            create_post($data);
-        }
-        // sleep(3);
+            $args_test = [
+                'post_type'      => 'post', // Укажите тип поста
+                'key'      => 'product-id',
+                'meta_value'    => $item->_id,
+                'posts_per_page' => 1, // Получить только один пост
+                'fields'         => 'ids' // Вернуть только ID поста
+            ];
+
+            $existing_posts = get_posts($args_test);
+
+            if ($existing_posts) {
+                $post_id = $existing_posts[0]; // Получаем ID существующего поста   
+                update_post($data, $post_id);
+            } else {
+                create_post($data);
+            }
+        }        
         wp_cache_flush();
     }
 

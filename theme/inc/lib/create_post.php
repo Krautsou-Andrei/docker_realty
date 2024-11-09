@@ -73,87 +73,57 @@ function create_post($data)
     $title = create_title_post($product_room_id, $product_area, $product_stage);
     $post_slug = $product_id;
 
-    $args_test = [
-        'post_type'      => 'post', // Укажите тип поста
-        'key'      => 'product-id',
-        'meta_value'    => $product_id,
-        'posts_per_page' => 1, // Получить только один пост
-        'fields'         => 'ids' // Вернуть только ID поста
-    ];
+    $post_id = wp_insert_post(array(
+        'post_title'   => $title . ' ' . $product_id,
+        'post_status'  => 'publish',
+        'post_type'    => 'post',
+        'post_name'     => $post_slug,
+        'post_category' => [
+            CATEGORIES_ID::CITIES,
+            CATEGORIES_ID::GK,
+            CATEGORIES_ID::ROOMS,
+            CATEGORIES_ID::AREA,
+            $id_city_category,
+            $id_gk_category,
+            $id_rooms_category,
+            $id_area_category
+        ]
+    ));
 
-    $existing_posts = get_posts($args_test);
-
-    if ($existing_posts) {
-        $post_id = $existing_posts[0]; // Получаем ID существующего поста   
-
+    if (!is_wp_error($post_id)) {
+        carbon_set_post_meta($post_id, 'product-id', $product_id);
+        carbon_set_post_meta($post_id, 'product-title', $title);
         carbon_set_post_meta($post_id, 'product-gallery', $ids_product_gallery);
         carbon_set_post_meta($post_id, 'product-price', $product_price);
-        carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);       
-        carbon_set_post_meta($post_id, 'product-year-build', $date_build);      
+        carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);
+        carbon_set_post_meta($post_id, 'product-rooms', intval($product_rooms) ? intval($product_rooms) : $product_rooms);
+        carbon_set_post_meta($post_id, 'product-area',  $product_area);
+        carbon_set_post_meta($post_id, 'product-area-kitchen', $product_area_kitchen);
+        carbon_set_post_meta($post_id, 'product-area-total-rooms', $product_area_rooms_total);
+        carbon_set_post_meta($post_id, 'product-stage', $product_stage);
+        carbon_set_post_meta($post_id, 'product-stages', $product_stages);
+        carbon_set_post_meta($post_id, 'product-year-build', $date_build);
+        carbon_set_post_meta($post_id, 'product-building-type', $product_building_type);
         carbon_set_post_meta($post_id, 'product-finishing', $product_finishing);
+        carbon_set_post_meta($post_id, 'product-city', $product_city);
+        carbon_set_post_meta($post_id, 'product-street', $product_street);
+        carbon_set_post_meta($post_id, 'product-latitude', $product_latitude);
+        carbon_set_post_meta($post_id, 'product-longitude', $product_longitude);
+        carbon_set_post_meta($post_id, 'product-builder-liter', $product_building_name);
+        carbon_set_post_meta($post_id, 'product-apartamens-number', $product_apartament_number);
+        carbon_set_post_meta($post_id, 'product-apartamens-wc', $product_apartamens_wc);
+        carbon_get_post_meta($post_id, 'product_height', $product_height);
 
-        $updated_post = array(
-            'ID'         => $post_id,
-            'post_title' => $title . ' ' . $product_id,
-            'post_name'     => $post_slug,
-        );
-        wp_update_post($updated_post);
-        if (!empty($product_block_id)) {
-            update_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
-        }
+        carbon_set_post_meta($post_id, 'product-agent-phone', $product_agent_phone);
+        carbon_set_post_meta($post_id, 'product-agent-name', 'Арсен');
+        carbon_set_post_meta($post_id, 'product-agent-photo', [$id_image_agent]);
+
+        set_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
     } else {
-        $post_id = wp_insert_post(array(
-            'post_title'   => $title . ' ' . $product_id,
-            'post_status'  => 'publish',
-            'post_type'    => 'post',
-            'post_name'     => $post_slug, 
-            'post_category' => [
-                CATEGORIES_ID::CITIES,
-                CATEGORIES_ID::GK,
-                CATEGORIES_ID::ROOMS,
-                CATEGORIES_ID::AREA,
-                $id_city_category,
-                $id_gk_category,
-                $id_rooms_category,
-                $id_area_category
-            ]
-        ));
-
-        if (!is_wp_error($post_id)) {
-            carbon_set_post_meta($post_id, 'product-id', $product_id);
-            carbon_set_post_meta($post_id, 'product-title', $title);
-            carbon_set_post_meta($post_id, 'product-gallery', $ids_product_gallery);
-            carbon_set_post_meta($post_id, 'product-price', $product_price);
-            carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);
-            carbon_set_post_meta($post_id, 'product-rooms', intval($product_rooms) ? intval($product_rooms) : $product_rooms);
-            carbon_set_post_meta($post_id, 'product-area',  $product_area);
-            carbon_set_post_meta($post_id, 'product-area-kitchen', $product_area_kitchen);
-            carbon_set_post_meta($post_id, 'product-area-total-rooms', $product_area_rooms_total);
-            carbon_set_post_meta($post_id, 'product-stage', $product_stage);
-            carbon_set_post_meta($post_id, 'product-stages', $product_stages);
-            carbon_set_post_meta($post_id, 'product-year-build', $date_build);
-            carbon_set_post_meta($post_id, 'product-building-type', $product_building_type);
-            carbon_set_post_meta($post_id, 'product-finishing', $product_finishing);
-            carbon_set_post_meta($post_id, 'product-city', $product_city);
-            carbon_set_post_meta($post_id, 'product-street', $product_street);
-            carbon_set_post_meta($post_id, 'product-latitude', $product_latitude);
-            carbon_set_post_meta($post_id, 'product-longitude', $product_longitude);
-            carbon_set_post_meta($post_id, 'product-builder-liter', $product_building_name);
-            carbon_set_post_meta($post_id, 'product-apartamens-number', $product_apartament_number);
-            carbon_set_post_meta($post_id, 'product-apartamens-wc', $product_apartamens_wc);
-            carbon_get_post_meta($post_id, 'product_height', $product_height);
-
-            carbon_set_post_meta($post_id, 'product-agent-phone', $product_agent_phone);
-            carbon_set_post_meta($post_id, 'product-agent-name', 'Арсен');
-            carbon_set_post_meta($post_id, 'product-agent-photo', [$id_image_agent]);
-
-            update_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
-        } else {            
-            echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
-        }
+        echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
     }
 }
-function update_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id)
+function set_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id)
 {
     if (!empty($product_block_id)) {
         $args_post = array(

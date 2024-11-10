@@ -40,11 +40,13 @@ if (!empty($max_floor)) {
 <div class="product__more" data-container-table>
     <section class="gk-table">
         <div class="gk-table__filter">
-            <div class="gk-plan">
-                <div class="gk-plan__image" data-type="popup-plan">
-                    <img src="<?php echo get_image_url($image_plan_url) ?>" alt="" width="258" height="200" data-type="popup-plan" />
+            <?php if (!empty($image_plan_url)) { ?>
+                <div class="gk-plan">
+                    <div class="gk-plan__image" data-type="popup-plan">
+                        <img src="<?php echo get_image_url($image_plan_url) ?>" alt="" width="258" height="200" data-type="popup-plan" />
+                    </div>
                 </div>
-            </div>
+            <?php } ?>
             <div class="tab-gk__wrapper">
                 <?php if (!empty($literal && !$crb_gk_is_house)) { ?>
                     <div class="tab-gk__liter">

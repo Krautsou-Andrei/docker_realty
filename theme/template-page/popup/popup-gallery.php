@@ -33,19 +33,7 @@ $is_single_page = $template !== '';
     <div class="popup__content">
       <div class="popup__container">
         <div class="popup-gallery__header">
-          <?php if ($is_single_page) { ?>
-            <div class="popup-gallery__tabs">
-              <label>
-                <input type="radio" name="popup-galery-type" id="" checked data-button-start-slide>
-                <span>Планировка</span>
-              </label>
-
-              <label>
-                <input type="radio" name="popup-galery-type" id="" data-button-current-slide>
-                <span>Галерея</span>
-              </label>
-            </div>
-          <?php } ?>
+          <div class=""> </div>
           <div class="popup-gallery__info">
             <?php
             $product_id = carbon_get_post_meta(get_the_ID(), 'product-id');

@@ -11,6 +11,7 @@ require_once get_template_directory() . '/inc/lib/get_message_server_telegram.ph
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 require_once get_template_directory() . '/inc/lib/update_post.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
+require_once get_template_directory() . '/inc/enums/names_sities.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 
 set_time_limit(0);
@@ -76,7 +77,7 @@ function start()
             if (!empty($id_page)) {
                 create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
             }
-        }        
+        }
         wp_cache_flush();
     }
 
@@ -85,59 +86,63 @@ function start()
 
     prettyVarDump($regions_ids);
 
-    $json_folder_path = get_template_directory() . '/json/apartments.json';
-    $items = Items::fromFile($json_folder_path);
-    get_message_server_telegram('Успех', 'Начало загрузки объявлений');
+    global  $names_cities;
 
-    foreach ($items as $name => $item) {
-        if (in_array($item->block_district, $regions_ids)) {
-            $data = new stdClass();
+    foreach ($names_cities as $city) {
+        $json_folder_path = get_template_directory() . '/json/' . $city . '/apartments.json';
+        $items = Items::fromFile($json_folder_path);
+        get_message_server_telegram('Успех', 'Начало загрузки объявлений ' . $city);
 
-            $data->id = $item->_id;
-            $data->product_gallery = $item->plan[0] ? $item->plan : '';
-            $data->product_price = $item->price ?? 0;
-            $data->product_price_meter = $item->price && $item->area_total ? round(floatval($item->price) / floatval($item->area_total), 2) :  0;
-            $data->product_rooms = $rooms_ids[$item->room] ?? 0;
-            $data->product_room_id = $item->room ?? '';
-            $data->product_area = $item->area_total ?? 0;
-            $data->product_area_kitchen = $item->area_kitchen ?? '';
-            $data->product_area_rooms_total = $item->area_rooms_total ?? '';
-            $data->product_stage = $item->floor ?? '';
-            $data->product_stages = $item->floors ?? '';
-            $data->product_year_build = $item->building_deadline ?? '';
-            $data->product_city = $item->block_district_name ?? '';
-            $data->product_gk = $item->block_name ?? '';
-            $data->product_street = $item->block_address ?? '';
-            $data->coordinates = $item->block_geometry->coordinates ?? [];
-            $data->product_building_type = $building_type_ids[$item->building_type] ?? '';
-            $data->product_finishing = $finishings_ids[$item->finishing] ?? '';
-            $data->building_name = $item->building_name ?? '';
-            $data->block_id = $item->block_id ?? '';
-            $data->product_apartament_number = $item->number ?? '';
-            $data->product_apartamens_wc = $item->wc_count ?? '';
-            $data->product_height = $item->height ?? '';
+        foreach ($items as $name => $item) {
+            if (in_array($item->block_district, $regions_ids)) {
+                $data = new stdClass();
 
-            $args_test = [
-                'post_type'      => 'post', // Укажите тип поста
-                'key'      => 'product-id',
-                'meta_value'    => $item->_id,
-                'posts_per_page' => 1, // Получить только один пост
-                'fields'         => 'ids' // Вернуть только ID поста
-            ];
+                $data->id = $item->_id;
+                $data->product_gallery = $item->plan[0] ? $item->plan : '';
+                $data->product_price = $item->price ?? 0;
+                $data->product_price_meter = $item->price && $item->area_total ? round(floatval($item->price) / floatval($item->area_total), 2) :  0;
+                $data->product_rooms = $rooms_ids[$item->room] ?? 0;
+                $data->product_room_id = $item->room ?? '';
+                $data->product_area = $item->area_total ?? 0;
+                $data->product_area_kitchen = $item->area_kitchen ?? '';
+                $data->product_area_rooms_total = $item->area_rooms_total ?? '';
+                $data->product_stage = $item->floor ?? '';
+                $data->product_stages = $item->floors ?? '';
+                $data->product_year_build = $item->building_deadline ?? '';
+                $data->product_city = $item->block_district_name ?? '';
+                $data->product_gk = $item->block_name ?? '';
+                $data->product_street = $item->block_address ?? '';
+                $data->coordinates = $item->block_geometry->coordinates ?? [];
+                $data->product_building_type = $building_type_ids[$item->building_type] ?? '';
+                $data->product_finishing = $finishings_ids[$item->finishing] ?? '';
+                $data->building_name = $item->building_name ?? '';
+                $data->block_id = $item->block_id ?? '';
+                $data->product_apartament_number = $item->number ?? '';
+                $data->product_apartamens_wc = $item->wc_count ?? '';
+                $data->product_height = $item->height ?? '';
 
-            $existing_posts = get_posts($args_test);
+                $args_test = [
+                    'post_type'      => 'post', // Укажите тип поста
+                    'key'      => 'product-id',
+                    'meta_value'    => $item->_id,
+                    'posts_per_page' => 1, // Получить только один пост
+                    'fields'         => 'ids' // Вернуть только ID поста
+                ];
 
-            if ($existing_posts) {
-                $post_id = $existing_posts[0]; // Получаем ID существующего поста   
-                update_post($data, $post_id);
-            } else {
-                create_post($data);
+                $existing_posts = get_posts($args_test);
+
+                if ($existing_posts) {
+                    $post_id = $existing_posts[0]; // Получаем ID существующего поста   
+                    update_post($data, $post_id);
+                } else {
+                    create_post($data);
+                }
             }
-        }        
-        wp_cache_flush();
+            wp_cache_flush();
+        }
+        get_message_server_telegram('Успех', 'Загрузились объявления ' . $city);
     }
-
-    get_message_server_telegram('Успех', 'Загрузились объявления');
+    get_message_server_telegram('Успех', 'Загрузились все объявления');
 }
 
 

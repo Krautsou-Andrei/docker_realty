@@ -11,7 +11,7 @@ function get_message_server_telegram($type, $message_invite = '', $region = '', 
     if (!empty($message_invite)) {
         $message .= "<b>Сообщение</b>: <code>$message_invite\n</code>";
     }
-    if (!empty($name)) {
+    if (!empty($region)) {
         $message .= "<b>Регион</b>: <code>$region\n</code>";
     }
     if (!empty($gk)) {

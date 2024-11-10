@@ -1,45 +1,58 @@
 <?php
+require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
+require_once get_template_directory() . '/inc/enums/names_files.php';
+require_once get_template_directory() . '/inc/enums/names_sities.php';
 
-function get_json($name)
+function get_json($city, $name)
 {
-    $json_url = 'https://obj-estate.ru/json-about/?file=' . $name;
-
-    $json_folder_path = get_template_directory() . '/temp/';
+    $json_url = 'https://dataout.trendagent.ru/' . $city . '/' . $name . '.json';
+    $json_folder_path = get_template_directory() . '/temp/' . $city . '/';
     $json_file_path = $json_folder_path . $name . '.json';
 
-    $max_attempts = 10;
-    $attempt = 0;
+    if (!file_exists($json_folder_path)) {
+        mkdir($json_folder_path, 0755, true);
+    }
 
-    while ($attempt < $max_attempts) {
-        $attempt++;
 
-        $json_content = @file_get_contents($json_url);
+    $ch = curl_init($json_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 600);
 
-        if ($json_content !== false) {
+
+    $json_content = curl_exec($ch);
+
+
+    if (curl_errno($ch)) {
+        get_message_server_telegram("Не удалось получить JSON для: $name. Ошибка: ", curl_error($ch));
+    } else {
+
+        if ($json_content === false || empty($json_content)) {
+            get_message_server_telegram("Получен пустой ответ для: ", $name);
+        } else {
 
             file_put_contents($json_file_path, $json_content);
-            return;
         }
-
-        sleep(3600);
     }
+
+
+    curl_close($ch);
 }
 
 function my_custom_task()
 {
-    $names_files = [
-        'about',
-        'buildings',
-        'buildingtypes',
-        'finishings',
-        'room',
-        'regions',
-        'builders',
-        'blocks',
-        'apartments'
-    ];
 
-    foreach ($names_files as $name) {
-        get_json($name);
+    global $names_files, $names_cities;
+
+    get_message_server_telegram('начало', 'обновления базы данных');
+
+    foreach ($names_cities as $city) {
+        foreach ($names_files as $name) {
+            get_json($city, $name);
+        }
     }
+
+    get_message_server_telegram('завершение', 'обновления базы данных');
 }
+
+my_custom_task();

@@ -8,7 +8,7 @@ require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/enums/rooms_id.php';
 
-function create_post($data)
+function create_post($data, $id_gk_category)
 {
     $product_id = $data->id;
     $product_rooms = $data->product_rooms;
@@ -65,8 +65,7 @@ function create_post($data)
     }
 
 
-    $id_city_category = create_category($product_city, get_transliterate($product_city), CATEGORIES_ID::CITIES);
-    $id_gk_category = create_category($product_gk, get_transliterate($product_gk), CATEGORIES_ID::GK);
+    $id_city_category = create_category($product_city, get_transliterate($product_city), CATEGORIES_ID::CITIES);   
     $id_rooms_category = create_category(intval($product_rooms) ? intval($product_rooms) : $product_rooms, intval($product_rooms) ? 'rooms_' . intval($product_rooms) : get_transliterate($product_rooms), CATEGORIES_ID::ROOMS);
     $id_area_category = create_category(ceil($product_area), 'area_' . ceil($product_area), CATEGORIES_ID::AREA);
 

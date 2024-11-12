@@ -5,9 +5,11 @@ Template Name: JSON Apartaments
 
 declare(strict_types=1);
 require_once get_template_directory() . '/vendor/autoload.php';
+require_once get_template_directory() . '/inc/lib/create_category.php';
 require_once get_template_directory() . '/inc/lib/create_page.php';
 require_once get_template_directory() . '/inc/lib/create_post.php';
 require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
+require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 require_once get_template_directory() . '/inc/lib/update_post.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
@@ -20,78 +22,82 @@ use JsonMachine\Items;
 
 function start()
 {
-    $args_cities = array(
-        'hide_empty' => false,
-        'parent' => CATEGORIES_ID::CITIES,
-    );
-
-    $categories_cities = get_categories($args_cities);
-    $categories_cities_name = [];
-
-    foreach ($categories_cities as $city) {
-        $categories_cities_name[] = $city->name;
-    }
-
-
-    $regions = convert_json_to_array('/json/regions.json');
-    $regions_ids = [];
-
-    foreach ($regions as $region) {
-        if (in_array($region->name, $categories_cities_name)) {
-            $regions_ids[] = $region->_id;
-        }
-    }
-
-    $building_type = convert_json_to_array('/json/buildingtypes.json');
-    $building_type_ids = [];
-
-    foreach ($building_type as $type) {
-        $building_type_ids[$type->_id] = $type->name;
-    }
-
-    $finishings = convert_json_to_array('/json/finishings.json');
-    $finishings_ids = [];
-
-    foreach ($finishings as $type) {
-        $finishings_ids[$type->_id] = $type->name;
-    }
-
-    $rooms = convert_json_to_array('/json/room.json');
-    $rooms_ids = [];
-
-    foreach ($rooms as $room) {
-        $rooms_ids[$room->crm_id] = $room->name_one;
-    }
-
-    $blocks = convert_json_to_array('/json/blocks.json');
-
-    get_message_server_telegram('Успех', 'Начало загрузки жилых комплексов');
-
-    foreach ($blocks as $block) {
-        if (in_array($block->district, $regions_ids)) {
-            $region = search_region($regions, $block->district);
-            $region_name = $region->name;
-
-            $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
-
-            if (!empty($id_page)) {
-                create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
-            }
-        }
-        wp_cache_flush();
-    }
-
-    get_message_server_telegram('Успех', 'Загрузились жилые комплексы городов: ' .  implode(', ', $categories_cities_name));
-
-
-    prettyVarDump($regions_ids);
-
     global  $names_cities;
 
-    foreach ($names_cities as $city) {
-        $json_folder_path = get_template_directory() . '/json/' . $city . '/apartments.json';
+    foreach ($names_cities as $city_region) {
+
+
+        $args_cities = array(
+            'hide_empty' => false,
+            'parent' => CATEGORIES_ID::CITIES,
+        );
+
+        $categories_cities = get_categories($args_cities);
+        $categories_cities_name = [];
+
+        foreach ($categories_cities as $city) {
+            $categories_cities_name[] = $city->name;
+        }
+
+
+
+        $regions = convert_json_to_array('/json/' . $city_region . '/regions.json');
+        $regions_ids = [];
+
+        foreach ($regions as $region) {
+            if (in_array($region->name, $categories_cities_name)) {
+                $regions_ids[] = $region->_id;
+            }
+        }
+
+        $building_type = convert_json_to_array('/json/' . $city_region . '/buildingtypes.json');
+        $building_type_ids = [];
+
+        foreach ($building_type as $type) {
+            $building_type_ids[$type->_id] = $type->name;
+        }
+
+        $finishings = convert_json_to_array('/json/' . $city_region . '/finishings.json');
+        $finishings_ids = [];
+
+        foreach ($finishings as $type) {
+            $finishings_ids[$type->_id] = $type->name;
+        }
+
+        $rooms = convert_json_to_array('/json/' . $city_region . '/room.json');
+        $rooms_ids = [];
+
+        foreach ($rooms as $room) {
+            $rooms_ids[$room->crm_id] = $room->name_one;
+        }
+
+        $blocks = convert_json_to_array('/json/' . $city_region . '/blocks.json');
+
+        get_message_server_telegram('Успех', 'Начало загрузки жилых комплексов ' . $city_region);
+
+        foreach ($blocks as $block) {
+            if (in_array($block->district, $regions_ids)) {
+                $region = search_region($regions, $block->district);
+                $region_name = $region->name;
+
+                $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $region_name);
+
+                if (!empty($id_page)) {
+                    create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
+                }
+            }
+            wp_cache_flush();
+        }
+
+        get_message_server_telegram('Успех', 'Загрузились жилые комплексы городов: ' .  implode(', ', $categories_cities_name));
+
+
+        prettyVarDump($regions_ids);
+
+
+        $json_folder_path = get_template_directory() . '/json/' . $city_region . '/apartments.json';
         $items = Items::fromFile($json_folder_path);
-        get_message_server_telegram('Успех', 'Начало загрузки объявлений ' . $city);
+        get_message_server_telegram('Успех', 'Начало загрузки объявлений ' . $city_region);
 
         foreach ($items as $name => $item) {
             if (in_array($item->block_district, $regions_ids)) {
@@ -121,26 +127,42 @@ function start()
                 $data->product_apartamens_wc = $item->wc_count ?? '';
                 $data->product_height = $item->height ?? '';
 
+                $id_gk_category = create_category($data->product_gk, get_transliterate($data->product_gk), CATEGORIES_ID::GK);
+
                 $args_test = [
-                    'post_type'      => 'post', // Укажите тип поста
-                    'key'      => 'product-id',
-                    'meta_value'    => $item->_id,
-                    'posts_per_page' => 1, // Получить только один пост
-                    'fields'         => 'ids' // Вернуть только ID поста
+                    'post_type'      => 'post',
+                    'posts_per_page' => 1,
+                    'fields'         => 'ids',
+                    'meta_query'     => [
+                        [
+                            'key'       => 'product-id',
+                            'value'     => $item->_id,
+                            'compare'   => '='
+                        ]
+                    ],
+                    'tax_query' => [
+                        [
+                            'taxonomy' => 'category',
+                            'field'    => 'term_id',
+                            'terms'    => $id_gk_category,
+                        ]
+                    ],
+                    'no_found_rows' => true
                 ];
 
                 $existing_posts = get_posts($args_test);
 
                 if ($existing_posts) {
-                    $post_id = $existing_posts[0]; // Получаем ID существующего поста   
+                    $post_id = $existing_posts[0];
                     update_post($data, $post_id);
                 } else {
-                    create_post($data);
+                    create_post($data, $id_gk_category);
                 }
             }
             wp_cache_flush();
         }
-        get_message_server_telegram('Успех', 'Загрузились объявления ' . $city);
+        wp_cache_flush();
+        get_message_server_telegram('Успех', 'Загрузились объявления ' . $city_region);
     }
     get_message_server_telegram('Успех', 'Загрузились все объявления');
 }

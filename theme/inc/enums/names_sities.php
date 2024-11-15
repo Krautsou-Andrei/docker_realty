@@ -1,4 +1,10 @@
 <?php
 $names_cities = [
-    'krasnodar'
+    'krasnodar',
+    'nsk',
+    'spb',
+    'msk',
+    'rostov',
+    'kzn',
+    'ekb'
 ];

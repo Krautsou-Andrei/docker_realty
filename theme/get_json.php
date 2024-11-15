@@ -6,7 +6,7 @@ require_once get_template_directory() . '/inc/enums/names_sities.php';
 function get_json($city, $name)
 {
     $json_url = 'https://dataout.trendagent.ru/' . $city . '/' . $name . '.json';
-    $json_folder_path = get_template_directory() . '/temp/' . $city . '/';
+    $json_folder_path = get_template_directory() . '/json/' . $city . '/';
     $json_file_path = $json_folder_path . $name . '.json';
 
     if (!file_exists($json_folder_path)) {

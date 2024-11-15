@@ -54,5 +54,3 @@ function my_custom_task()
 
     get_message_server_telegram('завершение', 'обновления базы данных');
 }
-
-my_custom_task();

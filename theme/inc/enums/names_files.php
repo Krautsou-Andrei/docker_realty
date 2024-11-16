@@ -9,4 +9,5 @@ $names_files = [
     'builders',
     'blocks',
     'apartments',
+    'subways'
 ];

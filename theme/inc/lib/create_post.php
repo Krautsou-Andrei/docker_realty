@@ -51,17 +51,21 @@ function create_post($data, $region_category_id, $id_gk_category)
     $ids_product_gallery = [];
 
     foreach ($product_gallery as $image) {
-        $attachment_id = upload_image_from_url($image);
+        $attachment_id = @upload_image_from_url($image);
         if (!is_wp_error($attachment_id)) {
             $ids_product_gallery[] = $attachment_id;
         } else {
             $error_message = $attachment_id->get_error_message();
             get_message_server_telegram('Ошибка загрузки картинки план' . $product_id, $error_message);
         }
+
+        if (!$attachment_id) {
+            get_message_server_telegram('Ошибка ожидания загрузки картинки' . $product_id, 'Тайминг');
+        }
     }
 
-    $id_image_agent = upload_image_from_url($product_agent_url);
-    if (is_wp_error($id_image_agent)) {
+    $id_image_agent = @upload_image_from_url($product_agent_url);
+    if (is_wp_error($id_image_agent) || !$id_image_agent) {
         $id_image_agent = '';
     }
 
@@ -124,4 +128,3 @@ function create_post($data, $region_category_id, $id_gk_category)
         echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
     }
 }
-

@@ -12,14 +12,17 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
         if (!empty($block->plan) && !$is_old) {
             foreach ($block->plan as $render) {
                 if (!empty($render)) {
-                    // sleep(6);
-                    $attachment_id = upload_image_from_url($render);
+                    $attachment_id = @upload_image_from_url($render);
                     if (!is_wp_error($attachment_id)) {
                         $ids_gallery_plan[] = $attachment_id;
                     } else {
                         $upload_errors[] = $render;
                         $error_message = $attachment_id->get_error_message();
                         get_message_server_telegram('Ошибка загрузки картинки план' . $block->name, $error_message);
+                    }
+
+                    if (!$attachment_id) {
+                        get_message_server_telegram('Ошибка ожидания загрузки картинки' . $block->name, $error_message);
                     }
                 }
             }
@@ -29,14 +32,17 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
         if (!empty($block->renderer)  && !$is_old) {
             foreach ($block->renderer as $render) {
                 if (!empty($render)) {
-                    // sleep(3);
-                    $attachment_id = upload_image_from_url($render);
+                    $attachment_id = @upload_image_from_url($render);
                     if (!is_wp_error($attachment_id)) {
                         $ids_gallery[] = $attachment_id;
                     } else {
                         $upload_errors[] = $render;
                         $error_message = $attachment_id->get_error_message();
                         get_message_server_telegram('Ошибка загрузки картинки ' . $block->name, $error_message);
+                    }
+
+                    if (!$attachment_id) {
+                        get_message_server_telegram('Ошибка ожидания загрузки картинки' . $block->name, $error_message);
                     }
                 }
             }

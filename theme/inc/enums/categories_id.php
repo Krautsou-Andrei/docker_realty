@@ -6,5 +6,5 @@ class CATEGORIES_ID
     const REGIONS = 33;
     const GK = 434;
     const PAGE_NEW_BUILDINGS = 4044;
-    const ROOMS = 33;
+    const ROOMS = 36;
 }

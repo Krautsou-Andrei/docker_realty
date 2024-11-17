@@ -24,6 +24,9 @@ $filter_area = $search_params->filter_area;
 $filter_area_ot = $search_params->filter_area_ot;
 $filter_area_do = $search_params->filter_area_do;
 
+$filter_region = $search_params->filter_region;
+$regions_names = $search_params->regions_names;
+
 $rooms_names = $search_params->rooms_names;
 
 $max_area = $search_params->max_area;
@@ -43,6 +46,27 @@ if (!empty($filter_price_view[0])) {
     <input hidden type="radio" name="type" value="<?php echo $type_filter ?>" data-name="Дома" id="" checked data-select-type />
     <input hidden type="text" name="select-price" value="<?php echo $filter_price ?>" id="" checked data-select-price />
     <input hidden type="text" name="select-area" value="<?php echo $filter_area ?>" id="" checked data-select-area />
+    <div class="label-option-radio-wrapper label label-region" id="filter-region" data-checked>
+      <div class="option-radio">
+        <span class="option-radio__label" data-checked-view data-default-value="Регион"><?php echo !empty($filter_region) ? $filter_region : 'Регион' ?></span>
+        <span data-arrow></span>
+      </div>
+      <?php if (!empty($regions_names)) { ?>
+        <div class="option-radio__select" data-select>
+          <ul>
+            <?php foreach ($regions_names as $region) { ?>
+              <li>
+                <label>
+                  <span><?php echo $region ?></span>
+                  <input type="radio" name="option-radio-region" value="<?php echo $region ?>" data-name="<?php echo $region ?>" id="" <?php echo $filter_region === $region ? 'checked' : '' ?> data-input-visible />
+                  <span></span>
+                </label>
+              </li>
+            <?php } ?>
+          </ul>
+        </div>
+      <?php } ?>
+    </div>
     <div class="label-option-radio-wrapper label label-city" id="filter-city" data-checked>
       <div class="option-radio">
         <span class="option-radio__label" data-checked-view data-default-value="Город"><?php echo !empty($filter_city) ? $filter_city : 'Город' ?></span>

@@ -5,7 +5,7 @@ function get_names_children_categories($parent_id)
 
     $args = array(
         'parent' => $parent_id,
-        'hide_empty' => true,
+        'hide_empty' => false,
     );
 
     $categories = get_categories($args);

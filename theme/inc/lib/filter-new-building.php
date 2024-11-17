@@ -2,6 +2,9 @@
 $type = $_GET['type'];
 $where = '/' . $type . '/?';
 
+if (isset($_GET['option-radio-region']) && $_GET['option-radio-region'] != '') {
+    $where .= '&region=' . $_GET['option-radio-region'];
+}
 
 if (isset($_GET['option-radio-city']) && $_GET['option-radio-city'] != '') {
     $where .= '&city=' . $_GET['option-radio-city'];

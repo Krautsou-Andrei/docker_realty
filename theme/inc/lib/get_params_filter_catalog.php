@@ -4,13 +4,20 @@ require_once get_template_directory() . '/inc/lib/get_link_page_by_template.php'
 require_once get_template_directory() . '/inc/lib/search_id_category_by_name.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 require_once get_template_directory() . '/inc/enums/categories_name.php';
+require_once get_template_directory() . '/inc/enums/default_enum.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
+
 
 function get_params_filter_catalog()
 {
-    $filter_city = isset($_GET['city']) ? $_GET['city'] : 'Новороссийск';
+    global  $names_default_cities;
+  
+    $filter_region = isset($_GET['region']) ? $_GET['region'] : DEFAULT_ENUM::DEFAULT_FILTER_REGION;
+  
+    $dafault_city = $names_default_cities[$filter_region] ?? DEFAULT_ENUM::DEFAULT_FILTER_CITY;
+    $filter_city = isset($_GET['city']) ? $_GET['city'] : $dafault_city;
 
-    $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : 'Квартиры';
+    $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : DEFAULT_ENUM::DEFAULT_FILTER_APARTAMENTS;
 
     $filter_rooms = isset($_GET['rooms']) ? $_GET['rooms'] : '';
     $filter_rooms_array = isset($_GET['rooms']) ? explode(',', $_GET['rooms']) : [];
@@ -27,8 +34,10 @@ function get_params_filter_catalog()
     $filter_area_ot = isset($filter_area_array[0]) ? $filter_area_array[0] : '';
     $filter_area_do = isset($filter_area_array[1]) ? $filter_area_array[1] : '';
 
+    $regions_parent_category_id  = search_id_category_by_name(CATEGORIES_NAME::REGIONS);
 
-    $cities_parent_category_id  = search_id_category_by_name(CATEGORIES_NAME::CITIES);
+    $regions_names = !empty($regions_parent_category_id) ? get_names_children_categories($regions_parent_category_id) : [];
+    $cities_parent_category_id  = search_id_category_by_name($filter_region);
     $cities_names = !empty($cities_parent_category_id) ? get_names_children_categories($cities_parent_category_id) : [];
 
     $rooms_parent_category_id = search_id_category_by_name(CATEGORIES_NAME::ROOMS);
@@ -48,7 +57,8 @@ function get_params_filter_catalog()
         }
     }
 
-    $id_page_city = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $filter_city);
+    $id_page_region = search_id_page_by_name($filter_region, CATEGORIES_ID::PAGE_NEW_BUILDINGS);
+    $id_page_city = search_id_page_by_name($filter_city, $id_page_region);
 
     $args_gk_city = array(
         'post_type'   => 'page',
@@ -78,6 +88,7 @@ function get_params_filter_catalog()
     $params->cities_names = $cities_names;
     $params->filter_city = $filter_city;
     $params->filter_type_build = $filter_type_build;
+    $params->filter_region = $filter_region;
     $params->filter_rooms = $filter_rooms;
     $params->filter_rooms_array = $filter_rooms_array;
     $params->filter_price_array = $filter_price_array;
@@ -92,6 +103,7 @@ function get_params_filter_catalog()
     $params->link_page_map = $link_page_map;
     $params->max_area = $max_area;
     $params->max_price = $max_price;
+    $params->regions_names = $regions_names;
     $params->rooms_parent_category_id = $rooms_parent_category_id;
     $params->rooms_names = $rooms_names;
     $params->type_filter = $type_filter;

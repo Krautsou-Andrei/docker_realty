@@ -6,6 +6,7 @@ Template Name: Страница карта
 
 
 require_once get_template_directory() . '/inc/enums/default_enum.php';
+require_once get_template_directory() . '/inc/enums/names_sities.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 require_once get_template_directory() . '/inc/lib/get_query_filter_catalog.php';
 require_once get_template_directory() . '/inc/lib/get_title_city.php';
@@ -18,7 +19,12 @@ get_header();
     <div class="main-favorites">
         <?php $crb_new_building_title = carbon_get_post_meta(get_the_ID(), 'crb_new_building_title');
 
-        $filter_city = isset($_GET['city']) ? $_GET['city'] : 'Новороссийск';
+        global  $names_default_cities;
+
+        $filter_region = isset($_GET['region']) ? $_GET['region'] : DEFAULT_ENUM::DEFAULT_FILTER_REGION;
+
+        $dafault_city = $names_default_cities[$filter_region] ?? DEFAULT_ENUM::DEFAULT_FILTER_CITY;
+        $filter_city = isset($_GET['city']) ? $_GET['city'] : $dafault_city;
 
         $title_city =  get_title_city($filter_city);
 
@@ -50,7 +56,7 @@ get_header();
             'city' => $filter_city,
             'coordinates_center' => isset($locations[0]) ? $locations[0]['coordinates'] : [],
             'locations' => $locations,
-            'title' => 'Новостройки в Новороссийске',
+            'title' => 'Новостройки ' . $title_city,
             'is_padding' => true,
             'zoom' => 13,
         ];

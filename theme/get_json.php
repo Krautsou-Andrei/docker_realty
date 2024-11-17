@@ -46,9 +46,9 @@ function my_custom_task()
 
     get_message_server_telegram('начало', 'обновления базы данных');
 
-    foreach ($names_cities as $city) {
+    foreach ($names_cities as $key_city => $city) {
         foreach ($names_files as $name) {
-            get_json($city, $name);
+            get_json($key_city, $name);
         }
     }
 

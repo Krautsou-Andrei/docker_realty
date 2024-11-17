@@ -1,5 +1,5 @@
 <?php
-function getPostsMap($ids_gk_category)
+function get_post_map($ids_gk_category)
 {
     $args = [
         'post_type'      => 'post',

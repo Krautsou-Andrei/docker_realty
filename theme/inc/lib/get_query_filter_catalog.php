@@ -1,19 +1,29 @@
 <?php
 require_once get_template_directory() . '/inc/enums/categories_id.php';
+require_once get_template_directory() . '/inc/enums/default_enum.php';
 require_once get_template_directory() . '/inc/enums/template_name.php';
 require_once get_template_directory() . '/inc/lib/sort_gk.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 
-function get_query_filter_catalog($paged, $city = '')
+function get_query_filter_catalog($paged, $region = '', $city = '')
 {
 
-    $filter_city = isset($_GET['city']) ? $_GET['city'] : 'Новороссийск';
+    global  $names_default_cities;
+
+    $filter_region = isset($_GET['region']) ? $_GET['region'] : DEFAULT_ENUM::DEFAULT_FILTER_REGION;
+
+    $dafault_city = $names_default_cities[$filter_region] ?? DEFAULT_ENUM::DEFAULT_FILTER_CITY;
+    $filter_city = isset($_GET['city']) ? $_GET['city'] : $dafault_city;
 
     if (!empty($city)) {
         $filter_city = $city;
     }
 
-    $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : 'Квартиры';
+    if (!empty($region)) {
+        $filter_region = $region;
+    }
+
+    $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : DEFAULT_ENUM::DEFAULT_FILTER_APARTAMENTS;
 
     $filter_price = isset($_GET['select_price']) ?  explode('-', $_GET['select_price']) : [];
     $filter_area = isset($_GET['select_area']) ? explode('-', $_GET['select_area']) : [];
@@ -39,7 +49,8 @@ function get_query_filter_catalog($paged, $city = '')
         }
     }
 
-    $id_page = search_id_page_by_name(CATEGORIES_ID::PAGE_NEW_BUILDINGS, $filter_city) ?? 1;
+    $id_page_region = search_id_page_by_name($filter_region, CATEGORIES_ID::PAGE_NEW_BUILDINGS);
+    $id_page_city = search_id_page_by_name($filter_city, $id_page_region) ?? 1;
 
     $page_ids = sort_gk($filter_city);
 
@@ -48,7 +59,7 @@ function get_query_filter_catalog($paged, $city = '')
         'posts_per_page' => 9, // Количество постов на странице
         'paged'          => $paged,
         'post_status'    => 'publish',
-        'post_parent'    => $id_page, // Указываем родительскую категорию
+        'post_parent'    => $id_page_city, // Указываем родительскую категорию
         'meta_key'      => '_wp_page_template', // Мета-ключ для шаблона
         'meta_value'    => TEMPLATE_NAME::PAGE_GK, // Имя шаблона   
         'post__in'       => $page_ids, // Фильтруем по ID страниц
@@ -67,7 +78,7 @@ function get_query_filter_catalog($paged, $city = '')
     if ($filter_type_build !== '') {
         $args['meta_query'][] = array(
             'key'     => 'crb_gk_is_house',
-            'value'   => $filter_type_build == 'Квартиры' ? '' : 'yes',
+            'value'   => $filter_type_build == DEFAULT_ENUM::DEFAULT_FILTER_APARTAMENTS ? '' : 'yes',
             'compare' => '=',
         );
     }

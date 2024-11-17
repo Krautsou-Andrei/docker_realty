@@ -4,8 +4,9 @@ require_once get_template_directory() . '/inc/lib/get_query_filter_catalog.php';
 function load_gk_new_buildings()
 {
     $paged = $_POST['paged'];
+    $region = $_POST['region'];
     $city = $_POST['city'];
-    $query = get_query_filter_catalog($paged, $city);
+    $query = get_query_filter_catalog($paged, $region, $city);
 
     ob_start();
     $end = false;

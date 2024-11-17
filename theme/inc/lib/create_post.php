@@ -4,11 +4,12 @@ require_once get_template_directory() . '/inc/lib/create_category.php';
 require_once get_template_directory() . '/inc/lib/create_title_post.php';
 require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
+require_once get_template_directory() . '/inc/lib/set_min_max_value_gk.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/enums/rooms_id.php';
 
-function create_post($data, $id_gk_category)
+function create_post($data, $region_category_id, $id_gk_category)
 {
     $product_id = $data->id;
     $product_rooms = $data->product_rooms;
@@ -65,7 +66,7 @@ function create_post($data, $id_gk_category)
     }
 
 
-    $id_city_category = create_category($product_city, get_transliterate($product_city), CATEGORIES_ID::CITIES);   
+    $id_city_category = create_category($product_city, get_transliterate($product_city), $region_category_id);
     $id_rooms_category = create_category(intval($product_rooms) ? intval($product_rooms) : $product_rooms, intval($product_rooms) ? 'rooms_' . intval($product_rooms) : get_transliterate($product_rooms), CATEGORIES_ID::ROOMS);
     $id_area_category = create_category(ceil($product_area), 'area_' . ceil($product_area), CATEGORIES_ID::AREA);
 
@@ -78,10 +79,11 @@ function create_post($data, $id_gk_category)
         'post_type'    => 'post',
         'post_name'     => $post_slug,
         'post_category' => [
-            CATEGORIES_ID::CITIES,
+            CATEGORIES_ID::REGIONS,
             CATEGORIES_ID::GK,
             CATEGORIES_ID::ROOMS,
             CATEGORIES_ID::AREA,
+            $region_category_id,
             $id_city_category,
             $id_gk_category,
             $id_rooms_category,
@@ -122,80 +124,4 @@ function create_post($data, $id_gk_category)
         echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
     }
 }
-function set_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id)
-{
-    if (!empty($product_block_id)) {
-        $args_post = array(
-            'post_type'      => 'page', // Тип поста
-            'post_status'    => 'publish', // Только опубликованные страницы
-            'key'      => 'crb_gk_id', // Мета-ключ
-            'meta_value'    => $product_block_id, // Значение мета-ключа
-            'posts_per_page' => 1, // Ограничиваем количество выводимых страниц
-        );
 
-        $pages = get_posts($args_post);
-
-        if (!empty($pages)) {
-
-            $page = $pages[0];
-
-            $min_price_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_price');
-            $min_price_gk_metr = carbon_get_post_meta($page->ID, 'crb_gk_min_price_meter');
-            $max_price_gk = carbon_get_post_meta($page->ID, 'crb_gk_max_price');
-            $max_price_gk_meter = carbon_get_post_meta($page->ID, 'crb_gk_max_price_meter');
-
-            $min_area_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_area');
-            $max_area_gk = carbon_get_post_meta($page->ID, 'crb_gk_max_area');
-
-            $min_rooms_gk = carbon_get_post_meta($page->ID, 'crb_gk_min_rooms');
-            $max_rooms_gk = carbon_get_post_meta($page->ID, 'crb_gk_max_rooms');
-            $rooms_gk = !empty(carbon_get_post_meta($page->ID, 'crb_gk_rooms')) ? explode(',', carbon_get_post_meta($page->ID, 'crb_gk_rooms')) : [];
-
-            $room = intval($product_rooms) ? intval($product_rooms) : $product_rooms;
-
-
-            if (empty($min_price_gk) || intval($min_price_gk) > intval($product_price)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_min_price', $product_price);
-            }
-            if (empty($min_price_gk_metr) || intval($min_price_gk_metr) > intval($product_price_meter)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_min_price_meter', $product_price_meter);
-            }
-
-            if (empty($max_price_gk) || intval($max_price_gk) < intval($product_price)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_max_price', $product_price);
-            }
-            if (empty($max_price_gk_meter) || intval($max_price_gk_meter) > intval($product_price_meter)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_max_price_meter', $product_price_meter);
-            }
-
-            if (empty($min_area_gk) || intval($min_area_gk) > intval($product_area)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_min_area', $product_area);
-            }
-            if (empty($max_area_gk) || intval($max_area_gk) < intval($product_area)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_max_area', $product_area);
-            }
-
-            if (empty($min_rooms_gk) || intval($min_rooms_gk) > intval($product_rooms)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_min_rooms', intval($product_rooms));
-            }
-            if (empty($max_rooms_gk) || intval($max_rooms_gk) < intval($product_rooms)) {
-                carbon_set_post_meta($page->ID, 'crb_gk_max_rooms', intval($product_rooms));
-            }
-
-            if (!in_array($room, $rooms_gk)) {
-                $rooms_gk[] = $room;
-                if (!empty($rooms_gk)) {
-                    $rooms_gk_string = implode(',', $rooms_gk);
-                    carbon_set_post_meta($page->ID, 'crb_gk_rooms', $rooms_gk_string);
-                }
-            }
-
-            if ($product_room_id == ROOMS_ID::STUDIO_0 || $product_room_id == ROOMS_ID::STUDIO) {
-                carbon_set_post_meta($page->ID, 'crb_gk_is_studio', 'yes');
-            }
-            if ($product_room_id == ROOMS_ID::COTTADGE || $product_room_id == ROOMS_ID::TON_HOUSE) {
-                carbon_set_post_meta($page->ID, 'crb_gk_is_house', 'yes');
-            }
-        }
-    }
-}

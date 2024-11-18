@@ -2,7 +2,7 @@
 require_once get_template_directory() . '/inc/lib/create_title_post.php';
 require_once get_template_directory() . '/inc/lib/set_min_max_value_gk.php';
 
-function update_post($data, $post_id)
+function update_post($data, $post_id, $page_gk_id)
 {
     $product_id = $data->id;
     $product_room_id = $data->product_room_id;
@@ -37,7 +37,8 @@ function update_post($data, $post_id)
         'post_name'     => $post_slug,
     );
     wp_update_post($updated_post);
+    
     if (!empty($product_block_id)) {
-        set_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
+        set_min_max_value_gk($page_gk_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
     }
 }

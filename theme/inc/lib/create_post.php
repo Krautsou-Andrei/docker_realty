@@ -9,7 +9,7 @@ require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/enums/rooms_id.php';
 
-function create_post($data, $region_category_id, $id_gk_category)
+function create_post($data, $region_category_id, $id_gk_category, $page_gk_id)
 {
     $product_id = $data->id;
     $product_rooms = $data->product_rooms;
@@ -123,7 +123,7 @@ function create_post($data, $region_category_id, $id_gk_category)
         carbon_set_post_meta($post_id, 'product-agent-name', 'Арсен');
         carbon_set_post_meta($post_id, 'product-agent-photo', [$id_image_agent]);
 
-        set_min_max_value_gk($product_block_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
+        set_min_max_value_gk($page_gk_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
     } else {
         echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
     }

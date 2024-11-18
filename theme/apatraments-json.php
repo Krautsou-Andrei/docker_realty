@@ -9,6 +9,7 @@ require_once get_template_directory() . '/inc/lib/create_category.php';
 require_once get_template_directory() . '/inc/lib/create_page.php';
 require_once get_template_directory() . '/inc/lib/create_post.php';
 require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
+require_once get_template_directory() . '/inc/lib/get_gk_map.php';
 require_once get_template_directory() . '/inc/lib/get_post_map.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 require_once get_template_directory() . '/inc/lib/search_id_category_by_name.php';
@@ -90,17 +91,18 @@ function start()
             if (in_array($category_city->name, $regions_names)) {
                 $search_categories_cities[] = $category_city->term_id;
             }
-        }
+        }        
 
         $post_map = get_post_map($search_categories_cities);
 
         $json_folder_path = get_template_directory() . '/json/' . $key_city_region . '/apartments.json';
         $items = Items::fromFile($json_folder_path);
 
+        $gk_map = get_gk_map($id_page_krai);
+
         get_message_server_telegram('Успех', 'Начало загрузки объявлений ' . $key_city_region);
 
         foreach ($items as $name => $item) {
-
             $data = new stdClass();
 
             $data->id = $item->_id;
@@ -130,11 +132,12 @@ function start()
             $id_gk_category = create_category($data->product_gk, get_transliterate($data->product_gk), CATEGORIES_ID::GK);
 
             $post_id = $post_map[$item->_id];
+            $page_gk_id = $gk_map[$data->block_id];
 
             if ($post_id) {
-                update_post($data, $post_id);
+                update_post($data, $post_id, $page_gk_id);
             } else {
-                create_post($data, $region_category_id, $id_gk_category);
+                create_post($data, $region_category_id, $id_gk_category, $page_gk_id);
             }
         }
         wp_cache_flush();
@@ -143,7 +146,6 @@ function start()
     }
     get_message_server_telegram('Успех', 'Загрузились все объявления');
 }
-
 
 function search_region($regions, $search_id)
 {

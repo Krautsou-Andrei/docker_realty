@@ -38,7 +38,7 @@ function update_post($data, $post_id, $page_gk_id)
     );
     wp_update_post($updated_post);
     
-    if (!empty($product_block_id)) {
+    if (!empty($page_gk_id)) {
         set_min_max_value_gk($page_gk_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
     }
 }

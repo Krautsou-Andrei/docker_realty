@@ -9,7 +9,7 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
         $ids_gallery_plan = [];
         $upload_errors = [];
 
-        if (!empty($block->plan) && !$is_old) {
+        if (!empty($block->plan) ) {
             foreach ($block->plan as $render) {
                 if (!empty($render)) {
                     $attachment_id = @upload_image_from_url($render);
@@ -29,7 +29,7 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
         }
         $ids_gallery = [];
 
-        if (!empty($block->renderer)  && !$is_old) {
+        if (!empty($block->renderer)  ) {
             foreach ($block->renderer as $render) {
                 if (!empty($render)) {
                     $attachment_id = @upload_image_from_url($render);
@@ -94,8 +94,7 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
         );
         wp_update_post($updated_page);
 
-        if (!empty($upload_errors)) {
-            var_dump($upload_errors);
+        if (!empty($upload_errors)) {         
             get_message_server_telegram('Незагруженные картинки ' . $block->name, implode(', ', $upload_errors));
         }
     } catch (Exception $e) {

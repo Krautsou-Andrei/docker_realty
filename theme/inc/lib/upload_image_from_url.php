@@ -21,7 +21,7 @@ function upload_image_from_url($image_url, $count = 0)
     }
 
     // Проверяем, является ли $attachment_id идентификатором вложения
-    if (is_numeric($attachment_id) && $attachment_id > 0) {
+    if (is_numeric($attachment_id) && $attachment_id > 0) {       
         return $attachment_id;
     } else {
         $webp_attachment_id = convert_image_to_webp($attachment_id, $image_url);
@@ -30,6 +30,10 @@ function upload_image_from_url($image_url, $count = 0)
             return $webp_attachment_id;
         }
 
+        global $image_cache;
+        $webp_image_url = get_name_image_webp($image_url);
+
+        $image_cache[$webp_image_url] = $webp_attachment_id;   
         return $webp_attachment_id;
     }
 }
@@ -120,17 +124,14 @@ function convert_image_to_webp($image_data, $image_url)
 
 function upload_image($image_url)
 {
-    $webp_image_url = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $image_url);
+    global $image_cache;
 
-    $existing_attachment = get_posts(array(
-        'post_type' => 'attachment',
-        'meta_key' => 'external_image_url',
-        'meta_value' => $webp_image_url,
-        'posts_per_page' => 1,
-    ));
+    $webp_image_url = get_name_image_webp($image_url);
 
-    if ($existing_attachment) {
-        return $existing_attachment[0]->ID; // Возвращаем ID, если изображение уже существует
+    $image_id = $image_cache[$webp_image_url] ?? false;    
+
+    if ($image_id) {
+        return $image_id;
     }
 
     $response = wp_remote_get($image_url);
@@ -150,4 +151,13 @@ function upload_image($image_url)
 
     // Возвращаем данные изображения для конвертации
     return $image_data; // Возвращаем данные изображения, чтобы конвертировать их в WebP
+}
+
+function get_name_image_webp($image_url)
+{
+    $file_name = basename($image_url);
+    $file_name_without_extension = pathinfo($file_name, PATHINFO_FILENAME);
+    $webp_image_url = $file_name_without_extension . '.webp';
+
+    return $webp_image_url;
 }

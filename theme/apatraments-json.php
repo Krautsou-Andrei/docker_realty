@@ -151,7 +151,7 @@ function start()
     }
     get_message_server_telegram('Успех', 'Загрузились все объявления');
 }
-start();
+
 function search_region($regions, $search_id)
 {
     $searchRegion = array_filter($regions, function ($object) use ($search_id) {

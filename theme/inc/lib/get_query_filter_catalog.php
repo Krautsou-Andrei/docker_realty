@@ -50,6 +50,7 @@ function get_query_filter_catalog($paged, $region = '', $city = '')
     }
 
     $id_page_region = search_id_page_by_name($filter_region, CATEGORIES_ID::PAGE_NEW_BUILDINGS);
+
     $id_page_city = search_id_page_by_name($filter_city, $id_page_region) ?? 1;
 
     $page_ids = sort_gk($filter_city);
@@ -68,6 +69,16 @@ function get_query_filter_catalog($paged, $region = '', $city = '')
             'relation' => 'AND', // Указываем, что условия должны выполняться одновременно
         ),
     );
+
+    $is_view_all_page = carbon_get_post_meta(CATEGORIES_ID::PAGE_NEW_BUILDINGS, 'crb_gk_is_not_all_view');
+
+    if ($is_view_all_page) {
+        $args['meta_query'][] = [
+            'key'     => 'crb_gk_min_price_meter',
+            'value'   => '',
+            'compare' => '!='
+        ];
+    }
 
     $args['meta_query'][] = [
         'key'     => 'crb_gk_is_not_view',

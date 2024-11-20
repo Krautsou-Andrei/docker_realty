@@ -16,4 +16,5 @@ require __DIR__ . '/fields-page-ipoteca.php';
 require __DIR__ . '/fields-page-home.php';
 require __DIR__ . '/fields-page-favorites.php';
 require __DIR__ . '/fields-page-new-building-city.php';
+require __DIR__ . '/fields-page-new-building.php';
 

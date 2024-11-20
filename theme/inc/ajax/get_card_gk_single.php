@@ -15,12 +15,11 @@ function get_card_gk_single()
     $args_gk = [
         'post_type' => 'post', // Тип поста (может быть 'post', 'page', 'custom-post-type' и т.д.)
         'posts_per_page' => -1, // Количество постов на странице (-1 для вывода всех постов)
+        'fields'        => 'ids',
         'category__and' => [$id_category_gk],
     ];
 
-
-
-    $query = new WP_Query($args_gk);
+    $query = get_posts($args_gk);
 
     $price_all = [];
     $price_meter_all = [];
@@ -29,66 +28,59 @@ function get_card_gk_single()
     $map_apartaments = [];
     $map_houses = [];
 
-    if ($query->have_posts()) {
+    foreach ($query as $id_post) {
+        $price = carbon_get_post_meta($id_post, 'product-price');
+        $price_meter = carbon_get_post_meta($id_post, 'product-price-meter');
+        $apartament_finishing = carbon_get_post_meta($id_post, 'product-finishing');
+        $liter = carbon_get_post_meta($id_post, 'product-builder-liter');
+        $categories = get_the_category($id_post);
+        $floor = carbon_get_post_meta($id_post, 'product-stage');
+        $rooms = carbon_get_post_meta($id_post, 'product-rooms');
+        $area = carbon_get_post_meta($id_post, 'product-area');
 
-        while ($query->have_posts()) {
-            $query->the_post();
-            $id_post = get_the_ID();
-            $price = carbon_get_post_meta($id_post, 'product-price');
-            $price_meter = carbon_get_post_meta($id_post, 'product-price-meter');
-            $apartament_finishing = carbon_get_post_meta($id_post, 'product-finishing');
-            $liter = carbon_get_post_meta($id_post, 'product-builder-liter');
-            $categories = get_the_category($id_post);
-            $floor = carbon_get_post_meta($id_post, 'product-stage');
-            $rooms = carbon_get_post_meta($id_post, 'product-rooms');
-            $area = carbon_get_post_meta($id_post, 'product-area');
+        $apartament = [];
+        $apartament['id_post'] = $id_post;
+        $apartament['rooms'] = $rooms;
+        $apartament['area'] = $area;
 
-            $apartament = [];
-            $apartament['id_post'] = $id_post;
-            $apartament['rooms'] = $rooms;
-            $apartament['area'] = $area;
-
-            if (!isset($map_apartaments[$liter]['floors'])) {
-                $map_apartaments[$liter]['floors'] = [];
-            }
-            if (!isset($map_apartaments[$liter]['area'])) {
-                $map_apartaments[$liter]['area'] = [];
-            }
-            if (!isset($map_apartaments[$liter]['rooms'])) {
-                $map_apartaments[$liter]['rooms'] = [];
-            }
-
-            $map_apartaments[$liter]['floors'][$floor][] = $apartament;
-
-            foreach ($categories as $category) {
-                if ($category->parent == CATEGORIES_ID::AREA && !in_array($category->term_id, array_column($map_apartaments[$liter]['area'], 'term_id'))) {
-                    $map_apartaments[$liter]['area'][] = (array) $category;
-                }
-                if ($category->parent == CATEGORIES_ID::ROOMS && !in_array($category->term_id, array_column($map_apartaments[$liter]['rooms'], 'term_id'))) {
-                    $map_apartaments[$liter]['rooms'][] = (array) $category;
-                }
-                if ($category->parent == CATEGORIES_ID::ROOMS && ($category->name == CATEGORIES_NAME::COTTADGE || $category->name == CATEGORIES_NAME::TON_HOUSE)) {
-                    $map_houses[] = [
-                        'post_id' => $id_post,
-                        'image' => carbon_get_post_meta($id_post, 'product-gallery')[0],
-                        'area' => $area,
-                        'price' => $price
-                    ];
-                }
-            }
-
-            if (!in_array($apartament_finishing, $finishing)) {
-                $finishing[] = $apartament_finishing;
-            }
-            if (!in_array($liter, $literal)) {
-                $literal[] = $liter;
-            }
-
-            $price_all[] = $price;
-            $price_meter_all[] = $price_meter;
+        if (!isset($map_apartaments[$liter]['floors'])) {
+            $map_apartaments[$liter]['floors'] = [];
+        }
+        if (!isset($map_apartaments[$liter]['area'])) {
+            $map_apartaments[$liter]['area'] = [];
+        }
+        if (!isset($map_apartaments[$liter]['rooms'])) {
+            $map_apartaments[$liter]['rooms'] = [];
         }
 
-        wp_reset_postdata();
+        $map_apartaments[$liter]['floors'][$floor][] = $apartament;
+
+        foreach ($categories as $category) {
+            if ($category->parent == CATEGORIES_ID::AREA && !in_array($category->term_id, array_column($map_apartaments[$liter]['area'], 'term_id'))) {
+                $map_apartaments[$liter]['area'][] = (array) $category;
+            }
+            if ($category->parent == CATEGORIES_ID::ROOMS && !in_array($category->term_id, array_column($map_apartaments[$liter]['rooms'], 'term_id'))) {
+                $map_apartaments[$liter]['rooms'][] = (array) $category;
+            }
+            if ($category->parent == CATEGORIES_ID::ROOMS && ($category->name == CATEGORIES_NAME::COTTADGE || $category->name == CATEGORIES_NAME::TON_HOUSE)) {
+                $map_houses[] = [
+                    'post_id' => $id_post,
+                    'image' => carbon_get_post_meta($id_post, 'product-gallery')[0],
+                    'area' => $area,
+                    'price' => $price
+                ];
+            }
+        }
+
+        if (!in_array($apartament_finishing, $finishing)) {
+            $finishing[] = $apartament_finishing;
+        }
+        if (!in_array($liter, $literal)) {
+            $literal[] = $liter;
+        }
+
+        $price_all[] = $price;
+        $price_meter_all[] = $price_meter;
     }
 
     foreach ($map_apartaments as $liter => $data) {

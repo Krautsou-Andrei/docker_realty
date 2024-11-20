@@ -28,24 +28,16 @@ wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
     </div>
   </div>
   <div class="main-favorites">
-    <?php $crb_new_building_title = carbon_get_post_meta(get_the_ID(), 'crb_new_building_title');
-
-    $filter_city = explode('/', $_SERVER['REQUEST_URI'])[2];
-    $countSale = 6;
-
-    $title_city = $filter_city === 'novorossiysk' ? 'в Новороссийске' : ($filter_city === 'krasnodar' ? 'в Краснодаре' : '');
-    $search_param_city = $filter_city === 'novorossiysk' ? 'Новороссийск' : ($filter_city === 'krasnodar' ? 'Краснодар' : '');
-
-
-    if (function_exists('yoast_breadcrumb')) {
-      yoast_breadcrumb('<div class="main-favorites__breadcrumbs">
-                          <section class="breadcrumbs">
-                            <div class="breadcrumbs__container">
-                             ', '
-                             </div>
-                          </section>
-                        </div>');
-    }
+    <?php
+      if (function_exists('yoast_breadcrumb')) {
+        yoast_breadcrumb('<div class="main-favorites__breadcrumbs">
+                            <section class="breadcrumbs">
+                              <div class="breadcrumbs__container">
+                              ', '
+                              </div>
+                            </section>
+                          </div>');
+      }
     ?>
     <div class="main-favorites__cards-preview">
       <section class="favorites">

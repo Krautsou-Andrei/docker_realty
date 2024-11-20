@@ -5,5 +5,5 @@ require_once get_template_directory() . '/apatraments-json.php';
 // require_once get_template_directory() . '/inc/lib/delete_old_posts.php';
 
 // my_custom_task();
-start();
+start(true);
 // delete_old_posts();

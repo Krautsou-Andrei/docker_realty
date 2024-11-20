@@ -7,9 +7,7 @@ function create_category($category_name, $category_slug = '', $parent_id = 0)
     $name = strval($category_name);
     $slug = strval($category_slug);
     $term_id = $category_cache[$name] ?? false;
-
-
-    prettyVarDump($category_cache);
+  
     if (!$term_id) {
         // Создаем новую категорию
         $result = wp_insert_term(
@@ -20,7 +18,7 @@ function create_category($category_name, $category_slug = '', $parent_id = 0)
                 'parent' => $parent_id     // ID родительской категории (необязательно)
             ]
         );
-        prettyVarDump('create category');
+        
         // Проверка на ошибки
         if (is_wp_error($result)) {
             return $result->get_error_message();
@@ -28,8 +26,7 @@ function create_category($category_name, $category_slug = '', $parent_id = 0)
             $category_cache[$name] = $result['term_id'];
             return $result['term_id']; // Возвращаем ID созданной категории
         }
-    } else {
-        prettyVarDump('not create category');
+    } else {     
         return $term_id; // Возвращаем ID существующей категории
     }
 }

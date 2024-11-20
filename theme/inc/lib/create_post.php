@@ -4,12 +4,12 @@ require_once get_template_directory() . '/inc/lib/create_category.php';
 require_once get_template_directory() . '/inc/lib/create_title_post.php';
 require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
-require_once get_template_directory() . '/inc/lib/set_min_max_value_gk.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
+require_once get_template_directory() . '/inc/enums/categories_name.php';
 require_once get_template_directory() . '/inc/enums/rooms_id.php';
 
-function create_post($data, $region_category_id, $id_gk_category, $page_gk_id)
+function create_post($data, $region_category_id, $id_gk_category)
 {
     $product_id = $data->id;
     $product_rooms = $data->product_rooms;
@@ -19,8 +19,7 @@ function create_post($data, $region_category_id, $id_gk_category, $page_gk_id)
     $product_area_rooms_total = $data->product_area_rooms_total;
     $product_stage = $data->product_stage;
     $product_city = $data->product_city;
-    $product_gk = $data->product_gk;
-
+  
     $product_gallery = $data->product_gallery;
     $product_price = $data->product_price;
     $product_price_meter = $data->product_price_meter;
@@ -32,11 +31,9 @@ function create_post($data, $region_category_id, $id_gk_category, $page_gk_id)
     $product_building_type = $data->product_building_type;
     $product_finishing = $data->product_finishing;
     $product_building_name = $data->building_name;
-    $product_block_id = $data->block_id;
     $product_apartament_number = $data->product_apartament_number;
     $product_apartamens_wc = $data->product_apartamens_wc;
     $product_height = $data->product_height;
-
 
     $product_agent_url = 'https://2bishop.ru/files/avatars/agph_23286_5jpeg.jpg';
     $product_agent_phone = carbon_get_theme_option('crb_phone_link');
@@ -123,7 +120,9 @@ function create_post($data, $region_category_id, $id_gk_category, $page_gk_id)
         carbon_set_post_meta($post_id, 'product-agent-name', 'Арсен');
         carbon_set_post_meta($post_id, 'product-agent-photo', [$id_image_agent]);
 
-        set_min_max_value_gk($page_gk_id, $product_price_meter, $product_price, $product_area, $product_rooms, $product_room_id);
+        if ($product_rooms === CATEGORIES_NAME::STUDIO) {
+            carbon_set_post_meta($post_id, 'product_type_aparts', 'yes');
+        }        
     } else {
         echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
     }

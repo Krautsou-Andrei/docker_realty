@@ -4,28 +4,16 @@ require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 
 function search_id_page_by_name($post_title, $paren_page = null, $category_id = null, $template = null, $is_create = false)
 {
-    $args_search_page = array(
-        'post_type'   => 'page',
-        'post_status' => 'publish',
-        'posts_per_page' => -1,
 
-    );
-    if ($paren_page !== null) {
-        $args_search_page['post_parent'] = $paren_page;
-    }
+    $page_slug = get_transliterate($post_title);
+    $page_enabled_id = page_exists($page_slug);
 
-    $search_pages = get_posts($args_search_page);
-
-    if (!empty($search_pages)) {
-        foreach ($search_pages as $page) {
-            if ($page->post_title === $post_title) {
-                return $page->ID;
-            }
-        }
+    if ($page_enabled_id) {
+        return $page_enabled_id;
     }
 
     if ($is_create) {
-        $page_slug = get_transliterate($post_title);
+
 
         $args_new_page = [
             'post_title'   => $post_title,

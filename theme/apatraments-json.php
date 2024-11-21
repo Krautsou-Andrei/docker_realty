@@ -111,45 +111,48 @@ function start($is_continue_load_post = false)
         $is_load = false;
 
         foreach ($items as $name => $item) {
-            if (!$is_continue_load_post || $item->_id === $latest_post_id || $is_load) {
-                $is_load = true;
-                $data = new stdClass();
+            if ($is_continue_load_post && !$is_load && $item->_id !== $latest_post_id) {
+                continue;
+            }
 
-                $data->id = $item->_id;
-                $data->product_gallery =           $item->plan[0] ? $item->plan : '';
-                $data->product_price =             $item->price ?? 0;
-                $data->product_price_meter =       $item->price && $item->area_total ? round(floatval($item->price) / floatval($item->area_total), 2) :  0;
-                $data->product_rooms =             $rooms_ids[$item->room] ?? 0;
-                $data->product_room_id =           $item->room ?? '';
-                $data->product_area =              $item->area_total ?? 0;
-                $data->product_area_kitchen =      $item->area_kitchen ?? '';
-                $data->product_area_rooms_total =  $item->area_rooms_total ?? '';
-                $data->product_stage =             $item->floor ?? '';
-                $data->product_stages =            $item->floors ?? '';
-                $data->product_year_build =        $item->building_deadline ?? '';
-                $data->product_city =              $item->block_district_name ?? '';
-                $data->product_gk =                $item->block_name ?? '';
-                $data->product_street =            $item->block_address ?? '';
-                $data->coordinates =               $item->block_geometry->coordinates ?? [];
-                $data->product_building_type =     $building_type_ids[$item->building_type] ?? '';
-                $data->product_finishing =         $finishings_ids[$item->finishing] ?? '';
-                $data->building_name =             $item->building_name ?? '';
-                $data->block_id =                  $item->block_id ?? '';
-                $data->product_apartament_number = $item->number ?? '';
-                $data->product_apartamens_wc =     $item->wc_count ?? '';
-                $data->product_height =            $item->height ?? '';
+            $is_load = true;
 
-                $id_gk_category = create_category($data->product_gk, get_transliterate($data->product_gk), CATEGORIES_ID::GK);
+            $data = new stdClass();
+            $data->id =                        $item->_id;
+            $data->product_gallery =           !empty($item->plan) ? $item->plan : [];
+            $data->product_price =             $item->price ?? 0;
+            $data->product_price_meter =       ($item->price && $item->area_total) ? round(floatval($item->price) / floatval($item->area_total), 2) : 0;
+            $data->product_rooms =             $rooms_ids[$item->room] ?? 0;
+            $data->product_room_id =           $item->room ?? '';
+            $data->product_area =              $item->area_total ?? 0;
+            $data->product_area_kitchen =      $item->area_kitchen ?? '';
+            $data->product_area_rooms_total =  $item->area_rooms_total ?? '';
+            $data->product_stage =             $item->floor ?? '';
+            $data->product_stages =            $item->floors ?? '';
+            $data->product_year_build =        $item->building_deadline ?? '';
+            $data->product_city =              $item->block_district_name ?? '';
+            $data->product_gk =                $item->block_name ?? '';
+            $data->product_street =            $item->block_address ?? '';
+            $data->coordinates =               $item->block_geometry->coordinates ?? [];
+            $data->product_building_type =     $building_type_ids[$item->building_type] ?? '';
+            $data->product_finishing =         $finishings_ids[$item->finishing] ?? '';
+            $data->building_name =             $item->building_name ?? '';
+            $data->block_id =                  $item->block_id ?? '';
+            $data->product_apartament_number = $item->number ?? '';
+            $data->product_apartamens_wc =     $item->wc_count ?? '';
+            $data->product_height =            $item->height ?? '';
 
-                $post_id = $post_map[$item->_id] ?? false;
+            $id_gk_category = create_category($data->product_gk, get_transliterate($data->product_gk), CATEGORIES_ID::GK);
+            $post_id = $post_map[$item->_id] ?? false;
 
-                if ($post_id) {
-                    update_post($data, $post_id);
-                } else {
-                    create_post($data, $region_category_id, $id_gk_category);
-                }
+            if ($post_id) {
+                update_post($data, $post_id);
+            } else {
+                create_post($data, $region_category_id, $id_gk_category);
             }
         }
+        $post_map = null;
+        gc_collect_cycles();
         wp_cache_flush();
 
         $gk_map = get_gk_map($id_page_krai);

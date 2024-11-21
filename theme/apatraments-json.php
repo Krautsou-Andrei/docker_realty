@@ -35,6 +35,7 @@ function start($is_continue_load_post = false)
 
     $category_cache = get_category_map();
     $image_cache = get_images_map();
+    $is_load = false;
 
     foreach ($names_cities as $key_city_region => $city_region) {
 
@@ -108,7 +109,7 @@ function start($is_continue_load_post = false)
         get_message_server_telegram('Успех', 'Начало загрузки объявлений ' . $key_city_region);
 
         $latest_post_id = get_latest_post();
-        $is_load = false;
+       
 
         foreach ($items as $name => $item) {
             if ($is_continue_load_post && !$is_load && $item->_id !== $latest_post_id) {

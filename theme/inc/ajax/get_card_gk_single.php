@@ -83,27 +83,16 @@ function get_card_gk_single()
         $price_meter_all[] = $price_meter;
     }
 
-    foreach ($map_apartaments as $liter => $data) {
-        usort($map_apartaments[$liter]['area'], function ($a, $b) {
-            return intval($a['name']) - intval($b['name']);
-        });
+    foreach ($map_apartaments as $liter => &$data) {
+        usort($data['area'], fn($a, $b) => intval($a['name']) - intval($b['name']));
+        usort($data['rooms'], fn($a, $b) => strcmp(intval($a['name']), intval($b['name'])));
+        krsort($data['floors']);
     }
-
-    foreach ($map_apartaments as $liter => $data) {
-        usort($map_apartaments[$liter]['rooms'], function ($a, $b) {
-            return strcmp(intval($a['name']), intval($b['name']));
-        });
-    }
+    unset($data);     
 
     usort($literal, function ($a, $b) {
         return strcmp(intval($a), intval($b));
-    });
-
-    foreach ($map_apartaments as $liter => $floors) {
-        krsort($map_apartaments[$liter]); // Сортируем массив по ключам для текущего литера
-
-        krsort($map_apartaments[$liter]['floors']);
-    }
+    });    
 
     $params_table = [
         'id_page_gk' => $id_page_gk,

@@ -73,7 +73,11 @@ function start($is_continue_load_post = false)
             $region = search_region($regions, $block->district);
             $region_name = $region->name;
 
-            $id_page = search_id_page_by_name($region_name, $id_page_krai, $region_category_id, TEMPLATE_NAME::CITY_BY_NEW_BUILDING, true);
+            $id_page = '';
+
+            if (!empty($region_name)) {
+                $id_page = search_id_page_by_name($region_name, $id_page_krai, $region_category_id, TEMPLATE_NAME::CITY_BY_NEW_BUILDING, true);
+            }
 
             if (!empty($id_page)) {
                 create_page($id_page, $block, TEMPLATE_NAME::PAGE_GK, $region_name);
@@ -109,7 +113,7 @@ function start($is_continue_load_post = false)
         get_message_server_telegram('Успех', 'Начало загрузки объявлений ' . $key_city_region);
 
         $latest_post_id = get_latest_post();
-       
+
 
         foreach ($items as $name => $item) {
             if ($is_continue_load_post && !$is_load && $item->_id !== $latest_post_id) {
@@ -173,6 +177,10 @@ function search_region($regions, $search_id)
     $searchRegion = array_filter($regions, function ($object) use ($search_id) {
         return $object->_id === $search_id;
     });
+
+    if (empty($searchRegion)) {
+        prettyVarDump($search_id);
+    }
 
     return  reset($searchRegion);
 }

@@ -1,4 +1,5 @@
 <?php
+require_once get_template_directory() . '/inc/lib/get_latest_post.php';
 /*
 Template Name: Serve Large JSON
 */
@@ -49,6 +50,10 @@ $args = [
 $query = get_posts($args);
 
 var_dump(count($query));
+
+$latest_post = get_latest_post();
+
+var_dump($latest_post);
 
 // if ($query->have_posts()) :
 //     echo '<ul>';

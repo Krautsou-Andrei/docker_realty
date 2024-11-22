@@ -3,6 +3,7 @@
 require_once get_template_directory() . '/inc/lib/create_category.php';
 require_once get_template_directory() . '/inc/lib/get_message_server.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
+require_once get_template_directory() . '/inc/lib/page_exists.php';
 require_once get_template_directory() . '/inc/lib/update_fields_gk.php';
 
 function create_page($parent_id, $page, $template, $city_name)
@@ -67,21 +68,4 @@ function create_page($parent_id, $page, $template, $city_name)
     }
 
     return $page_id;
-}
-
-function page_exists($slug)
-{
-    $args = array(
-        'name'        => $slug, // Слаг
-        'post_type'   => 'page', // Тип поста
-        'post_status' => 'publish', // Только опубликованные страницы
-        'numberposts' => 1, // Только одна страница
-    );
-
-    $pages = get_posts($args);
-
-    if (!empty($pages)) {
-        return $pages[0]->ID;
-    }
-    return !empty($pages);
 }

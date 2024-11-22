@@ -1,6 +1,7 @@
 <?php
 require_once get_template_directory() . '/inc/lib/create_category.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
+require_once get_template_directory() . '/inc/lib/page_exists.php';
 
 function search_id_page_by_name($post_title, $paren_page = null, $category_id = null, $template = null, $is_create = false)
 {

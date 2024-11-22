@@ -1,9 +1,42 @@
 <?php
 require_once('/var/www/html/wp-load.php');
-// require_once get_template_directory() . '/get_json.php';
+require_once get_template_directory() . '/get_json.php';
 require_once get_template_directory() . '/apatraments-json.php';
-// require_once get_template_directory() . '/inc/lib/delete_old_posts.php';
+require_once get_template_directory() . '/inc/lib/delete_old_posts.php';
 
-// my_custom_task();
-start(true);
-// delete_old_posts();
+$max_attempts = 10;
+
+// Функция для выполнения задачи с повторными попытками
+function execute_with_retries($function_name, $params = null, $max_attempts = 10)
+{
+    for ($attempt = 1; $attempt <= $max_attempts; $attempt++) {
+        try {
+            // Вызов функции с параметрами, если они переданы
+            if ($params !== null) {
+                $function_name($params);
+            } else {
+                $function_name();
+            }
+            return; // Если функция выполнена успешно, выходим
+        } catch (Exception $e) {
+            error_log('Attempt ' . $attempt . ' failed for ' . $function_name . ': ' . $e->getMessage());
+            if ($attempt === $max_attempts) {
+                throw $e; // Если это последняя попытка, выбрасываем исключение
+            }
+        }
+    }
+}
+
+// Выполнение первой задачи
+// execute_with_retries('my_custom_task');
+
+// Выполнение второй задачи с обработкой ошибок
+try {
+    start();
+} catch (Exception $e) {
+    error_log('First attempt to start failed: ' . $e->getMessage());
+    execute_with_retries('start', true); // Повторный вызов с параметром true
+}
+
+// Выполнение задачи по удалению старых постов
+// execute_with_retries('delete_old_posts');

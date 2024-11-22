@@ -147,13 +147,13 @@ function start($is_continue_load_post = false)
             $data->product_apartamens_wc =     $item->wc_count ?? '';
             $data->product_height =            $item->height ?? '';
 
-            $id_gk_category = create_category($data->product_gk, get_transliterate($data->product_gk), CATEGORIES_ID::GK);
+
             $post_id = $post_map[$item->_id] ?? false;
 
             if ($post_id) {
                 update_post($data, $post_id);
             } else {
-                create_post($data, $region_category_id, $id_gk_category);
+                create_post($data, $region_category_id);
             }
         }
         $post_map = null;

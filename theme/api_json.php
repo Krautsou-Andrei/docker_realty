@@ -31,8 +31,11 @@ Template Name: Serve Large JSON
 //     exit;
 // }
 
-$date_query = new DateTime();
-$date_query->modify('-1 hour'); 
+date_default_timezone_set('Europe/Moscow');
+
+$date_query = new DateTime('now');
+
+$date_query->modify('-1 hour');
 $timestamp = $date_query->getTimestamp();
 
 $args = [
@@ -54,6 +57,7 @@ var_dump(count($query));
 $latest_post = get_latest_post();
 
 var_dump($latest_post);
+var_dump(memory_get_usage());
 
 // if ($query->have_posts()) :
 //     echo '<ul>';

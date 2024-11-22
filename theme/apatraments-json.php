@@ -116,7 +116,7 @@ function start($is_continue_load_post = false)
 
 
         foreach ($items as $name => $item) {
-            if ($is_continue_load_post && !$is_load && $item->_id !== $latest_post_id) {
+            if ($is_continue_load_post && !$is_load && $item->_id !== $latest_post_id && $latest_post_id !== null) {
                 continue;
             }
 

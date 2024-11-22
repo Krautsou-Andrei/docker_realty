@@ -32,7 +32,7 @@ function execute_with_retries($function_name, $params = null, $max_attempts = 10
 
 // Выполнение второй задачи с обработкой ошибок
 try {
-    start();
+    start(true);
 } catch (Exception $e) {
     error_log('First attempt to start failed: ' . $e->getMessage());
     execute_with_retries('start', true); // Повторный вызов с параметром true

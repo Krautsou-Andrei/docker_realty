@@ -1,13 +1,7 @@
 <?php
-require_once get_template_directory() . '/inc/lib/create_title_post.php';
-require_once get_template_directory() . '/inc/lib/set_min_max_value_gk.php';
-
 function update_post($data, $post_id)
 {
-    $product_id = $data->id;
-    $product_room_id = $data->product_room_id;
-    $product_area = $data->product_area;
-    $product_stage = $data->product_stage;
+    date_default_timezone_set('Europe/Moscow');  
 
     $product_price = $data->product_price;
     $product_price_meter = $data->product_price_meter;
@@ -19,20 +13,13 @@ function update_post($data, $post_id)
     if (!empty($product_year_build)) {
         $date = new DateTime($product_year_build);
         $date_build = $date->format("Y");
-    }
-
-    $title = create_title_post($product_room_id, $product_area, $product_stage);
-    $post_slug = $product_id;
+    }  
 
     carbon_set_post_meta($post_id, 'product-price', $product_price);
     carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);
     carbon_set_post_meta($post_id, 'product-year-build', $date_build);
     carbon_set_post_meta($post_id, 'product-finishing', $product_finishing);
-
-    $updated_post = array(
-        'ID'         => $post_id,
-        'post_title' => $title . ' ' . $product_id,
-        'post_name'     => $post_slug,
-    );
-    wp_update_post($updated_post);
+    update_post_meta($post_id, 'post_modified', current_time('mysql'));
+    update_post_meta($post_id, 'post_modified_gmt', current_time('mysql', 1));
+    
 }

@@ -58,16 +58,3 @@ $latest_post = get_latest_post();
 
 var_dump($latest_post);
 var_dump(memory_get_usage());
-
-// if ($query->have_posts()) :
-//     echo '<ul>';
-//     while ($query->have_posts()) : $query->the_post();
-//         echo '<li>' . get_the_title() . ' - ' . get_the_modified_date() . '</li>';
-//     endwhile;
-//     echo '</ul>';
-// else :
-//     echo 'Нет постов, обновленных за последний час.';
-// endif;
-
-// // Сбрасываем глобальные переменные поста
-// wp_reset_postdata();

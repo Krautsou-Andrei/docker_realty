@@ -159,7 +159,7 @@ function start($is_continue_load_post = false)
         $post_map = null;
         gc_collect_cycles();
         wp_cache_flush();
-
+        get_message_server_telegram('Успех', 'Начало обновления цены ' . $key_city_region);
         $gk_map = get_gk_map($id_page_krai);
         $post_map_categories = get_post_map_category($search_categories_cities);
 

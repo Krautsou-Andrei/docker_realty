@@ -1,15 +1,11 @@
 <?php
-
-require_once get_template_directory() . '/inc/enums/rooms_id.php';
-
 function set_min_max_value_gk($page_gk_id, $params)
 {
-    if (!empty($page_gk_id)) {
-
+    if (!empty($page_gk_id)) {   
         $min_price_gk = $params->min_price;
-        $min_price_gk_metr = $params->min_price_meter;
+        $min_price_gk_metr = $params->min_price_metr;
         $max_price_gk =  $params->max_price;
-        $max_price_gk_meter = $params->max_price_meter;
+        $max_price_gk_metr = $params->max_price_metr;
 
         $min_area_gk =  $params->min_area;
         $max_area_gk = $params->max_area;
@@ -28,8 +24,8 @@ function set_min_max_value_gk($page_gk_id, $params)
         if (!empty($max_price_gk)) {
             carbon_set_post_meta($page_gk_id, 'crb_gk_max_price', $max_price_gk);
         }
-        if (!empty($max_price_gk_meter)) {
-            carbon_set_post_meta($page_gk_id, 'crb_gk_max_price_meter', $max_price_gk_meter);
+        if (!empty($max_price_gk_metr)) {
+            carbon_set_post_meta($page_gk_id, 'crb_gk_max_price_meter', $max_price_gk_metr);
         }
         if (!empty($min_area_gk)) {
             carbon_set_post_meta($page_gk_id, 'crb_gk_min_area', $min_area_gk);

@@ -9,50 +9,50 @@ function set_value_gk($id_page_gk, $post_map_categories)
     $post = get_post($id_page_gk);
     $slug_page = $post ? $post->post_name : '';
 
-    $id_category_gk = get_term_by('slug', $slug_page, 'category')->term_id;   
+    $id_category_gk = get_term_by('slug', $slug_page, 'category')->term_id;
 
-    $min_price = '';
-    $min_price_meter = '';
-    $max_price = '';
-    $max_price_meter = '';
-    $min_area = '';
-    $max_area = '';
-    $min_room = '';
-    $max_room = '';
+    $min_price = 0;
+    $min_price_metr = 0;
+    $max_price = 0;
+    $max_price_metr = 0;
+    $min_area = 0;
+    $max_area = 0;
+    $min_room = 0;
+    $max_room = 0;
     $is_studio = false;
-    $rooms = [];    
-
+    $rooms = [];
+  
     foreach ($post_map_categories as $key => $ids_post_categories) {
-        if (in_array($id_category_gk, $ids_post_categories)) {
+        if (in_array($id_category_gk, $ids_post_categories)) {           
             $id_post = $key;
-            $price_meter = carbon_get_post_meta($id_post, 'product-price-meter');
+            $price_metr = carbon_get_post_meta($id_post, 'product-price-meter');
             $price       = carbon_get_post_meta($id_post, 'product-price');
             $area        = carbon_get_post_meta($id_post, 'product-area-total-rooms');
             $room        = carbon_get_post_meta($id_post, 'product-rooms');
             $studio      = carbon_get_post_meta($id_post, 'product_type_aparts');
 
-            if (empty($price_meter) || intval($min_price_meter) > intval($price_meter)) {
-                $min_price_meter = $price_meter;
+            if (empty($min_price_metr) || intval($min_price_metr) > intval($price_metr)) {
+                $min_price_metr = $price_metr;
             }
-            if (empty($price_meter) || intval($max_price_meter) < intval($price_meter)) {
-                $max_price_meter = $price_meter;
+            if (empty($max_price_metr) || intval($max_price_metr) < intval($price_metr)) {
+                $max_price_metr = $price_metr;
             }
-            if (empty($price) || intval($min_price) > intval($price)) {
+            if (empty($min_price) || intval($min_price) > intval($price)) {
                 $min_price = $price;
             }
-            if (empty($price_meter) || intval($max_price) < intval($price)) {
+            if (empty($max_price) || intval($max_price) < intval($price)) {
                 $max_price = $price;
             }
-            if (empty($area) || intval($min_area) > intval($area)) {
+            if (empty($min_area) || intval($min_area) > intval($area)) {
                 $min_area = $area;
             }
-            if (empty($area) || intval($max_area) < intval($area)) {
+            if (empty($max_area) || intval($max_area) < intval($area)) {
                 $max_area = $area;
             }
-            if (empty($room) || intval($min_room) > intval($room)) {
-                $min_area = $room;
+            if (empty($min_room) || intval($min_room) > intval($room)) {
+                $min_room = $room;
             }
-            if (empty($room) || intval($max_room) < intval($room)) {
+            if (empty($max_room) || intval($max_room) < intval($room)) {
                 $max_room = $room;
             }
 
@@ -73,9 +73,9 @@ function set_value_gk($id_page_gk, $post_map_categories)
     $data = new stdClass();
 
     $data->min_price = $min_price;
-    $data->min_price_meter = $min_price_meter;
+    $data->min_price_metr = $min_price_metr;
     $data->max_price = $max_price;
-    $data->max_price_meter = $max_price_meter;
+    $data->max_price_metr = $max_price_metr;
     $data->min_area = $min_area;
     $data->max_area = $max_area;
     $data->min_room = $min_room;

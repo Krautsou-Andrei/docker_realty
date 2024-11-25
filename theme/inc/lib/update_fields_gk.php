@@ -1,4 +1,5 @@
 <?php
+require_once get_template_directory() . '/inc/lib/is_house.php';
 require_once get_template_directory() . '/inc/lib/get_message_server.php';
 require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
@@ -83,7 +84,7 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
             carbon_set_post_meta($post_id, 'crb_gk_is_not_view', '');
         }
 
-        if (strpos(mb_strtolower($block->name, 'UTF-8'), 'коттедж') !== false || mb_strpos($block->name, 'Дома ', 0, 'UTF-8') !== false) {
+        if (is_house($block->name)) {
             carbon_set_post_meta($post_id, 'crb_gk_is_house', 'yes');
         }
 

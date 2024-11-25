@@ -10,8 +10,13 @@ function search_id_page_by_name($post_title, $paren_page = null, $category_id = 
     $page_enabled_id = page_exists($page_slug);
 
     if ($page_enabled_id) {
+        if (!empty($template)) {
+            update_post_meta($page_enabled_id, '_wp_page_template', $template);
+        }
         return $page_enabled_id;
     }
+
+
 
     if ($is_create) {
 

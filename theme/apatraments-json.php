@@ -39,7 +39,7 @@ function start($is_continue_load_post = false)
 
     foreach ($names_cities as $key_city_region => $city_region) {
 
-        $id_page_krai = search_id_page_by_name($city_region, CATEGORIES_ID::PAGE_NEW_BUILDINGS, null, null, true);
+        $id_page_krai = search_id_page_by_name($city_region, CATEGORIES_ID::PAGE_NEW_BUILDINGS, null, TEMPLATE_NAME::REGION, true);
         $region_category_id = search_id_category_by_name($city_region);
 
         $regions = convert_json_to_array('/json/' . $key_city_region . '/regions.json');

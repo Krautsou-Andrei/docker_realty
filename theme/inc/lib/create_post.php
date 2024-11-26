@@ -99,7 +99,7 @@ function create_post($data, $region_category_id)
 
             $meta_data = [
                 '_product-id' => $product_id,
-                '_product-title' => $title,               
+                '_product-title' => $title,
                 '_product-price' => $product_price,
                 '_product-price-meter' => $product_price_meter,
                 '_product-rooms' => intval($product_rooms) ? intval($product_rooms) : $product_rooms,
@@ -130,11 +130,12 @@ function create_post($data, $region_category_id)
             }
 
             if (!empty($values)) {
-                // Выполнение одного запроса
-                $sql = "INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES " . implode(', ', $values) . " 
-                        ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)";
+                $sql = "INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES " . implode(', ', $values);
+                $result = $wpdb->query($sql);
 
-                $wpdb->query($sql);
+                if ($result === false) {
+                    error_log('Ошибка при вставке записей в wp_postmeta: ' . $wpdb->last_error);
+                }
             }
 
             carbon_set_post_meta($post_id, 'product-gallery', $ids_product_gallery);
@@ -142,7 +143,6 @@ function create_post($data, $region_category_id)
             if ($product_rooms === CATEGORIES_NAME::STUDIO) {
                 carbon_set_post_meta($post_id, 'product_type_aparts', 'yes');
             }
-
         } else {
             echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
         }

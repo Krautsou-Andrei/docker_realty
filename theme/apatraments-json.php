@@ -172,6 +172,8 @@ function start($is_continue_load_post = false)
             }
         }
 
+        $gk_map = null;
+        $post_map_categories = null;
 
         get_message_server_telegram('Успех', 'Загрузились объявления: ' . $key_city_region . ' в количестве: ' . $count);
     }
@@ -179,8 +181,6 @@ function start($is_continue_load_post = false)
     sleep(300);
     get_message_server_telegram('Успех', 'Загрузились все объявления');
 }
-
-start();
 
 function search_region($regions, $search_id)
 {

@@ -95,36 +95,54 @@ function create_post($data, $region_category_id)
         ));
 
         if (!is_wp_error($post_id)) {
-            carbon_set_post_meta($post_id, 'product-id', $product_id);
-            carbon_set_post_meta($post_id, 'product-title', $title);
-            carbon_set_post_meta($post_id, 'product-gallery', $ids_product_gallery);
-            carbon_set_post_meta($post_id, 'product-price', $product_price);
-            carbon_set_post_meta($post_id, 'product-price-meter',  $product_price_meter);
-            carbon_set_post_meta($post_id, 'product-rooms', intval($product_rooms) ? intval($product_rooms) : $product_rooms);
-            carbon_set_post_meta($post_id, 'product-area',  $product_area);
-            carbon_set_post_meta($post_id, 'product-area-kitchen', $product_area_kitchen);
-            carbon_set_post_meta($post_id, 'product-area-total-rooms', $product_area_rooms_total);
-            carbon_set_post_meta($post_id, 'product-stage', $product_stage);
-            carbon_set_post_meta($post_id, 'product-stages', $product_stages);
-            carbon_set_post_meta($post_id, 'product-year-build', $date_build);
-            carbon_set_post_meta($post_id, 'product-building-type', $product_building_type);
-            carbon_set_post_meta($post_id, 'product-finishing', $product_finishing);
-            carbon_set_post_meta($post_id, 'product-city', $product_city);
-            carbon_set_post_meta($post_id, 'product-street', $product_street);
-            carbon_set_post_meta($post_id, 'product-latitude', $product_latitude);
-            carbon_set_post_meta($post_id, 'product-longitude', $product_longitude);
-            carbon_set_post_meta($post_id, 'product-builder-liter', $product_building_name);
-            carbon_set_post_meta($post_id, 'product-apartamens-number', $product_apartament_number);
-            carbon_set_post_meta($post_id, 'product-apartamens-wc', $product_apartamens_wc);
-            carbon_get_post_meta($post_id, 'product_height', $product_height);
+            global $wpdb;
 
-            carbon_set_post_meta($post_id, 'product-agent-phone', $product_agent_phone);
-            carbon_set_post_meta($post_id, 'product-agent-name', 'Арсен');
-            carbon_set_post_meta($post_id, 'product-agent-photo', [$id_image_agent]);
+            $meta_data = [
+                '_product-id' => $product_id,
+                '_product-title' => $title,               
+                '_product-price' => $product_price,
+                '_product-price-meter' => $product_price_meter,
+                '_product-rooms' => intval($product_rooms) ? intval($product_rooms) : $product_rooms,
+                '_product-area' => $product_area,
+                '_product-area-kitchen' => $product_area_kitchen,
+                '_product-area-total-rooms' => $product_area_rooms_total,
+                '_product-stage' => $product_stage,
+                '_product-stages' => $product_stages,
+                '_product-year-build' => $date_build,
+                '_product-building-type' => $product_building_type,
+                '_product-finishing' => $product_finishing,
+                '_product-city' => $product_city,
+                '_product-street' => $product_street,
+                '_product-latitude' => $product_latitude,
+                '_product-longitude' => $product_longitude,
+                '_product-builder-liter' => $product_building_name,
+                '_product-apartamens-number' => $product_apartament_number,
+                '_product-apartamens-wc' => $product_apartamens_wc,
+                '_product-height' => $product_height,
+                '_product-agent-phone' => $product_agent_phone,
+                '_product-agent-name' => 'Арсен',
+                '_product-agent-photo' => $id_image_agent,
+            ];
+
+            $values = [];
+            foreach ($meta_data as $key => $value) {
+                $values[] = $wpdb->prepare("(%d, %s, %s)", $post_id, $key, maybe_serialize($value));
+            }
+
+            if (!empty($values)) {
+                // Выполнение одного запроса
+                $sql = "INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES " . implode(', ', $values) . " 
+                        ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)";
+
+                $wpdb->query($sql);
+            }
+
+            carbon_set_post_meta($post_id, 'product-gallery', $ids_product_gallery);
 
             if ($product_rooms === CATEGORIES_NAME::STUDIO) {
                 carbon_set_post_meta($post_id, 'product_type_aparts', 'yes');
             }
+
         } else {
             echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
         }

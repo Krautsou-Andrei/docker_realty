@@ -9,18 +9,11 @@ function search_id_page_by_name($post_title, $paren_page = null, $category_id = 
     $page_slug = get_transliterate($post_title);
     $page_enabled_id = page_exists($page_slug);
 
-    if ($page_enabled_id) {
-        if (!empty($template)) {
-            update_post_meta($page_enabled_id, '_wp_page_template', $template);
-        }
+    if ($page_enabled_id) {       
         return $page_enabled_id;
     }
 
-
-
     if ($is_create) {
-
-
         $args_new_page = [
             'post_title'   => $post_title,
             'post_content' => '',

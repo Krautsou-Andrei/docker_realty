@@ -76,13 +76,7 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
             carbon_set_post_meta($post_id, 'crb_gk_is_studio', '');
             carbon_set_post_meta($post_id, 'crb_gk_is_house', '');
             carbon_set_post_meta($post_id, 'crb_gk_rooms', '');
-        }
-
-        $crb_gk_is_not_view = carbon_get_post_meta($post_id, 'crb_gk_is_not_view', true);
-
-        if (empty($crb_gk_is_not_view)) {
-            carbon_set_post_meta($post_id, 'crb_gk_is_not_view', '');
-        }
+        }       
 
         if (is_house($block->name)) {
             carbon_set_post_meta($post_id, 'crb_gk_is_house', 'yes');

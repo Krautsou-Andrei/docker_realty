@@ -86,7 +86,7 @@ function start($is_continue_load_post = false)
             wp_cache_flush();
         }
 
-        get_message_server_telegram('Успех', 'Загрузились жилые комплексы городов: ' . $key_city_region);
+        get_message_server_telegram('Успех', 'Загрузились жилые комплексы городов: ' . $key_city_region . ' в количестве: ' . count($blocks));
 
         $regions_names = array_column($regions, 'name');
 
@@ -114,8 +114,10 @@ function start($is_continue_load_post = false)
 
         $latest_post_id = get_latest_post();
 
+        $count = 0;
 
         foreach ($items as $name => $item) {
+            $count++;
             if ($is_continue_load_post && !$is_load && $item->_id !== $latest_post_id && $latest_post_id !== null) {
                 continue;
             }
@@ -159,16 +161,22 @@ function start($is_continue_load_post = false)
         $post_map = null;
         gc_collect_cycles();
         wp_cache_flush();
-        get_message_server_telegram('Успех', 'Начало обновления цены ' . $key_city_region);
-        $gk_map = get_gk_map($id_page_krai);
-        $post_map_categories = get_post_map_category($search_categories_cities);
 
-        foreach ($gk_map as $gk_id) {
-            set_value_gk($gk_id, $post_map_categories);
+        if ($is_load) {
+            get_message_server_telegram('Успех', 'Начало обновления цены ' . $key_city_region);
+            $gk_map = get_gk_map($id_page_krai);
+            $post_map_categories = get_post_map_category($search_categories_cities);
+
+            foreach ($gk_map as $gk_id) {
+                set_value_gk($gk_id, $post_map_categories);
+            }
         }
 
-        get_message_server_telegram('Успех', 'Загрузились объявления ' . $key_city_region);
+
+        get_message_server_telegram('Успех', 'Загрузились объявления: ' . $key_city_region . ' в количестве: ' . $count);
     }
+
+    sleep(300);
     get_message_server_telegram('Успех', 'Загрузились все объявления');
 }
 

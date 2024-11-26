@@ -153,7 +153,7 @@ function start($is_continue_load_post = false)
             $post_id = $post_map[$item->_id] ?? false;
 
             if ($post_id) {
-                update_post($data, $post_id);
+                // update_post($data, $post_id);
             } else {
                 create_post($data, $region_category_id);
             }

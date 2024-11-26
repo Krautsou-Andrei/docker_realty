@@ -1,5 +1,5 @@
 <?php
-function get_latest_post()
+function get_latest_post($delete = true)
 {
     $args = array(
         'numberposts' => 1,
@@ -17,11 +17,11 @@ function get_latest_post()
         $post_id = $latest_post->ID;
         $product_id = carbon_get_post_meta($post_id, 'product-id');
 
-        if ($product_id === '') {
+        if ($product_id === '' && $delete) {
             wp_delete_post($post_id, true);
             get_latest_post();
         }
     }
-    
+
     return $product_id;
 }

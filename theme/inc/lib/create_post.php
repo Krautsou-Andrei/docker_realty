@@ -12,29 +12,29 @@ require_once get_template_directory() . '/inc/enums/rooms_id.php';
 function create_post($data, $region_category_id)
 {
     try {
-        $product_id = $data->id;
-        $product_rooms = $data->product_rooms;
-        $product_room_id = $data->product_room_id;
-        $product_area = $data->product_area;
-        $product_area_kitchen = $data->product_area_kitchen;
-        $product_area_rooms_total = $data->product_area_rooms_total;
-        $product_stage = $data->product_stage;
-        $product_city = $data->product_city;
-        $product_gk = $data->product_gk;
-        $product_gallery = $data->product_gallery;
-        $product_price = $data->product_price;
-        $product_price_meter = $data->product_price_meter;
-        $product_stages = $data->product_stages;
-        $product_year_build = $data->product_year_build;
-        $product_street = $data->product_street;
-        $product_latitude = $data->coordinates[1] ?? '';
-        $product_longitude = $data->coordinates[0] ?? '';
-        $product_building_type = $data->product_building_type;
-        $product_finishing = $data->product_finishing;
-        $product_building_name = $data->building_name;
-        $product_apartament_number = $data->product_apartament_number;
-        $product_apartamens_wc = $data->product_apartamens_wc;
-        $product_height = $data->product_height;
+        $product_id = $data['id'];
+        $product_rooms = $data['product_rooms'];
+        $product_room_id = $data['product_room_id'];
+        $product_area = $data['product_area'];
+        $product_area_kitchen = $data['product_area_kitchen'];
+        $product_area_rooms_total = $data['product_area_rooms_total'];
+        $product_stage = $data['product_stage'];
+        $product_city = $data['product_city'];
+        $product_gk = $data['product_gk'];
+        $product_gallery = $data['product_gallery'];
+        $product_price = $data['product_price'];
+        $product_price_meter = $data['product_price_meter'];
+        $product_stages = $data['product_stages'];
+        $product_year_build = $data['product_year_build'];
+        $product_street = $data['product_street'];
+        $product_latitude = $data['coordinates'][1] ?? '';
+        $product_longitude = $data['coordinates'][0] ?? '';
+        $product_building_type = $data['product_building_type'];
+        $product_finishing = $data['product_finishing'];
+        $product_building_name = $data['building_name'];
+        $product_apartament_number = $data['product_apartament_number'];
+        $product_apartamens_wc = $data['product_apartamens_wc'];
+        $product_height = $data['product_height'];
 
         $product_agent_url = 'https://2bishop.ru/files/avatars/agph_23286_5jpeg.jpg';
         $product_agent_phone = carbon_get_theme_option('crb_phone_link');
@@ -66,7 +66,6 @@ function create_post($data, $region_category_id)
         if (is_wp_error($id_image_agent) || !$id_image_agent) {
             $id_image_agent = '';
         }
-
 
         $id_gk_category = create_category($product_gk, get_transliterate($product_gk), CATEGORIES_ID::GK);
         $id_city_category = create_category($product_city, get_transliterate($product_city), $region_category_id);
@@ -147,7 +146,7 @@ function create_post($data, $region_category_id)
             echo 'Ошибка при создании поста: ' . $post_id->get_error_message();
         }
     } catch (Exception $e) {
-        get_message_server_telegram('Ошибка при создании поста из catch: ' . $data->id);
+        get_message_server_telegram('Ошибка при создании поста из catch: ' . $data['id']);
         return new WP_Error('create post', 'Ошибка при создании поста: ' . $e->getMessage());
     }
 }

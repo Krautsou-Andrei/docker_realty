@@ -54,7 +54,7 @@ $query = get_posts($args);
 
 var_dump(count($query));
 
-$latest_post = get_latest_post();
+$latest_post = get_latest_post(false);
 
 var_dump($latest_post);
 var_dump(memory_get_usage());

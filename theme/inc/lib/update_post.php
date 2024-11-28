@@ -1,8 +1,10 @@
 <?php
+require_once get_template_directory() . '/inc/lib/update_posts_in_db.php';
+
 function update_post($data, $post_id)
 {
-    global $wpdb;
-    date_default_timezone_set('Europe/Moscow');  
+    global $update_posts_map;
+    date_default_timezone_set('Europe/Moscow');
 
     $product_price = $data['product_price'];
     $product_price_meter = $data['product_price_meter'];
@@ -14,35 +16,23 @@ function update_post($data, $post_id)
     if (!empty($product_year_build)) {
         $date = new DateTime($product_year_build);
         $date_build = $date->format("Y");
-    }  
+    }
 
-    $data_update_post = [
+    $data_update_post_meta = [
         '_product-price' => $product_price,
         '_product-price-meter' => $product_price_meter,
         '_product-year-build' => $date_build,
-        '_product-finishing' => $product_finishing,       
+        '_product-finishing' => $product_finishing,
     ];
-    
-    // Подготовка SQL-запроса
-    $sql = "INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES ";
-    
-    $values = [];
-    foreach ($data_update_post as $key => $value) {
-        $values[] = $wpdb->prepare("(%d, %s, %s)", $post_id, $key, $value);
+
+    $data_update_post = [
+        'post_modified' => current_time('mysql'),
+        'post_modified_gmt' => current_time('mysql', 1)
+    ];
+
+    $update_posts_map[$post_id] = [$data_update_post_meta, $data_update_post];
+
+    if (count($update_posts_map) >= 1000) {
+        update_posts_in_db();
     }
-    
-    $sql .= implode(', ', $values);
-    $sql .= " ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)";
-    
-    // Выполнение запроса
-    $result = $wpdb->query($sql);
-    
-    if ($result === false) {
-        // Обработка ошибки
-        error_log('Ошибка при обновлении метаданных: ' . $wpdb->last_error);
-    }
-    
-    update_post_meta($post_id, 'post_modified', current_time('mysql'));
-    update_post_meta($post_id, 'post_modified_gmt', current_time('mysql', 1));
-    
 }

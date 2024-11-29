@@ -98,6 +98,7 @@ function insert_posts_in_db()
         }
 
         $create_posts_map = [];
+        sleep(5);
     } catch (Exception $e) {
         get_message_server_telegram('Ошибка при вставке постов в базу данных поста из catch:');
         return new WP_Error('create post', 'Ошибка при создании поста: ' . $e->getMessage());

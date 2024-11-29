@@ -109,7 +109,7 @@ function create_chank_posts($data, $region_category_id, $last_post_id = 0)
 
         $create_posts_map[$last_post_id] = [$data_create_post, $meta_data_post, $data_taxonomy];
 
-        if (count($create_posts_map) >= 100) {
+        if (count($create_posts_map) >= 1000) {
             insert_posts_in_db();
         }
     } catch (Exception $e) {

@@ -50,33 +50,40 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
         }
 
         if (!$is_old) {
+            global $wpdb;
+
+            carbon_set_post_meta($post_id, 'crb_gk_plan', $ids_gallery_plan);
+
             $description = $block->description;
             $description = preg_replace('/<a.*?>(.*?)<\/a>/', '', $description);
             $description = preg_replace('/<p.*?>(.*?)<\/p>/', '$1<br>', $description);
 
-            carbon_set_post_meta($post_id, 'crb_gk_id', $block->_id);
-            carbon_set_post_meta($post_id, 'crb_gk_name', $block->name);
-            carbon_set_post_meta($post_id, 'crb_gk_plan', $ids_gallery_plan);
-            carbon_set_post_meta($post_id, 'crb_gk_gallery', $ids_gallery);
-            carbon_set_post_meta($post_id, 'crb_gk_description', $description);
-            carbon_set_post_meta($post_id, 'crb_gk_city', $name_city);
-            carbon_set_post_meta($post_id, 'crb_gk_address', !empty($block->address[0]) ? $block->address[0] : '');
-            if (!empty($block->geometry->coordinates[0]) && !empty($block->geometry->coordinates[1])) {
-                carbon_set_post_meta($post_id, 'crb_gk_latitude', $block->geometry->coordinates[0]);
-                carbon_set_post_meta($post_id, 'crb_gk_longitude',  $block->geometry->coordinates[1]);
+            $meta_data = [
+                '_crb_gk_id' => $block->_id,
+                '_crb_gk_name' => $block->name,
+                '_crb_gk_description' => $description,
+                '_crb_gk_city' =>  $name_city,
+                '_crb_gk_address' => !empty($block->address[0]) ? $block->address[0] : '',
+                '_crb_gk_latitude' => !empty($block->geometry->coordinates[0]) ? $block->geometry->coordinates[0] : '',
+                '_crb_gk_longitude' => !empty($block->geometry->coordinates[1]) ? $block->geometry->coordinates[1] : '',
+
+            ];
+
+            $values = [];
+            $sql = "INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES ";
+
+            foreach ($meta_data as $key => $value) {
+                $values[] = $wpdb->prepare("(%d, %s, %s)", $post_id, $key, $value);
             }
-            carbon_set_post_meta($post_id, 'crb_gk_min_price', '');
-            carbon_set_post_meta($post_id, 'crb_gk_min_price_meter', '');
-            carbon_set_post_meta($post_id, 'crb_gk_max_price', '');
-            carbon_set_post_meta($post_id, 'crb_gk_max_price_meter', '');
-            carbon_set_post_meta($post_id, 'crb_gk_min_area', '');
-            carbon_set_post_meta($post_id, 'crb_gk_max_area', '');
-            carbon_set_post_meta($post_id, 'crb_gk_min_rooms', '');
-            carbon_set_post_meta($post_id, 'crb_gk_max_rooms', '');
-            carbon_set_post_meta($post_id, 'crb_gk_is_studio', '');
-            carbon_set_post_meta($post_id, 'crb_gk_is_house', '');
-            carbon_set_post_meta($post_id, 'crb_gk_rooms', '');
-        }       
+
+            $sql .= implode(', ', $values);
+
+            $result = $wpdb->query($sql);
+
+            if ($result === false) {
+                echo "Ошибка при вставке: " . $wpdb->last_error;
+            }
+        }
 
         if (is_house($block->name)) {
             carbon_set_post_meta($post_id, 'crb_gk_is_house', 'yes');

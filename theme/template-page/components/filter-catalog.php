@@ -46,6 +46,7 @@ if (!empty($filter_price_view[0])) {
     <input hidden type="radio" name="type" value="<?php echo $type_filter ?>" data-name="Дома" id="" checked data-select-type />
     <input hidden type="text" name="select-price" value="<?php echo $filter_price ?>" id="" checked data-select-price />
     <input hidden type="text" name="select-area" value="<?php echo $filter_area ?>" id="" checked data-select-area />
+    <input hidden type="text" name="desctop" value="true" id="" />
     <div class="label-option-radio-wrapper label label-region" id="filter-region" data-checked>
       <div class="option-radio">
         <span class="option-radio__label" data-checked-view data-default-value="Регион"><?php echo !empty($filter_region) ? $filter_region : 'Регион' ?></span>

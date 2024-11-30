@@ -54,7 +54,7 @@ function get_query_filter_catalog($paged, $region = '', $city = '')
     $id_page_city = search_id_page_by_name($filter_city, $id_page_region) ?? 1;
 
     $page_ids = sort_gk($filter_city);
-  
+
     $args = array(
         'post_type'      => 'page', // Тип поста
         'posts_per_page' => 9, // Количество постов на странице
@@ -78,15 +78,14 @@ function get_query_filter_catalog($paged, $region = '', $city = '')
             'value'   => '',
             'compare' => '!='
         ];
-
-        $args['meta_query'][] = [
-            'key'     => 'crb_gk_is_not_view',
-            'value'   => '',
-            'compare' => '='
-        ];
     }
-
     
+    $args['meta_query'][] = [
+        'key'     => 'crb_gk_is_not_view',
+        'value'   => '',
+        'compare' => '='
+    ];
+
 
     if ($filter_type_build !== '') {
         $args['meta_query'][] = array(

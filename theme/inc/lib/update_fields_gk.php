@@ -59,13 +59,25 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
             $description = preg_replace('/<p.*?>(.*?)<\/p>/', '$1<br>', $description);
 
             $meta_data = [
-                '_crb_gk_id' => $block->_id,
-                '_crb_gk_name' => $block->name,
-                '_crb_gk_description' => $description,
-                '_crb_gk_city' =>  $name_city,
-                '_crb_gk_address' => !empty($block->address[0]) ? $block->address[0] : '',
-                '_crb_gk_latitude' => !empty($block->geometry->coordinates[0]) ? $block->geometry->coordinates[0] : '',
-                '_crb_gk_longitude' => !empty($block->geometry->coordinates[1]) ? $block->geometry->coordinates[1] : '',
+                '_crb_gk_id'              => $block->_id,
+                '_crb_gk_name'            => $block->name,
+                '_crb_gk_description'     => $description,
+                '_crb_gk_city'            =>  $name_city,
+                '_crb_gk_address'         => !empty($block->address[0]) ? $block->address[0] : '',
+                '_crb_gk_latitude'        => !empty($block->geometry->coordinates[0]) ? $block->geometry->coordinates[0] : '',
+                '_crb_gk_longitude'       => !empty($block->geometry->coordinates[1]) ? $block->geometry->coordinates[1] : '',               
+                '_crb_gk_is_not_view'     => '',              
+                '_crb_gk_min_price'       => '',
+                '_crb_gk_min_price_meter' => '',
+                '_crb_gk_max_price'       => '',
+                '_crb_gk_max_price_meter' => '',
+                '_crb_gk_min_area'        => '',
+                '_crb_gk_max_area'        => '',
+                '_crb_gk_min_rooms'       => '',
+                '_crb_gk_max_rooms'       => '',
+                '_crb_gk_is_studio'       => '',
+                '_crb_gk_is_house'        => '',
+                '_crb_gk_rooms'           => ''
 
             ];
 

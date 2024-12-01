@@ -1,5 +1,6 @@
 
 <?php
+require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 function update_posts_images_in_db()
 {
     global $update_posts_map_images,  $wpdb;
@@ -21,8 +22,10 @@ function update_posts_images_in_db()
             if ($result_meta === false) {
                 error_log('Ошибка при обновлении: ' . $wpdb->last_error);
             }
-        }       
+        }
 
+        get_message_server_telegram('загружены картинки ' . count($update_posts_map_images));
+        
         $update_posts_map_images = [];
         sleep(5);
     } catch (Exception $e) {

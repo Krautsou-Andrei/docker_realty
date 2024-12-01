@@ -53,6 +53,7 @@ function update_fields_gk($post_id, $block, $name_city, $is_old = false)
             global $wpdb;
 
             carbon_set_post_meta($post_id, 'crb_gk_plan', $ids_gallery_plan);
+            carbon_set_post_meta($post_id, 'crb_gk_gallery', $ids_gallery);
 
             $description = $block->description;
             $description = preg_replace('/<a.*?>(.*?)<\/a>/', '', $description);

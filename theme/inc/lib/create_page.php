@@ -1,7 +1,7 @@
 <?php
 
 require_once get_template_directory() . '/inc/lib/create_category.php';
-require_once get_template_directory() . '/inc/lib/get_message_server.php';
+require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 require_once get_template_directory() . '/inc/lib/page_exists.php';
 require_once get_template_directory() . '/inc/lib/update_fields_gk.php';
@@ -39,8 +39,7 @@ function create_page($parent_id, $page, $template, $city_name)
         update_fields_gk($page_enabled_id, $page, $city_name, true);
         return;
     }
-
-    // Создание массива данных для новой страницы
+ 
     $page_data = array(
         'post_title'    => $page_title,
         'post_status'   => 'publish', // Статус - опубликован
@@ -49,23 +48,15 @@ function create_page($parent_id, $page, $template, $city_name)
         'post_name'     => $page_slug, // Слаг страницы
         'page_template' => $template, // Шаблон страницы
     );
-
-    // Вставка страницы в БД
+    
     $page_id = wp_insert_post($page_data);
-
-    // Проверка на ошибки
+   
     if (is_wp_error($page_id)) {
-        $message = 'Ошибка ' . $page_id;
-
-        get_message_server($message, true);
-        return $page_id; // Возвращаем объект ошибки
+        get_message_server_telegram('Ошибка при создании страницы: ' . $city_name);
+        return $page_id;
     }
 
-    // Установка шаблона страницы
-    if ($template) {
-        update_post_meta($page_id, '_wp_page_template', $template);
-        update_fields_gk($page_id, $page, $city_name);
-    }
+    update_fields_gk($page_id, $page, $city_name);
 
     return $page_id;
 }

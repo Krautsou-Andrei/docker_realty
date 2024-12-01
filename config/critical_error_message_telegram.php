@@ -5,4 +5,4 @@ require_once get_template_directory() . '/inc/lib/get_message_server_telegram.ph
 $delay = 300;
 get_message_server_telegram("Критическая ошибка", "Скрипт отановлен");
 sleep($delay);
-start(true);
+start();

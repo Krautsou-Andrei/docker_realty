@@ -70,7 +70,8 @@ function insert_posts_in_db()
             foreach ($values_term_relationships as $data) {
                 $term_values[] = $wpdb->prepare("(%d, %d, %d)", $data['object_id'], $data['term_taxonomy_id'], $data['term_order']);
             }
-            $sql_terms = "INSERT INTO {$wpdb->term_relationships} (object_id, term_taxonomy_id, term_order ) VALUES " . implode(', ', $term_values);
+            $sql_terms = "INSERT INTO {$wpdb->term_relationships} (object_id, term_taxonomy_id, term_order) VALUES " . implode(', ', $term_values) . " 
+                  ON DUPLICATE KEY UPDATE term_order = VALUES(term_order)";
             $wpdb->query($sql_terms);
         }
 

@@ -36,9 +36,9 @@ $update_posts_map_images = [];
 
 use JsonMachine\Items;
 
-function start($is_continue_load_post = false)
+function start()
 {
-    global  $names_cities, $image_cache, $category_cache, $wpdb;
+    global  $names_cities, $image_cache, $category_cache, $wpdb, $create_posts_map, $update_posts_map, $update_posts_map_images;
 
     $category_cache = get_category_map();
     $image_cache = get_images_map();
@@ -92,11 +92,18 @@ function start($is_continue_load_post = false)
         }
 
         get_message_server_telegram('Успех', 'Загрузились жилые комплексы городов: ' . $key_city_region . ' в количестве: ' . count($blocks));
+
+        $blocks = [];
+        $rooms_ids = [];
+        $rooms = [];
+        $finishings = [];
+        $finishings_ids = [];
+        $building_type = [];
+        $building_type_ids = [];
+        $regions = [];
+
         sleep(5);
     }
-
-
-    $is_load = false;
 
     foreach ($names_cities as $key_city_region => $city_region) {
         $id_page_krai = search_id_page_by_name($city_region, CATEGORIES_ID::PAGE_NEW_BUILDINGS, null, TEMPLATE_NAME::REGION, true);
@@ -132,8 +139,6 @@ function start($is_continue_load_post = false)
         $json_folder_path = get_template_directory() . '/json/' . $key_city_region . '/apartments.json';
         $items = Items::fromFile($json_folder_path);
 
-        $latest_post_id = get_latest_post();
-
         $count = 0;
         $last_post_id = $wpdb->get_var("SELECT MAX(ID) FROM {$wpdb->posts}");
 
@@ -141,12 +146,6 @@ function start($is_continue_load_post = false)
 
         foreach ($items as $name => $item) {
             $count++;
-
-            if ($is_continue_load_post && !$is_load && $item->_id !== $latest_post_id && $latest_post_id !== null) {
-                continue;
-            }
-
-            $is_load = true;
 
             $data = [
                 'id' => $item->_id,
@@ -196,21 +195,22 @@ function start($is_continue_load_post = false)
         gc_collect_cycles();
         wp_cache_flush();
 
-        if ($is_load) {
-            get_message_server_telegram('Успех', 'Начало обновления цены ' . $key_city_region);
 
-            $gk_map = get_gk_map($id_page_krai);
-            $post_map_categories = get_post_map_category($search_categories_cities);
+        get_message_server_telegram('Успех', 'Начало обновления цены ' . $key_city_region);
 
-            foreach ($gk_map as $gk_id) {
-                set_value_gk($gk_id, $post_map_categories);
-            }
+        $rooms_ids = [];
+        $rooms = [];
+        $regions = [];
 
-            $gk_map = null;
-            $post_map_categories = null;
+        $gk_map = get_gk_map($id_page_krai);
+        $post_map_categories = get_post_map_category($search_categories_cities);
+
+        foreach ($gk_map as $gk_id) {
+            set_value_gk($gk_id, $post_map_categories);
         }
 
-
+        $gk_map = null;
+        $post_map_categories = null;
 
         get_message_server_telegram('Успех', 'Загрузились объявления: ' . $key_city_region . ' в количестве: ' . $count);
         sleep(5);
@@ -266,11 +266,11 @@ function start($is_continue_load_post = false)
         gc_collect_cycles();
         wp_cache_flush();
 
-        get_message_server_telegram('Успех', 'Загрузились объявления: ' . $key_city_region);
+        get_message_server_telegram('Успех', 'Загрузились картинки для объявлений: ' . $key_city_region);
         sleep(5);
     }
 
-    sleep(60);
+    sleep(10);
     get_message_server_telegram('Успех', 'Загрузились все объявления');
 }
 

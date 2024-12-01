@@ -5,7 +5,7 @@ require_once get_template_directory() . '/inc/lib/upload_image_from_url.php';
 
 function update_post_images($data, $post_id)
 {
-    global $update_posts_map_images,  $wpdb;
+    global $update_posts_map_images;
 
     try {
         $product_id = $data['id'];
@@ -40,7 +40,7 @@ function update_post_images($data, $post_id)
 
         $update_posts_map_images[$post_id] = $meta_data;
 
-        if ($update_posts_map_images >= 1000) {
+        if (count($update_posts_map_images) >= 1000) {
             update_posts_images_in_db();
         }
     } catch (Exception $e) {

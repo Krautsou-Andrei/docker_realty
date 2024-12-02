@@ -26,7 +26,7 @@ require_once get_template_directory() . '/inc/lib/get_image_url.php';
             <div class="single-page__title">
               <?php
 
-              $product_agent_phone  = carbon_get_post_meta(get_the_ID(), 'product-agent-phone');
+              $product_agent_phone  = !empty(carbon_get_post_meta(get_the_ID(), 'product-agent-phone')) ? carbon_get_post_meta(get_the_ID(), 'product-agent-phone') :  carbon_get_theme_option('crb_phone_link');
               $product_agent_photo  = carbon_get_post_meta(get_the_ID(), 'product-agent-photo');
               $product_apartamens_wc = carbon_get_post_meta(get_the_ID(), 'product-apartamens-wc');
               $product_area = carbon_get_post_meta(get_the_ID(), 'product-area');

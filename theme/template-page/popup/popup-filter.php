@@ -188,7 +188,7 @@ $type_filter = $search_params->type_filter;
           </div>
 
           <div class="filert-mobile-form__button filter-button">
-            <button class="button" type="submit">
+            <button class="button" type="submit" data-button-search>
               <span>Найти</span>
             </button>
           </div>

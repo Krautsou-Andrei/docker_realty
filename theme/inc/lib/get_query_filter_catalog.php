@@ -5,7 +5,7 @@ require_once get_template_directory() . '/inc/enums/template_name.php';
 require_once get_template_directory() . '/inc/lib/sort_gk.php';
 require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 
-function get_query_filter_catalog($paged, $region = '', $city = '')
+function get_query_filter_catalog($paged, $region = '', $city = '', $type_build = '', $rooms = '', $selectPrice = '', $selectArea = '')
 {
 
     global  $names_default_cities;
@@ -25,9 +25,18 @@ function get_query_filter_catalog($paged, $region = '', $city = '')
 
     $filter_type_build = isset($_GET['type-build']) ? $_GET['type-build'] : DEFAULT_ENUM::DEFAULT_FILTER_APARTAMENTS;
 
-    $filter_price = isset($_GET['select_price']) ?  explode('-', $_GET['select_price']) : [];
-    $filter_area = isset($_GET['select_area']) ? explode('-', $_GET['select_area']) : [];
+    if (!empty($type_build)) {
+        $filter_type_build = $type_build;
+    }
 
+    $filter_price = isset($_GET['select_price']) ?  explode('-', $_GET['select_price']) : [];
+    if (!empty($selectPrice)) {
+        $filter_price =  explode('-', $selectPrice);
+    }
+    $filter_area = isset($_GET['select_area']) ? explode('-', $_GET['select_area']) : [];
+    if (!empty($selectArea)) {
+        $filter_area =  explode('-', $selectArea);
+    }
 
     $filter_price_ot = isset($filter_price[0]) ? $filter_price[0] : '';
     $filter_price_do = isset($filter_price[1]) ? $filter_price[1] : '';
@@ -38,6 +47,10 @@ function get_query_filter_catalog($paged, $region = '', $city = '')
     $filter_check_price = isset($_GET['check_price']) ? $_GET['check_price'] : '';
 
     $filter_rooms_array = isset($_GET['rooms']) ? explode(',', $_GET['rooms']) : [];
+
+    if (!empty($rooms)) {
+        $filter_rooms_array = explode(',', $rooms);
+    }
 
     $rooms_query = [];
 
@@ -79,7 +92,7 @@ function get_query_filter_catalog($paged, $region = '', $city = '')
             'compare' => '!='
         ];
     }
-    
+
     $args['meta_query'][] = [
         'key'     => 'crb_gk_is_not_view',
         'value'   => '',

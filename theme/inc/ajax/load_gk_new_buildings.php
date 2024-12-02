@@ -6,7 +6,12 @@ function load_gk_new_buildings()
     $paged = $_POST['paged'];
     $region = $_POST['region'];
     $city = $_POST['city'];
-    $query = get_query_filter_catalog($paged, $region, $city);
+    $type_build = $_POST['typeBuild'];
+    $rooms = $_POST['rooms'];
+    $selectPrice = $_POST['selectPrice'];
+    $selectArea = $_POST['selectArea'];
+
+    $query = get_query_filter_catalog($paged, $region, $city, $type_build, $rooms, $selectPrice, $selectArea);
 
     ob_start();
     $end = false;

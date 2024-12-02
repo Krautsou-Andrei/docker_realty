@@ -7,11 +7,31 @@ jQuery(document).ready(function ($) {
   const url = new URL(currentUrl);
   const queryParams = url.searchParams;
 
+  let region = "Краснодарский край";
   let city = "Новороссийск";
+  let typeBuild = "Квартиры";
+  let rooms = "";
+  let selectPrice = "";
+  let selectArea = "";
 
   queryParams.forEach((value, key) => {
     if (key === "city") {
       city = value;
+    }
+    if (key === "region") {
+      region = value;
+    }
+    if (key === "type-build") {
+      typeBuild = value;
+    }
+    if (key === "rooms") {
+      rooms = value;
+    }
+    if (key === "select_price") {
+      selectPrice = value;
+    }
+    if (key === "select_area") {
+      selectArea = value;
     }
   });
 
@@ -28,7 +48,12 @@ jQuery(document).ready(function ($) {
       data: {
         action: "load_gk_new_buildings",
         paged: paged,
+        region: region,
         city: city,
+        typeBuild: typeBuild,
+        rooms: rooms,
+        selectPrice: selectPrice,
+        selectArea: selectArea,
       },
       success: function (response) {
         if (response.success) {

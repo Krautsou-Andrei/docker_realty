@@ -7,8 +7,8 @@ while [ ! -f /var/www/html/wp-config.php ]; do
 done
 
 # Добавляем строку для WP_MEMORY_LIMIT, если она еще не добавлена
-if ! grep -q "define('WP_MEMORY_LIMIT', '4052M');" /var/www/html/wp-config.php; then
-    sed -i "2s/^/define('WP_MEMORY_LIMIT', '4052M');\n/" /var/www/html/wp-config.php
+if ! grep -q "define('WP_MEMORY_LIMIT', '6144M');" /var/www/html/wp-config.php; then
+    sed -i "2s/^/define('WP_MEMORY_LIMIT', '6144M');\n/" /var/www/html/wp-config.php
 fi
 
 # Добавляем строку для FS_METHOD, если она еще не добавлена

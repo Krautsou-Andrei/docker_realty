@@ -36,7 +36,7 @@ $update_posts_map_images = [];
 
 use JsonMachine\Items;
 
-function start()
+function start($is_continue_load = false)
 {
     global  $names_cities, $image_cache, $category_cache, $wpdb, $create_posts_map, $update_posts_map, $update_posts_map_images;
 
@@ -105,6 +105,8 @@ function start()
         sleep(5);
     }
 
+    $is_load = false;
+
     foreach ($names_cities as $key_city_region => $city_region) {
         $id_page_krai = search_id_page_by_name($city_region, CATEGORIES_ID::PAGE_NEW_BUILDINGS, null, TEMPLATE_NAME::REGION, true);
         $region_category_id = search_id_category_by_name($city_region);
@@ -141,11 +143,17 @@ function start()
 
         $count = 0;
         $last_post_id = $wpdb->get_var("SELECT MAX(ID) FROM {$wpdb->posts}");
+        $latest_post_id = get_latest_post();
 
         get_message_server_telegram('Успех', 'Начало загрузки объявлений ' . $key_city_region . ' last_post_id: ' . $last_post_id);
 
         foreach ($items as $name => $item) {
             $count++;
+            if ($is_continue_load && !$is_load && $item->_id !== $latest_post_id && $latest_post_id !== null) {
+                continue;
+            }
+
+            $is_load = true;
 
             $data = [
                 'id' => $item->_id,
@@ -195,23 +203,24 @@ function start()
         gc_collect_cycles();
         wp_cache_flush();
 
-
-        get_message_server_telegram('Успех', 'Начало обновления цены ' . $key_city_region);
-
         $rooms_ids = [];
         $rooms = [];
         $regions = [];
 
-        $gk_map = get_gk_map($id_page_krai);
-        $post_map_categories = get_post_map_category($search_categories_cities);
+        if ($is_load) {
+            get_message_server_telegram('Успех', 'Начало обновления цены ' . $key_city_region);
 
-        foreach ($gk_map as $gk_id) {
-            set_value_gk($gk_id, $post_map_categories);
+            $gk_map = get_gk_map($id_page_krai);
+            $post_map_categories = get_post_map_category($search_categories_cities);
+
+            foreach ($gk_map as $gk_id) {
+                set_value_gk($gk_id, $post_map_categories);
+            }
+
+            $gk_map = null;
+            $post_map_categories = null;
         }
-
-        $gk_map = null;
-        $post_map_categories = null;
-
+        
         get_message_server_telegram('Успех', 'Загрузились объявления: ' . $key_city_region . ' в количестве: ' . $count);
         sleep(5);
     }

@@ -247,7 +247,7 @@ function start($is_continue_load = false)
             }
         }
 
-        $post_map = get_post_map($search_categories_cities);
+        $post_map = get_post_map_no_image($search_categories_cities);
 
         $json_folder_path = get_template_directory() . '/json/' . $key_city_region . '/apartments.json';
         $items = Items::fromFile($json_folder_path);

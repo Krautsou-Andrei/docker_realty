@@ -249,21 +249,22 @@ function start($is_continue_load = false)
 
         $post_map = get_post_map_no_image($search_categories_cities);
 
-        $json_folder_path = get_template_directory() . '/json/' . $key_city_region . '/apartments.json';
-        $items = Items::fromFile($json_folder_path);
+        if (!empty($post_map)) {
+            $json_folder_path = get_template_directory() . '/json/' . $key_city_region . '/apartments.json';
+            $items = Items::fromFile($json_folder_path);
 
-        get_message_server_telegram('Успех', 'Начало загрузки картинок для объявлений ' . $key_city_region);
+            get_message_server_telegram('Успех', 'Начало загрузки картинок для объявлений ' . $key_city_region);
+            foreach ($items as $name => $item) {
+                $data = [
+                    'id'              => $item->_id,
+                    'product_gallery' => !empty($item->plan) ? $item->plan : [],
+                ];
 
-        foreach ($items as $name => $item) {
-            $data = [
-                'id'              => $item->_id,
-                'product_gallery' => !empty($item->plan) ? $item->plan : [],
-            ];
+                $post_id = $post_map[$item->_id] ?? false;
 
-            $post_id = $post_map[$item->_id] ?? false;
-
-            if ($post_id) {
-                update_post_images($data, $post_id);
+                if ($post_id) {
+                    update_post_images($data, $post_id);
+                }
             }
         }
 

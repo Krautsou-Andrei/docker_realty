@@ -1,4 +1,15 @@
 <?php
+
+$names_default_cities = [
+    'Краснодарский край' => 'Новороссийск',
+    'Новосибирская область' => 'Центральный район',
+    'Санкт-Петербург' => 'Кронштадтский р-н',
+    'Москва' => 'Басманный',
+    'Ростовская область' => 'Железнодорожный район',
+    'Казанская область' => 'Казань',
+    'Свердловская область' => 'Екатеринбург'
+];
+
 $type = $_GET['type'];
 $where = '/' . $type . '/?';
 
@@ -8,6 +19,10 @@ if (isset($_GET['option-radio-region']) && $_GET['option-radio-region'] != '') {
 
 if (isset($_GET['option-radio-city']) && $_GET['option-radio-city'] != '') {
     $where .= '&city=' . $_GET['option-radio-city'];
+}
+
+if (isset($_GET['option-radio-region']) && $_GET['option-radio-region'] != '' && (!isset($_GET['option-radio-city']) || $_GET['option-radio-city'] == '')) {
+    $where .= '&city=' . $names_default_cities[$_GET['option-radio-region']];
 }
 
 if (isset($_GET['option-radio-type-build']) && $_GET['option-radio-type-build'] != '') {

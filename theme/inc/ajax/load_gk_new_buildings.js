@@ -1,4 +1,14 @@
 jQuery(document).ready(function ($) {
+  const NAMES_DEFAULT_CITIES = new Map([
+    ["Краснодарский край", "Новороссийск"],
+    ["Новосибирская область", "Центральный район"],
+    ["Санкт-Петербург", "Кронштадтский р-н"],
+    ["Москва", "Басманный"],
+    ["Ростовская область", "Железнодорожный район"],
+    ["Казанская область", "Казань"],
+    ["Свердловская область", "Екатеринбург"],
+  ]);
+
   let container = $("#content-container-new-gk-buildings");
   let isLoading = false;
   let paged = 2;
@@ -8,7 +18,7 @@ jQuery(document).ready(function ($) {
   const queryParams = url.searchParams;
 
   let region = "Краснодарский край";
-  let city = "Новороссийск";
+  let city = "";
   let typeBuild = "Квартиры";
   let rooms = "";
   let selectPrice = "";
@@ -34,6 +44,12 @@ jQuery(document).ready(function ($) {
       selectArea = value;
     }
   });
+
+  if (city === "") {
+    city = NAMES_DEFAULT_CITIES.get(region)
+      ? NAMES_DEFAULT_CITIES.get(region)
+      : "";
+  }
 
   function loadMorePosts() {
     if (isLoading) {

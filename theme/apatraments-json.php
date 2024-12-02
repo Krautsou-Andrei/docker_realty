@@ -220,7 +220,7 @@ function start($is_continue_load = false)
             $gk_map = null;
             $post_map_categories = null;
         }
-        
+
         get_message_server_telegram('Успех', 'Загрузились объявления: ' . $key_city_region . ' в количестве: ' . $count);
         sleep(5);
     }
@@ -281,6 +281,19 @@ function start($is_continue_load = false)
 
     sleep(10);
     get_message_server_telegram('Успех', 'Загрузились все объявления');
+
+    sleep(10);
+    if (class_exists('Redis')) {
+        global $redis;
+        if ($redis) {
+            $redis->flushAll(); // Сбрасываем весь кеш
+            get_message_server_telegram('Успех', 'Кеш Redis сброшен ');
+        } else {
+            get_message_server_telegram('Ошибка', 'Кеш Redis не сброшен сброшен, нет соединения. Можно сбросить вручную');
+        }
+    } else {
+        get_message_server_telegram('Ошибка', 'Кеш Redis не сброшен сброшен, плагин не активирован');
+    }
 }
 
 function search_region($regions, $search_id)

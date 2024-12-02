@@ -122,6 +122,12 @@ $template =  get_page_template_slug();
 
 		</div>
 	</footer>
+	<div data-loader class="loader none">
+		<div class="loader-image-wrapper">
+			<img src=" <?php bloginfo('template_url'); ?>/assets/images/loading.gif" />
+			<span>Пожалуйста подождите..</span>
+		</div>
+	</div>
 <?php  } ?>
 </div>
 <div class="gloabl-popup" style="font-size: 0;">

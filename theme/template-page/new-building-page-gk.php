@@ -20,6 +20,17 @@ get_header();
 wp_enqueue_script('get_card_gk_single-js', get_template_directory_uri() . '/inc/ajax/get_card_gk_single.js', array('jquery'), null, true);
 wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
 ?>
+<script>
+  jQuery(document).ready(function($) {
+    function blockScroll() {
+      $("body").css({
+        overflow: "hidden",
+        height: "100%",
+      });
+    }
+    blockScroll();
+  })
+</script>
 <main class="page">
   <div data-loader class="loader">
     <div class="loader-image-wrapper">
@@ -29,15 +40,15 @@ wp_localize_script('get_card_gk_single-js', 'params', $params_page_gk);
   </div>
   <div class="main-favorites">
     <?php
-      if (function_exists('yoast_breadcrumb')) {
-        yoast_breadcrumb('<div class="main-favorites__breadcrumbs">
+    if (function_exists('yoast_breadcrumb')) {
+      yoast_breadcrumb('<div class="main-favorites__breadcrumbs">
                             <section class="breadcrumbs">
                               <div class="breadcrumbs__container">
                               ', '
                               </div>
                             </section>
                           </div>');
-      }
+    }
     ?>
     <div class="main-favorites__cards-preview">
       <section class="favorites">

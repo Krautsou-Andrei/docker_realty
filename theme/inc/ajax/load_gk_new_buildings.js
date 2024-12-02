@@ -63,7 +63,6 @@ jQuery(document).ready(function ($) {
 
             paged++;
             isLoading = false;
-            console.log("paged", response.data);
           } else {
             isLoading = false;
           }

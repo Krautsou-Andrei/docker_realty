@@ -12,6 +12,13 @@ jQuery(document).ready(function ($) {
   const contentAgentInfo = $(SELECTORS.CONTAINER_CARD_AGENT);
   const inputTableParams = $(SELECTORS.INPUT_TABLE_PARAMS);
 
+  function unblockScroll() {
+    $("body").css({
+      overflow: "",
+      height: "",
+    });
+  }
+
   $.ajax({
     url: ajax_object.ajaxurl,
     type: "POST",
@@ -21,7 +28,6 @@ jQuery(document).ready(function ($) {
       slug_page: params.slug_page,
     },
     success: function (response) {
-      loader.hide();
       if (response.paramsTable) {
         inputTableParams.val(response.paramsTable);
       }
@@ -42,10 +48,11 @@ jQuery(document).ready(function ($) {
       }
     },
     error: function (xhr, status, error) {
-      loader.hide();
       console.error(error);
     },
     complete: function () {
+      loader.hide();
+      unblockScroll();
       updateMainScript();
       initializeFormFilter();
       new NewTooltip();

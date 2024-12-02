@@ -220,7 +220,7 @@ if (!empty($filter_price_view[0])) {
   </div>
 
   <div class="form-filter-catalog__button">
-    <button class="button" type="submit">
+    <button class="button" type="submit" data-button-search>
       <img src="<?php bloginfo('template_url'); ?>/assets/images/search_outline.svg" width="16" height="16" alt="">
       <span>Найти</span>
     </button>

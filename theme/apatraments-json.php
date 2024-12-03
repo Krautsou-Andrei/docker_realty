@@ -35,6 +35,7 @@ $update_posts_map = [];
 $update_posts_map_images = [];
 
 use JsonMachine\Items;
+use Predis\Client;
 
 function start($is_continue_load = false)
 {
@@ -284,16 +285,17 @@ function start($is_continue_load = false)
     get_message_server_telegram('Успех', 'Загрузились все объявления');
 
     sleep(10);
-    if (class_exists('Redis')) {
-        global $redis;
-        if ($redis) {
-            $redis->flushAll(); // Сбрасываем весь кеш
-            get_message_server_telegram('Успех', 'Кеш Redis сброшен ');
-        } else {
-            get_message_server_telegram('Ошибка', 'Кеш Redis не сброшен сброшен, нет соединения. Можно сбросить вручную');
-        }
-    } else {
-        get_message_server_telegram('Ошибка', 'Кеш Redis не сброшен сброшен, плагин не активирован');
+    $client = new Client([
+        'scheme' => 'tcp',
+        'host'   => getenv('WORDPRESS_REDIS_HOST'),
+        'port'   => 6379,
+    ]);
+
+    try {
+        $client->flushall();
+        echo 'Кеш Redis успешно сброшен.<br>';
+    } catch (Exception $e) {
+        echo 'Ошибка: ' . $e->getMessage();
     }
 }
 

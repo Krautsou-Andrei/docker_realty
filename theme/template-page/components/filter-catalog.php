@@ -2,7 +2,6 @@
 require_once get_template_directory() . '/inc/enums/categories_name.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 require_once get_template_directory() . '/inc/lib/get_params_filter_catalog.php';
-require_once get_template_directory() . '/inc/lib/search_id_page_by_name.php';
 
 $search_params = get_params_filter_catalog();
 

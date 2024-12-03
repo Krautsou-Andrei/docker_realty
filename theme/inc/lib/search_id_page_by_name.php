@@ -4,13 +4,13 @@ require_once get_template_directory() . '/inc/lib/get_transliterate.php';
 require_once get_template_directory() . '/inc/lib/page_exists.php';
 require_once get_template_directory() . '/inc/enums/categories_id.php';
 
-function search_id_page_by_name($post_title, $paren_page = null, $category_id = null, $template = null, $is_create = false)
+function search_id_page_by_name($post_title, $paren_page, $category_id = null, $template = null, $is_create = false)
 {
 
-    $page_slug = get_transliterate($post_title);
+    $page_slug = get_transliterate($post_title) . '_' . $paren_page;
     $page_enabled_id = page_exists($page_slug);
 
-    if ($page_enabled_id) {       
+    if ($page_enabled_id) {
         return $page_enabled_id;
     }
 
@@ -21,11 +21,8 @@ function search_id_page_by_name($post_title, $paren_page = null, $category_id = 
             'post_status'  => 'publish',
             'post_type'    => 'page',
             'post_name'     => $page_slug,
+            'post_parent' => $paren_page
         ];
-
-        if ($paren_page !== null) {
-            $args_new_page['post_parent'] = $paren_page;
-        }
 
         if (!empty($template)) {
             $args_new_page['page_template'] = $template;

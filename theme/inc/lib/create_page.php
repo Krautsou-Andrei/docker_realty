@@ -10,7 +10,7 @@ function create_page($parent_id, $page, $template, $city_name)
 {
 
     $page_title = $page->name;
-    $page_slug = get_transliterate($page_title);
+    $page_slug = get_transliterate($page_title) . '_' .  trim(get_transliterate($city_name));
     $page_enabled_id = page_exists($page_slug);
 
     create_category($page_title, $page_slug, CATEGORIES_ID::GK);
@@ -39,7 +39,7 @@ function create_page($parent_id, $page, $template, $city_name)
         update_fields_gk($page_enabled_id, $page, $city_name, true);
         return;
     }
- 
+
     $page_data = array(
         'post_title'    => $page_title,
         'post_status'   => 'publish', // Статус - опубликован
@@ -48,9 +48,9 @@ function create_page($parent_id, $page, $template, $city_name)
         'post_name'     => $page_slug, // Слаг страницы
         'page_template' => $template, // Шаблон страницы
     );
-    
+
     $page_id = wp_insert_post($page_data);
-   
+
     if (is_wp_error($page_id)) {
         get_message_server_telegram('Ошибка при создании страницы: ' . $city_name);
         return $page_id;

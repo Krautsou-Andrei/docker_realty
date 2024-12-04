@@ -91,7 +91,7 @@ function start($is_continue_load = false)
 
             wp_cache_flush();
         }
-
+        sleep(3);
         get_message_server_telegram('Успех', 'Загрузились жилые комплексы городов: ' . $key_city_region . ' в количестве: ' . count($blocks));
 
         $blocks = [];
@@ -105,7 +105,7 @@ function start($is_continue_load = false)
 
         sleep(5);
     }
-
+    clearCache();
     $is_load = false;
 
     foreach ($names_cities as $key_city_region => $city_region) {
@@ -221,11 +221,11 @@ function start($is_continue_load = false)
             $gk_map = null;
             $post_map_categories = null;
         }
-
+        sleep(3);
         get_message_server_telegram('Успех', 'Загрузились объявления: ' . $key_city_region . ' в количестве: ' . $count);
         sleep(5);
     }
-
+    clearCache();
 
     foreach ($names_cities as $key_city_region => $city_region) {
         $region_category_id = search_id_category_by_name($city_region);
@@ -277,6 +277,7 @@ function start($is_continue_load = false)
         gc_collect_cycles();
         wp_cache_flush();
 
+        sleep(3);
         get_message_server_telegram('Успех', 'Загрузились картинки для объявлений: ' . $key_city_region);
         sleep(5);
     }
@@ -285,18 +286,7 @@ function start($is_continue_load = false)
     get_message_server_telegram('Успех', 'Загрузились все объявления');
 
     sleep(10);
-    $client = new Client([
-        'scheme' => 'tcp',
-        'host'   => getenv('WORDPRESS_REDIS_HOST'),
-        'port'   => 6379,
-    ]);
-
-    try {
-        $client->flushall();
-        echo 'Кеш Redis успешно сброшен.<br>';
-    } catch (Exception $e) {
-        echo 'Ошибка: ' . $e->getMessage();
-    }
+    clearCache();
 }
 
 function search_region($regions, $search_id)
@@ -333,6 +323,22 @@ function convert_json_to_array($path_json)
     }
 
     return $current_array ?? [];
+}
+
+function clearCache()
+{
+    $client = new Client([
+        'scheme' => 'tcp',
+        'host'   => getenv('WORDPRESS_REDIS_HOST'),
+        'port'   => 6379,
+    ]);
+
+    try {
+        $client->flushall();
+        echo 'Кеш Redis успешно сброшен.<br>';
+    } catch (Exception $e) {
+        echo 'Ошибка: ' . $e->getMessage();
+    }
 }
 
 function prettyVarDump($data)

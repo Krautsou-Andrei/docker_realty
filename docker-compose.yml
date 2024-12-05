@@ -14,20 +14,20 @@ services:
       MYSQL_USER: Andrei
       MYSQL_PASSWORD: KR7nDso$X8RWi6%%Yz
   
-  # redis:
-  #   image: redis:alpine
-  #   restart: always
-  #   ports:
-  #     - "6379:6379" 
-  #   environment:      
-  #     - REDIS_DATABASES=1
-  #   command: ["redis-server", "--maxmemory", "1024mb", "--maxmemory-policy", "allkeys-lru"] #   
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379" 
+    environment:      
+      - REDIS_DATABASES=1
+    command: ["redis-server", "--maxmemory", "1024mb", "--maxmemory-policy", "allkeys-lru"] #   
 
   wordpress:
     image: wordpress:php8.1-apache
     depends_on:
       - mysql
-      # - redis
+      - redis
     ports:
       - "80:80"  
     restart: always
@@ -37,8 +37,8 @@ services:
       WORDPRESS_DB_PASSWORD: KR7nDso$X8RWi6%%Yz         
       WORDPRESS_DB_NAME: realty
       WORDPRESS_DEBUG: 0
-      # WORDPRESS_CACHE: true
-      # WORDPRESS_REDIS_HOST: redis
+      WORDPRESS_CACHE: true
+      WORDPRESS_REDIS_HOST: redis
     volumes:
       - "./.srv/realty:/var/www/html"
       - "./theme/:/var/www/html/wp-content/themes/realty"
@@ -52,13 +52,13 @@ services:
       - "./config/critical_error_message_telegram.php:/var/www/html/critical_error_message_telegram.php"  
       - "./config/my_cron_file:/etc/cron.d/my_cron_file"
       - "./config/cron.log:/var/log/cron.log" 
-      # - "./config/entrypoint.sh:/usr/local/bin/entrypoint.sh"
-    # entrypoint: ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
-    # command: >
-    #   bash -c "apt-get update && apt-get install -y cron &&
-    #   chmod 0644 /etc/cron.d/my_cron_file &&
-    #   crontab /etc/cron.d/my_cron_file &&
-    #   service cron start && apache2-foreground"
+      - "./config/entrypoint.sh:/usr/local/bin/entrypoint.sh"
+    entrypoint: ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
+    command: >
+      bash -c "apt-get update && apt-get install -y cron &&
+      chmod 0644 /etc/cron.d/my_cron_file &&
+      crontab /etc/cron.d/my_cron_file &&
+      service cron start && apache2-foreground"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

@@ -109,8 +109,7 @@ function convert_image_to_webp($image_data, $image_url)
 
         // Подготовка метаданных для WebP
         require_once(ABSPATH . 'wp-admin/includes/image.php');
-        $attach_data = wp_generate_attachment_metadata($webp_attachment_id, $webp_path);
-        wp_update_attachment_metadata($webp_attachment_id, $attach_data);
+        $webp_attachment_id = wp_insert_attachment($webp_attachment, $webp_path);      
 
         // Сохраняем URL изображения в метаданных
         $webp_image_url = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $image_url);

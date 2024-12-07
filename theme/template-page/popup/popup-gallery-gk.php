@@ -61,7 +61,7 @@ $format_phone_agent = '+' . substr($agent_phone, 0, 1) . ' ' . substr($agent_pho
                                     echo '
                         <li class="slider-preview__slide swiper-slide">
                         <div class="slide-wrapper swiper-zoom-container">
-                        <img src="' . get_image_url($image_url) . '" alt="">
+                        <img src="' . get_image_url($image_url) . '" alt="" style="background-color: transparent;">
                         </div>
                         </li>';
                                 }

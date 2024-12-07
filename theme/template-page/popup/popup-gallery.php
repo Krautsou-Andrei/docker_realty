@@ -37,7 +37,7 @@ $is_single_page = $template !== '';
           <div class="popup-gallery__info">
             <?php
             $product_id = carbon_get_post_meta(get_the_ID(), 'product-id');
-            $product_agent_phone = carbon_get_post_meta(get_the_ID(), 'product-agent-phone');
+            $product_agent_phone = !empty(carbon_get_post_meta(get_the_ID(), 'product-agent-phone')) ? carbon_get_post_meta(get_the_ID(), 'product-agent-phone') : carbon_get_theme_option('crb_phone_link');
             $product_gallery = carbon_get_post_meta(get_the_ID(), 'product-gallery');
             $product_new_building = carbon_get_post_meta(get_the_ID(), 'product-new-building');
             $product_video = "";

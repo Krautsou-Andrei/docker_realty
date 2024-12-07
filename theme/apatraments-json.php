@@ -33,13 +33,14 @@ $create_posts_map = [];
 $image_cache = [];
 $update_posts_map = [];
 $update_posts_map_images = [];
+$count_images_update = 0;
 
 use JsonMachine\Items;
 use Predis\Client;
 
 function start($is_continue_load = false)
 {
-    global  $names_cities, $image_cache, $category_cache, $wpdb, $create_posts_map, $update_posts_map, $update_posts_map_images;
+    global  $names_cities, $image_cache, $category_cache, $wpdb, $create_posts_map, $update_posts_map, $update_posts_map_images, $count_images_update;
 
     $category_cache = get_category_map();
     $image_cache = get_images_map();
@@ -228,6 +229,8 @@ function start($is_continue_load = false)
     clearCache();
 
     foreach ($names_cities as $key_city_region => $city_region) {
+        $count_images_update = 0;
+
         $region_category_id = search_id_category_by_name($city_region);
         $regions = convert_json_to_array('/json/' . $key_city_region . '/regions.json');
 

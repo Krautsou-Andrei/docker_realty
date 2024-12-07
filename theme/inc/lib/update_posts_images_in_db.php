@@ -3,7 +3,7 @@
 require_once get_template_directory() . '/inc/lib/get_message_server_telegram.php';
 function update_posts_images_in_db()
 {
-    global $update_posts_map_images,  $wpdb;
+    global $update_posts_map_images, $wpdb, $count_images_update;
     try {
         $values_meta = [];
         foreach ($update_posts_map_images as $post_id => $update_post) {
@@ -24,8 +24,9 @@ function update_posts_images_in_db()
             }
         }
 
-        get_message_server_telegram('загружены картинки ' . count($update_posts_map_images));
-        
+        $count_images_update = $count_images_update + count($update_posts_map_images);
+        get_message_server_telegram('загружены картинки ' . $count_images_update);
+
         $update_posts_map_images = [];
         sleep(5);
     } catch (Exception $e) {

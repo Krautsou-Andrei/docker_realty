@@ -23,7 +23,7 @@ function execute_with_retries($function_name, $max_attempts = 10)
     }
 }
 
-// execute_with_retries('my_custom_task');
+execute_with_retries('my_custom_task');
 
 try {
     start();
@@ -32,4 +32,4 @@ try {
     execute_with_retries('start'); // Повторный вызов с параметром true
 }
 
-// execute_with_retries('delete_old_posts');
+execute_with_retries('delete_old_posts');

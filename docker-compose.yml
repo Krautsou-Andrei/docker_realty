@@ -13,15 +13,21 @@ services:
       MYSQL_DATABASE: realty
       MYSQL_USER: Andrei
       MYSQL_PASSWORD: KR7nDso$X8RWi6%%Yz
-  
+
   redis:
     image: redis:alpine
     restart: always
     ports:
-      - "6379:6379" 
-    environment:      
+      - "6379:6379"
+    environment:
       - REDIS_DATABASES=1
-    command: ["redis-server", "--maxmemory", "1024mb", "--maxmemory-policy", "allkeys-lru"] #   
+    command: [
+        "redis-server",
+        "--maxmemory",
+        "1024mb",
+        "--maxmemory-policy",
+        "allkeys-lru",
+      ] #
 
   wordpress:
     image: wordpress:php8.1-apache
@@ -29,30 +35,31 @@ services:
       - mysql
       - redis
     ports:
-      - "80:80" 
+      - "80:80"
     restart: always
     environment:
       WORDPRESS_DB_HOST: mysql:3306
-      WORDPRESS_DB_USER: Andrei                 
-      WORDPRESS_DB_PASSWORD: KR7nDso$X8RWi6%%Yz         
+      WORDPRESS_DB_USER: Andrei
+      WORDPRESS_DB_PASSWORD: KR7nDso$X8RWi6%%Yz
       WORDPRESS_DB_NAME: realty
       WORDPRESS_DEBUG: 0
       WORDPRESS_CACHE: true
       WORDPRESS_REDIS_HOST: redis
     volumes:
       - "./.srv/realty:/var/www/html"
+      - "./.srv/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
+      - "./.srv/certbot/www:/var/www/certbot"
+      - "./assets/:/var/www/html/assets"
+      - "./config/get_json.php:/var/www/html/get_json.php"
+      - "./config/critical_error_message_telegram.php:/var/www/html/critical_error_message_telegram.php"
+      - "./config/my_cron_file:/etc/cron.d/my_cron_file"
+      - "./config/cron.log:/var/log/cron.log"
+      - "./config/entrypoint.sh:/usr/local/bin/entrypoint.sh"
+      - "./map/:/var/www/html/map"
+      - "./mlsfiles/:/var/www/html/wp-content/mlsfiles"
       - "./theme/:/var/www/html/wp-content/themes/realty"
       - "./plugins/:/var/www/html/wp-content/plugins"
       - "./uploads/:/var/www/html/wp-content/uploads"
-      - "./.srv/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
-      - "./mlsfiles/:/var/www/html/wp-content/mlsfiles"
-      - "./map/:/var/www/html/map"
-      - "./assets/:/var/www/html/assets"     
-      - "./config/get_json.php:/var/www/html/get_json.php"  
-      - "./config/critical_error_message_telegram.php:/var/www/html/critical_error_message_telegram.php"  
-      - "./config/my_cron_file:/etc/cron.d/my_cron_file"
-      - "./config/cron.log:/var/log/cron.log" 
-      - "./config/entrypoint.sh:/usr/local/bin/entrypoint.sh"
     entrypoint: ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
     command: >
       bash -c "apt-get update && apt-get install -y cron &&
@@ -65,10 +72,10 @@ services:
     depends_on:
       - mysql
     ports:
-      - "8081:80" 
+      - "8081:80"
     environment:
       MYSQL_ROOT_PASSWORD: wordpress
-      MYSQL_USERNAME: Andrei                 # Это можно оставить, если нужно
+      MYSQL_USERNAME: Andrei # Это можно оставить, если нужно
       PMA_HOST: mysql
       UPLOAD_LIMIT: 1512M
 

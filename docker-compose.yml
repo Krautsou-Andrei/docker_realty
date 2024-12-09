@@ -10,9 +10,9 @@ services:
       - ./.srv/database:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: wordpress
-      MYSQL_DATABASE: 
-      MYSQL_USER: 
-      MYSQL_PASSWORD:
+      MYSQL_DATABASE: realty
+      MYSQL_USER: Andrei
+      MYSQL_PASSWORD: KR7nDso$X8RWi6%%Yz
   
   redis:
     image: redis:alpine
@@ -30,23 +30,22 @@ services:
       - redis
     ports:
       - "80:80" 
-      - "433:433" 
+      - "433: 433" 
     restart: always
     environment:
       WORDPRESS_DB_HOST: mysql:3306
-      WORDPRESS_DB_USER:                 
-      WORDPRESS_DB_PASSWORD:         
-      WORDPRESS_DB_NAME: 
+      WORDPRESS_DB_USER: Andrei                 
+      WORDPRESS_DB_PASSWORD: KR7nDso$X8RWi6%%Yz         
+      WORDPRESS_DB_NAME: realty
       WORDPRESS_DEBUG: 0
       WORDPRESS_CACHE: true
       WORDPRESS_REDIS_HOST: redis
     volumes:
       - "./.srv/realty:/var/www/html"
-      - "./.srv/certbot/www:/var/www/certbot"
-      - "./.srv/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
       - "./theme/:/var/www/html/wp-content/themes/realty"
       - "./plugins/:/var/www/html/wp-content/plugins"
-      - "./uploads/:/var/www/html/wp-content/uploads"      
+      - "./uploads/:/var/www/html/wp-content/uploads"
+      - "./.srv/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
       - "./mlsfiles/:/var/www/html/wp-content/mlsfiles"
       - "./map/:/var/www/html/map"
       - "./assets/:/var/www/html/assets"     
@@ -69,8 +68,8 @@ services:
     ports:
       - "8081:80" 
     environment:
-      MYSQL_ROOT_PASSWORD: 
-      MYSQL_USERNAME: 
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_USERNAME: Andrei                 # Это можно оставить, если нужно
       PMA_HOST: mysql
       UPLOAD_LIMIT: 1512M
 
@@ -82,4 +81,3 @@ services:
       - "./.srv/certbot/conf:/etc/letsencrypt"
       - "./.srv/certbot/www:/var/www/certbot"
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    
